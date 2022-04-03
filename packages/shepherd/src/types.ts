@@ -1,7 +1,7 @@
 /***************************************************
  * Created by gongyanyu on 2022/3/11 10:46. *
  ***************************************************/
-import {Storage} from './storage'
+import {Storage} from './Storage'
 import {CoapRequestParams} from 'coap'
 
 export interface Callback<T = unknown> {
