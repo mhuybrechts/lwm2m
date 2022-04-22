@@ -13,7 +13,7 @@ import {Callback, IAcceptDeviceIncoming, ICoapRequestParams, IConfig, IDeviceInf
 import {globalAgent, updateTiming, Agent, IncomingMessage, Server, request} from 'coap'
 import {CoapNode} from './CoapNode'
 
-const debug = require('debug')('@hollowy/coap-shepherd')
+const debug = require('debug')('@hollowy/Shepherd')
 
 export class CoapShepherd extends EventEmitter {
   public clientIdCount: number
@@ -459,7 +459,7 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
     else deferred.reject(err)
   })
 
-  req.end(reqObj.payload)
+  reqObj.payload ? req.end(reqObj.payload) : req.end()
 
   debug('REQ --> %s, token: %s', reqObj.method, req._packet ? req._packet.token.toString('hex') : undefined)
   return deferred.promise

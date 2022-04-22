@@ -11,7 +11,7 @@ import {Callback, ICoapRequestParams, INet} from './types'
 import {IncomingMessage, OutgoingMessage, setGlobalAgent, setGlobalAgentV6} from 'coap'
 import {Socket} from 'dgram'
 
-const debug = require('debug')('@hollowy/coap-shepherd:setupShepherd')
+const debug = require('debug')('@hollowy/Shepherd:INIT')
 
 export function setupShepherd(shepherd: CoapShepherd, callback?: Callback<void>): Q.Promise<void> {
   const deferred = Q.defer<void>()

@@ -8,7 +8,7 @@ import {CoapShepherd} from './CoapShepherd'
 import {IncomingMessage, OutgoingMessage} from 'coap'
 import {IDeviceAttrs} from './types'
 
-const debug = require('debug')('@hollowy/coap-shepherd:reqHandler')
+const debug = require('debug')('@hollowy/Shepherd:REQ')
 
 export function reqHandler(shepherd: CoapShepherd, req: IncomingMessage, rsp: OutgoingMessage) {
   const optType = reqParser(req)
@@ -342,7 +342,7 @@ function sendRsp(
   optType: string,
 ) {
   rsp.code = code
-  data === '' ? rsp.end() : rsp.end(data)
+  data ? rsp.end(data) : rsp.end()
   debug('RSP --> %s, token: %s', optType, rsp._packet ? rsp._packet.token.toString('hex') : undefined)
 }
 
@@ -409,8 +409,8 @@ function buildDeviceAttrs(shepherd: CoapShepherd, req: IncomingMessage): IDevice
 function buildChkAttrs(req: IncomingMessage) {
   let chkAttrs: any = {}
 
-  const // 'chk=out&t=300'
-    query = req.url ? req.url.split('?')[1] : undefined
+  // 'chk=out&t=300'
+  const query = req.url ? req.url.split('?')[1] : undefined
 
   const queryParams: any[] = query ? query.split('&') : undefined
   const invalidAttrs = []

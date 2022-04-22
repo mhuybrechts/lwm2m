@@ -1,5 +1,3 @@
-'use strict'
-
 export default {
   // Minimum time in seconds the Client Device should wait between two notifications.
   // default is 0 secs.

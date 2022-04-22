@@ -17,9 +17,9 @@ interface ICoapRequestParams extends CoapRequestParams {
   payload?: string
 }
 
-const debug = require('debug')('coap-node')
-const logReq = require('debug')('coap-node:request')
-const logRsp = require('debug')('coap-node:response')
+const DEBUG = require('debug')('coap-node')
+const DEBUG_REQ = require('debug')('coap-node:REQ')
+const DEBUG_RSP = require('debug')('coap-node:RSP')
 
 /*if (process.env.npm_lifecycle_event === 'test') {
   let network = {
@@ -433,7 +433,6 @@ export default class CoapNode extends EventEmitter {
       reqObj.query =
         'ep=' + self.clientName + '&lt=' + self.lifetime + '&lwm2m=' + self.version + '&mac=' + self.mac + '&b=U'
       self.request(reqObj, agent, function (err, rsp) {
-
         if (err) {
           invokeCallBackNextTick(err, null, callback)
         } else {

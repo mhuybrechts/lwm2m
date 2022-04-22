@@ -5,9 +5,7 @@ import SmartObject from 'smartobject'
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
 import {Callback, ICoapRequestParams, IDeviceAttrs, IDeviceInfo, IStatus, Result} from './types'
 import {CoapShepherd} from './CoapShepherd'
-import {IncomingMessage} from 'coap'
-import {OptionValue} from 'coap/models/models'
-import ObserveReadStream from 'coap/lib/observe_read_stream'
+import {IncomingMessage, OptionValue, ObserveReadStream} from 'coap'
 
 export class CoapNode {
   public shepherd: CoapShepherd
