@@ -2,7 +2,7 @@ import url from 'url'
 import net from 'net'
 import EventEmitter from 'events'
 import _ from 'lodash'
-import {Agent, createServer, IncomingMessage, OutgoingMessage, Server} from 'coap'
+import {Agent, createServer, IncomingMessage, OutgoingMessage, Server, CoapRequestParams} from 'coap'
 
 import reqHandler from './reqHandler'
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
@@ -12,6 +12,10 @@ import {Callback, IDevAttrs, INet} from './types'
 import SmartObject from 'smartobject'
 import network from 'network'
 import {checkAndBuildObjList, heartbeat} from './helpers'
+
+interface ICoapRequestParams extends CoapRequestParams {
+  payload?: string
+}
 
 const debug = require('debug')('coap-node')
 const logReq = require('debug')('coap-node:request')
@@ -390,14 +394,11 @@ export default class CoapNode extends EventEmitter {
 
     let self = this
 
-    let reqObj: any = {
+    let reqObj: ICoapRequestParams = {
       hostname: ip,
       port: port,
       pathname: '/rd',
-      payload: checkAndBuildObjList(this, false, {
-        ct: 'application/json',
-        hb: true,
-      }),
+      payload: checkAndBuildObjList(this, false, {}),
       method: 'POST',
       options: {'Content-Format': 'application/link-format'},
     }
@@ -429,8 +430,10 @@ export default class CoapNode extends EventEmitter {
 
     // [TODO] server is exist
     this._updateNetInfo(() => {
-      reqObj.query = 'ep=' + self.clientName + '&lt=' + self.lifetime + '&lwm2m=' + self.version + '&mac=' + self.mac
+      reqObj.query =
+        'ep=' + self.clientName + '&lt=' + self.lifetime + '&lwm2m=' + self.version + '&mac=' + self.mac + '&b=U'
       self.request(reqObj, agent, function (err, rsp) {
+
         if (err) {
           invokeCallBackNextTick(err, null, callback)
         } else {
@@ -584,7 +587,7 @@ export default class CoapNode extends EventEmitter {
     let chkErr
 
     function deregister(serverInfo, cb) {
-      let reqObj = {
+      let reqObj: CoapRequestParams = {
         hostname: serverInfo.ip,
         port: serverInfo.port,
         pathname: serverInfo.locationPath,
@@ -679,7 +682,7 @@ export default class CoapNode extends EventEmitter {
     }
 
     function checkin(serverInfo, cb) {
-      let reqObj = {
+      let reqObj: CoapRequestParams = {
         hostname: serverInfo.ip,
         port: serverInfo.port,
         pathname: serverInfo.locationPath,
@@ -748,7 +751,7 @@ export default class CoapNode extends EventEmitter {
       throw new TypeError('callback should be a function if given.')
 
     function checkout(serverInfo, cb) {
-      let reqObj = {
+      let reqObj: CoapRequestParams = {
         hostname: serverInfo.ip,
         port: serverInfo.port,
         pathname: serverInfo.locationPath,
@@ -802,7 +805,7 @@ export default class CoapNode extends EventEmitter {
   lookup(ssid: string, clientName: string, callback) {
     let serverInfo = this.serversInfo[ssid]
 
-    let reqObj = {
+    let reqObj: CoapRequestParams = {
       hostname: serverInfo.ip,
       port: serverInfo.port,
       pathname: '/rd-lookup/ep',
@@ -825,7 +828,9 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  request(reqObj: any, ownAgent, callback?) {
+  request(reqObj: ICoapRequestParams, ownAgent: Agent, callback?)
+  request(reqObj: ICoapRequestParams, callback?)
+  request(reqObj: ICoapRequestParams, ownAgent: any, callback?) {
     if (!_.isPlainObject(reqObj)) throw new TypeError('reqObj should be an object.')
 
     if (_.isFunction(ownAgent)) {
@@ -834,8 +839,9 @@ export default class CoapNode extends EventEmitter {
     }
 
     let self = this
-    let agent = ownAgent || new Agent({type: this._config.connectionType})
-    let req = agent.request(reqObj)
+    let agent: Agent = ownAgent ?? new Agent({type: this._config.connectionType})
+
+    const req = agent.request(reqObj)
 
     req.on('response', (rsp) => {
       if (!_.isEmpty(rsp.payload)) rsp.payload = rsp.payload.toString()

@@ -3,7 +3,7 @@ import _ from 'lodash'
 import proving from 'proving'
 import SmartObject from 'smartobject'
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
-import {Callback, IDeviceAttrs, IDeviceInfo, IStatus, Result} from './types'
+import {Callback, ICoapRequestParams, IDeviceAttrs, IDeviceInfo, IStatus, Result} from './types'
 import {CoapShepherd} from './CoapShepherd'
 import {IncomingMessage} from 'coap'
 import {OptionValue} from 'coap/models/models'
@@ -31,7 +31,7 @@ export class CoapNode {
   public version: string
   public ip: string
   public mac: string
-  public port: number | string
+  public port: number
   public joinTime: number
   public objList: object
   public heartbeatEnabled: boolean
@@ -407,6 +407,7 @@ export class CoapNode {
 
     this.ip = devAttrs.ip || 'unknown'
     this.mac = devAttrs.mac || 'unknown'
+    //@ts-ignore
     this.port = devAttrs.port || 'unknown'
 
     this.joinTime = devAttrs.joinTime || Date.now()
@@ -442,7 +443,7 @@ export class CoapNode {
     }
   }
 
-  _reqObj(method: string, pathname: string) {
+  _reqObj(method: ICoapRequestParams['method'], pathname: string): ICoapRequestParams {
     proving.string(method, 'method should be a string.')
     proving.string(pathname, 'pathname should be a string.')
 

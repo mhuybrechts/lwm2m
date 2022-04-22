@@ -205,7 +205,7 @@ export function decodeJson(path: string, value: any): any {
   return lwm2mCodec.decode('json', path, value)
 }
 
-export function getObjListOfSo(objList: string): {opts: object; list: object} {
+export function getObjListOfSo(objList: string): {opts: {ct: string; hb: boolean}; list: object} {
   const objListOfSo = {}
 
   const // ['</>;ct=11543;hb', '</1/2>', '</1/3>', '</2/0>']

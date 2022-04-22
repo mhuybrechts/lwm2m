@@ -4,124 +4,121 @@ importers:
 
   .:
     specifiers:
-      prettier: ^2.6.0
+      '@types/node': ^17.0.25
+      prettier: ^2.6.2
     devDependencies:
-      prettier: 2.6.0
+      '@types/node': 17.0.25
+      prettier: 2.6.2
 
   packages/helpers:
     specifiers:
-      '@types/chai': ^4.3.0
+      '@types/chai': ^4.3.1
       '@types/debug': ^4.1.7
-      '@types/lodash': ^4.14.178
-      '@types/mocha': ^9.1.0
+      '@types/lodash': ^4.14.182
+      '@types/mocha': ^9.1.1
       '@types/rimraf': ^3.0.2
       '@types/sinon': ^10.0.11
-      '@types/sinon-chai': ^3.2.7
+      '@types/sinon-chai': ^3.2.8
       chai: ^4.3.6
       lodash: ^4.17.21
       lwm2m-codec: 0.1.1
       lwm2m-id: ^1.6.4
       mocha: ^9.2.2
-      prettier: ^2.6.0
+      prettier: ^2.6.2
       proving: ^0.1.0
       rimraf: ^3.0.2
-      sinon: ^13.0.1
-      sinon-chai: ^3.6.0
+      sinon: ^13.0.2
+      sinon-chai: ^3.7.0
       ts-node: ^10.7.0
-      typescript: ^4.6.2
+      typescript: ^4.6.3
     dependencies:
-      '@types/lodash': 4.14.178
+      '@types/lodash': 4.14.182
       lodash: 4.17.21
       lwm2m-codec: 0.1.1
       lwm2m-id: 1.6.4
       proving: 0.1.0
     devDependencies:
-      '@types/chai': 4.3.0
+      '@types/chai': 4.3.1
       '@types/debug': 4.1.7
-      '@types/mocha': 9.1.0
+      '@types/mocha': 9.1.1
       '@types/rimraf': 3.0.2
       '@types/sinon': 10.0.11
-      '@types/sinon-chai': 3.2.7
+      '@types/sinon-chai': 3.2.8
       chai: 4.3.6
       mocha: 9.2.2
-      prettier: 2.6.0
+      prettier: 2.6.2
       rimraf: 3.0.2
-      sinon: 13.0.1
-      sinon-chai: 3.6.0_chai@4.3.6+sinon@13.0.1
-      ts-node: 10.7.0_typescript@4.6.2
-      typescript: 4.6.2
+      sinon: 13.0.2
+      sinon-chai: 3.7.0_chai@4.3.6+sinon@13.0.2
+      ts-node: 10.7.0_typescript@4.6.3
+      typescript: 4.6.3
 
   packages/node:
     specifiers:
-      '@hollowy/coap-helpers': ^1.0.0
-      '@hollowy/coap-shepherd': ^1.0.0
-      '@types/lodash': ^4.14.178
-      '@types/node': ^17.0.21
-      chai: ^3.5.0
-      coap: ^1.0.2
-      debug: ^4.3.3
+      '@hollowy/coap-helpers': ^0.0.0
+      '@types/lodash': ^4.14.182
+      '@types/node': ^17.0.25
+      chai: ^4.3.6
+      coap: ^1.0.5
+      debug: ^4.3.4
       lodash: ^4.17.21
       lwm2m-codec: 0.1.1
       lwm2m-id: ^1.6.4
-      mocha: ^2.5.3
-      network: ^0.6.0
-      prettier: ^2.5.1
+      mocha: ^9.2.2
+      network: ^0.6.1
+      prettier: ^2.6.2
       smartobject: ^1.5.3
     dependencies:
       '@hollowy/coap-helpers': link:../helpers
-      '@types/lodash': 4.14.178
-      coap: 1.0.2
-      debug: 4.3.3
+      '@types/lodash': 4.14.182
+      coap: 1.0.5
+      debug: 4.3.4
       lodash: 4.17.21
       lwm2m-codec: 0.1.1
       lwm2m-id: 1.6.4
-      network: 0.6.0
+      network: 0.6.1
       smartobject: 1.5.3
     devDependencies:
-      '@hollowy/coap-shepherd': link:../shepherd
-      '@types/node': 17.0.21
-      chai: 3.5.0
-      mocha: 2.5.3
-      prettier: 2.5.1
+      '@types/node': 17.0.25
+      chai: 4.3.6
+      mocha: 9.2.2
+      prettier: 2.6.2
 
   packages/shepherd:
     specifiers:
-      '@hollowy/coap-helpers': ^1.0.0
-      '@types/chai': ^4.3.0
+      '@hollowy/coap-helpers': ^0.0.0
+      '@types/chai': ^4.3.1
       '@types/debug': ^4.1.7
-      '@types/lodash': ^4.14.180
-      '@types/mocha': ^9.1.0
+      '@types/lodash': ^4
+      '@types/mocha': ^9.1.1
       '@types/nedb': ^1.8.12
-      '@types/node': ^17.0.21
-      '@types/prettier': ^2.4.4
+      '@types/node': ^17.0.25
+      '@types/prettier': ^2.6.0
       '@types/q': ^1.5.5
       '@types/rimraf': ^3.0.2
       '@types/sinon': ^10.0.11
-      '@types/sinon-chai': ^3.2.7
+      '@types/sinon-chai': ^3.2.8
       chai: ^4.3.6
-      coap: ^1.0.3
-      debug: ^4.3.3
-      lodash: ^4.17.21
+      coap: ^1.0.5
+      debug: ^4.3.4
+      lodash: ^4
       lwm2m-codec: 0.1.1
       lwm2m-id: ^1.6.4
       mocha: ^9.2.2
       nedb: ^1.8.0
       network: ^0.6
-      prettier: ^2.6.0
       proving: ^0.1.0
       q: ^1.5.1
       rimraf: ^3.0.2
-      sinon: ^13.0.1
-      sinon-chai: ^3.6.0
+      sinon: ^13.0.2
+      sinon-chai: ^3.7.0
       smartobject: ^1.5.3
       ts-node: ^10.7.0
-      typescript: ^4.6.2
-      udp-discovery: ^2.0.2
+      typescript: ^4.6.3
     dependencies:
       '@hollowy/coap-helpers': link:../helpers
-      '@types/lodash': 4.14.180
-      coap: 1.0.3
-      debug: 4.3.3
+      coap: 1.0.5
+      debug: 4.3.4
       lodash: 4.17.21
       lwm2m-codec: 0.1.1
       lwm2m-id: 1.6.4
@@ -131,25 +128,24 @@ importers:
       q: 1.5.1
       smartobject: 1.5.3
     devDependencies:
-      '@types/chai': 4.3.0
+      '@types/chai': 4.3.1
       '@types/debug': 4.1.7
-      '@types/mocha': 9.1.0
+      '@types/lodash': 4.14.180
+      '@types/mocha': 9.1.1
       '@types/nedb': 1.8.12
-      '@types/node': 17.0.21
-      '@types/prettier': 2.4.4
+      '@types/node': 17.0.25
+      '@types/prettier': 2.6.0
       '@types/q': 1.5.5
       '@types/rimraf': 3.0.2
       '@types/sinon': 10.0.11
-      '@types/sinon-chai': 3.2.7
+      '@types/sinon-chai': 3.2.8
       chai: 4.3.6
       mocha: 9.2.2
-      prettier: 2.6.0
       rimraf: 3.0.2
-      sinon: 13.0.1
-      sinon-chai: 3.6.0_chai@4.3.6+sinon@13.0.1
-      ts-node: 10.7.0_e79e62fe450383fd2d418267dc75e645
-      typescript: 4.6.2
-      udp-discovery: 2.0.2
+      sinon: 13.0.2
+      sinon-chai: 3.7.0_chai@4.3.6+sinon@13.0.2
+      ts-node: 10.7.0_de7c86b0cde507c63a0402da5b982bd3
+      typescript: 4.6.3
 
 packages:
 
@@ -166,19 +162,19 @@ packages:
     dev: true
 
   /@sinonjs/commons/1.8.3:
-    resolution: {integrity: sha1-OALd0hpQqUm2ch3dcto25n5/Gy0=, tarball: '@sinonjs/commons/download/@sinonjs/commons-1.8.3.tgz'}
+    resolution: {integrity: sha512-xkNcLAn/wZaX14RPlwizcKicDk9G3F8m2nU3L7Ukm5zBgTwiT0wsoFAHx9Jq56fJA1z/7uKGtCRu16sOUCLIHQ==}
     dependencies:
       type-detect: 4.0.8
     dev: true
 
-  /@sinonjs/fake-timers/9.1.1:
-    resolution: {integrity: sha1-e2mOC50S2TYR8G7hQ8MM7YSOKEA=, tarball: '@sinonjs/fake-timers/download/@sinonjs/fake-timers-9.1.1.tgz'}
+  /@sinonjs/fake-timers/9.1.2:
+    resolution: {integrity: sha512-BPS4ynJW/o92PUR4wgriz2Ud5gpST5vz6GQfMixEDK0Z8ZCUv2M7SkBLykH56T++Xs+8ln9zTGbOvNGIe02/jw==}
     dependencies:
       '@sinonjs/commons': 1.8.3
     dev: true
 
   /@sinonjs/samsam/6.1.1:
-    resolution: {integrity: sha1-Yn9/TL21bmQZ+iwaPkdRzk9qALE=, tarball: '@sinonjs/samsam/download/@sinonjs/samsam-6.1.1.tgz'}
+    resolution: {integrity: sha512-cZ7rKJTLiE7u7Wi/v9Hc2fs3Ucc3jrWeMgPHbbTCeVAB2S0wOBbYlkJVeNSL04i7fdhT8wIbDq1zhC/PXTD2SA==}
     dependencies:
       '@sinonjs/commons': 1.8.3
       lodash.get: 4.4.2
@@ -186,7 +182,7 @@ packages:
     dev: true
 
   /@sinonjs/text-encoding/0.7.1:
-    resolution: {integrity: sha1-jaXGUwkVZT86Hzj9XxAdjD+AecU=, tarball: '@sinonjs/text-encoding/download/@sinonjs/text-encoding-0.7.1.tgz'}
+    resolution: {integrity: sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==}
     dev: true
 
   /@tsconfig/node10/1.0.8:
@@ -208,22 +204,19 @@ packages:
   /@types/bl/5.0.2:
     resolution: {integrity: sha1-hDMx1saD6cLZf1C9ivKyCmFNaKU=, tarball: '@types/bl/download/@types/bl-5.0.2.tgz'}
     dependencies:
-      '@types/node': 17.0.21
+      '@types/node': 17.0.25
       '@types/readable-stream': 2.3.12
     dev: false
 
-  /@types/capitalize/2.0.0:
-    resolution: {integrity: sha1-jvpVC3DH0FvVoyPTm6di8/BYzfs=, tarball: '@types/capitalize/download/@types/capitalize-2.0.0.tgz'}
-    dev: false
-
-  /@types/chai/4.3.0:
-    resolution: {integrity: sha1-I1CevB+jLxtNUNambEAy1bjqq9w=, tarball: '@types/chai/download/@types/chai-4.3.0.tgz'}
+  /@types/chai/4.3.1:
+    resolution: {integrity: sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==}
     dev: true
 
   /@types/debug/4.1.7:
     resolution: {integrity: sha1-fMDqdhUJEkcJuLLRCQ2PbBeq24I=, tarball: '@types/debug/download/@types/debug-4.1.7.tgz'}
     dependencies:
       '@types/ms': 0.7.31
+    dev: true
 
   /@types/glob/7.2.0:
     resolution: {integrity: sha1-vBtb86qS8lvV3TnzXFc2G9zlsus=, tarball: '@types/glob/download/@types/glob-7.2.0.tgz'}
@@ -232,12 +225,12 @@ packages:
       '@types/node': 17.0.21
     dev: true
 
-  /@types/lodash/4.14.178:
-    resolution: {integrity: sha1-NB9tIkfbUo1KE927N0vNyAQG9Pg=, tarball: '@types/lodash/download/@types/lodash-4.14.178.tgz'}
-    dev: false
-
   /@types/lodash/4.14.180:
-    resolution: {integrity: sha1-SrfJ3fyS7EqIeIZIO8FMefs4BnA=, tarball: '@types/lodash/download/@types/lodash-4.14.180.tgz'}
+    resolution: {integrity: sha512-XOKXa1KIxtNXgASAnwj7cnttJxS4fksBRywK/9LzRV5YxrF80BXZIGeQSuoESQ/VkUj30Ae0+YcuHc15wJCB2g==}
+    dev: true
+
+  /@types/lodash/4.14.182:
+    resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
     dev: false
 
   /@types/lru-cache/5.1.1:
@@ -248,28 +241,29 @@ packages:
     resolution: {integrity: sha1-EAHMXmo3BLg8I2An538vWOoBD0A=, tarball: '@types/minimatch/download/@types/minimatch-3.0.5.tgz'}
     dev: true
 
-  /@types/mocha/9.1.0:
-    resolution: {integrity: sha1-uvF6ssyj/M4tMi68MEVL/0h++tU=, tarball: '@types/mocha/download/@types/mocha-9.1.0.tgz'}
+  /@types/mocha/9.1.1:
+    resolution: {integrity: sha512-Z61JK7DKDtdKTWwLeElSEBcWGRLY8g95ic5FoQqI9CMx0ns/Ghep3B4DfcEimiKMvtamNVULVNKEsiwV3aQmXw==}
     dev: true
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha1-MbfKZAcSij0rvCf+LSGzRTl/YZc=, tarball: '@types/ms/download/@types/ms-0.7.31.tgz'}
+    dev: true
 
   /@types/nedb/1.8.12:
     resolution: {integrity: sha1-WXuxJN2vFgOcbUePSrwKjyAGsTQ=, tarball: '@types/nedb/download/@types/nedb-1.8.12.tgz'}
     dependencies:
-      '@types/node': 17.0.21
+      '@types/node': 17.0.25
     dev: true
-
-  /@types/node/16.11.26:
-    resolution: {integrity: sha1-Y9IE0TbJkW+03NG1D5dA/oaITkc=, tarball: '@types/node/download/@types/node-16.11.26.tgz'}
-    dev: false
 
   /@types/node/17.0.21:
     resolution: {integrity: sha1-hkuYfAxo0HtDRYRcPmO3Xt0UNkQ=, tarball: '@types/node/download/@types/node-17.0.21.tgz'}
+    dev: true
 
-  /@types/prettier/2.4.4:
-    resolution: {integrity: sha1-XZtjEy31TYkJ/OHD+MomD91pPhc=, tarball: '@types/prettier/download/@types/prettier-2.4.4.tgz'}
+  /@types/node/17.0.25:
+    resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
+
+  /@types/prettier/2.6.0:
+    resolution: {integrity: sha512-G/AdOadiZhnJp0jXCaBQU449W2h716OW/EoXeYkCytxKL06X1WCXB4DZpp8TpZ8eyIJVS1cw4lrlkkSYU21cDw==}
     dev: true
 
   /@types/q/1.5.5:
@@ -279,7 +273,7 @@ packages:
   /@types/readable-stream/2.3.12:
     resolution: {integrity: sha1-4tgLCJvTfqT5P76piT3mfpABV0s=, tarball: '@types/readable-stream/download/@types/readable-stream-2.3.12.tgz'}
     dependencies:
-      '@types/node': 17.0.21
+      '@types/node': 17.0.25
       safe-buffer: 5.2.1
     dev: false
 
@@ -290,10 +284,10 @@ packages:
       '@types/node': 17.0.21
     dev: true
 
-  /@types/sinon-chai/3.2.7:
-    resolution: {integrity: sha1-XUx7CIAuAXwC7y8/yIbwVfGC+qU=, tarball: '@types/sinon-chai/download/@types/sinon-chai-3.2.7.tgz'}
+  /@types/sinon-chai/3.2.8:
+    resolution: {integrity: sha512-d4ImIQbT/rKMG8+AXpmcan5T2/PNeSjrYhvkwet6z0p8kzYtfgA32xzOBlbU0yqJfq+/0Ml805iFoODO0LP5/g==}
     dependencies:
-      '@types/chai': 4.3.0
+      '@types/chai': 4.3.1
       '@types/sinon': 10.0.11
     dev: true
 
@@ -364,11 +358,11 @@ packages:
     dev: false
 
   /async/1.5.2:
-    resolution: {integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=, tarball: async/download/async-1.5.2.tgz}
+    resolution: {integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=}
     dev: false
 
   /async/3.2.3:
-    resolution: {integrity: sha1-rFPa/T9HIO6eihYGKPGOqR3xlsk=, tarball: async/download/async-3.2.3.tgz}
+    resolution: {integrity: sha512-spZRyzKL5l5BZQrr/6m/SqFdBN0q3OCI0f9rjfBzCMBIP4p75P620rR3gTmaksNOhmzgdxcaxdNfMy6anrbM0g==}
     dev: false
 
   /balanced-match/1.0.2:
@@ -436,15 +430,6 @@ packages:
     resolution: {integrity: sha1-7tf5TGaZoxju725oln/hOcdkuGY=, tarball: capitalize/download/capitalize-2.0.4.tgz}
     dev: false
 
-  /chai/3.5.0:
-    resolution: {integrity: sha1-TQJjewZ/6Vi9v906QOxW/vc3Mkc=, tarball: chai/download/chai-3.5.0.tgz}
-    engines: {node: '>= 0.4.0'}
-    dependencies:
-      assertion-error: 1.1.0
-      deep-eql: 0.1.3
-      type-detect: 1.0.0
-    dev: true
-
   /chai/4.3.6:
     resolution: {integrity: sha1-/+S6LZ+p1mgMwLNwra5wnskBHpw=, tarball: chai/download/chai-4.3.6.tgz}
     engines: {node: '>=4'}
@@ -498,39 +483,16 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
-  /coap/1.0.2:
-    resolution: {integrity: sha1-DEXC+lDRdNwv57HA40yLybXbRZs=, tarball: coap/download/coap-1.0.2.tgz}
+  /coap/1.0.5:
+    resolution: {integrity: sha512-csTStrQbxlbzslAgyfKw/yTeU9GrPU7L5igOiCAO+YQJA7hxuRni9EXdUPm4sJgY6jBRmRkjABnDrgiSOzN/Ow==}
     engines: {node: '>=10'}
     dependencies:
       '@types/bl': 5.0.2
-      '@types/capitalize': 2.0.0
-      '@types/debug': 4.1.7
       '@types/lru-cache': 5.1.1
-      '@types/node': 16.11.26
       bl: 5.0.0
       capitalize: 2.0.4
       coap-packet: 1.1.0
-      debug: 4.3.3
-      fastseries: 2.0.0
-      lru-cache: 6.0.0
-      readable-stream: 3.6.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /coap/1.0.3:
-    resolution: {integrity: sha1-DeFq4GAjLv1PfeDydaN7CuapR0U=, tarball: coap/download/coap-1.0.3.tgz}
-    engines: {node: '>=10'}
-    dependencies:
-      '@types/bl': 5.0.2
-      '@types/capitalize': 2.0.0
-      '@types/debug': 4.1.7
-      '@types/lru-cache': 5.1.1
-      '@types/node': 16.11.26
-      bl: 5.0.0
-      capitalize: 2.0.4
-      coap-packet: 1.1.0
-      debug: 4.3.3
+      debug: 4.3.4
       fastseries: 2.0.0
       lru-cache: 6.0.0
       readable-stream: 3.6.0
@@ -549,18 +511,8 @@ packages:
     resolution: {integrity: sha1-wqCah6y95pVD3m9j+jmVyCbFNqI=, tarball: color-name/download/color-name-1.1.4.tgz}
     dev: true
 
-  /commander/0.6.1:
-    resolution: {integrity: sha1-+mihT2qUXVTbvlDYzbMyDp47GgY=, tarball: commander/download/commander-0.6.1.tgz}
-    engines: {node: '>= 0.4.x'}
-    dev: true
-
-  /commander/2.3.0:
-    resolution: {integrity: sha1-/UMOiJgy7DU7ms0d4hfBHLPu+HM=, tarball: commander/download/commander-2.3.0.tgz}
-    engines: {node: '>= 0.6.x'}
-    dev: true
-
   /commander/2.9.0:
-    resolution: {integrity: sha1-nJkJQXbhIkDLItbFFGCYQA/g99Q=, tarball: commander/download/commander-2.9.0.tgz}
+    resolution: {integrity: sha1-nJkJQXbhIkDLItbFFGCYQA/g99Q=}
     engines: {node: '>= 0.6.x'}
     dependencies:
       graceful-readlink: 1.0.1
@@ -574,35 +526,16 @@ packages:
     resolution: {integrity: sha1-wdfo8eX2z8n/ZfnNNS03NIdWwzM=, tarball: create-require/download/create-require-1.1.1.tgz}
     dev: true
 
-  /debug/2.2.0:
-    resolution: {integrity: sha1-+HBX6ZWxofauaklgZkE3vFbwOdo=, tarball: debug/download/debug-2.2.0.tgz}
-    dependencies:
-      ms: 0.7.1
-    dev: true
-
   /debug/2.6.9:
-    resolution: {integrity: sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8=, tarball: debug/download/debug-2.6.9.tgz}
+    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
     dependencies:
       ms: 2.0.0
     dev: false
 
-  /debug/4.1.1:
-    resolution: {integrity: sha1-O3ImAlUQnGtYnO4FDx1RYTlmR5E=, tarball: debug/download/debug-4.1.1.tgz}
-    deprecated: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
+  /debug/3.2.7:
+    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     dependencies:
       ms: 2.1.3
-    dev: true
-
-  /debug/4.3.3:
-    resolution: {integrity: sha1-BCZuC3CpjURi5uKI44JZITMytmQ=, tarball: debug/download/debug-4.3.3.tgz}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
     dev: false
 
   /debug/4.3.3_supports-color@8.1.1:
@@ -618,15 +551,21 @@ packages:
       supports-color: 8.1.1
     dev: true
 
+  /debug/4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: false
+
   /decamelize/4.0.0:
     resolution: {integrity: sha1-qkcte/Zg6xXzSU79UxyrfypwmDc=, tarball: decamelize/download/decamelize-4.0.0.tgz}
     engines: {node: '>=10'}
-    dev: true
-
-  /deep-eql/0.1.3:
-    resolution: {integrity: sha1-71WKyrjeJSBs1xOQbXTlaTDrafI=, tarball: deep-eql/download/deep-eql-0.1.3.tgz}
-    dependencies:
-      type-detect: 0.1.1
     dev: true
 
   /deep-eql/3.0.1:
@@ -634,15 +573,6 @@ packages:
     engines: {node: '>=0.12'}
     dependencies:
       type-detect: 4.0.8
-    dev: true
-
-  /deep-is/0.1.4:
-    resolution: {integrity: sha1-pvLc5hL63S7x9Rm3NVHxfoUZmDE=, tarball: deep-is/download/deep-is-0.1.4.tgz}
-    dev: true
-
-  /diff/1.4.0:
-    resolution: {integrity: sha1-fyjS657nsVqX79ic5j3P2qPMur8=, tarball: diff/download/diff-1.4.0.tgz}
-    engines: {node: '>=0.3.1'}
     dev: true
 
   /diff/4.0.2:
@@ -669,11 +599,6 @@ packages:
   /escalade/3.1.1:
     resolution: {integrity: sha1-2M/ccACWXFoBdLSoLqpcBVJ0LkA=, tarball: escalade/download/escalade-3.1.1.tgz}
     engines: {node: '>=6'}
-    dev: true
-
-  /escape-string-regexp/1.0.2:
-    resolution: {integrity: sha1-Tbwv5nTnGUnK8/smlc5/LcHZqNE=, tarball: escape-string-regexp/download/escape-string-regexp-1.0.2.tgz}
-    engines: {node: '>=0.8.0'}
     dev: true
 
   /escape-string-regexp/4.0.0:
@@ -710,7 +635,7 @@ packages:
     dev: true
 
   /fsevents/2.3.2:
-    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=, tarball: fsevents/download/fsevents-2.3.2.tgz}
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -733,13 +658,6 @@ packages:
       is-glob: 4.0.3
     dev: true
 
-  /glob/3.2.11:
-    resolution: {integrity: sha1-Spc/Y1uRkPcV0QmH1cAP0oFevj0=, tarball: glob/download/glob-3.2.11.tgz}
-    dependencies:
-      inherits: 2.0.4
-      minimatch: 0.3.0
-    dev: true
-
   /glob/7.2.0:
     resolution: {integrity: sha1-0VU1r3cy4C6Uj0xBYovZECk/YCM=, tarball: glob/download/glob-7.2.0.tgz}
     dependencies:
@@ -752,7 +670,7 @@ packages:
     dev: true
 
   /graceful-readlink/1.0.1:
-    resolution: {integrity: sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=, tarball: graceful-readlink/download/graceful-readlink-1.0.1.tgz}
+    resolution: {integrity: sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=}
     dev: false
 
   /growl/1.10.5:
@@ -760,12 +678,8 @@ packages:
     engines: {node: '>=4.x'}
     dev: true
 
-  /growl/1.9.2:
-    resolution: {integrity: sha1-Dqd0NxXbjY3ixe3hd14bRayFwC8=, tarball: growl/download/growl-1.9.2.tgz}
-    dev: true
-
   /has-flag/4.0.0:
-    resolution: {integrity: sha1-lEdx/ZyByBJlxNaUGGDaBrtZR5s=, tarball: has-flag/download/has-flag-4.0.0.tgz}
+    resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
     dev: true
 
@@ -776,6 +690,20 @@ packages:
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha1-ICK0sl+93CHS9SSXSkdKr+czkIs=, tarball: iconv-lite/download/iconv-lite-0.4.24.tgz}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+
+  /iconv-lite/0.5.2:
+    resolution: {integrity: sha512-kERHXvpSaB4aU3eANwidg79K8FlrN77m8G9V+0vOR3HYaRifrlwMEpT7ZBJqLSEIHnEgJTHcWK82wwLwwKwtag==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+
+  /iconv-lite/0.6.3:
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
@@ -798,11 +726,6 @@ packages:
 
   /inherits/2.0.4:
     resolution: {integrity: sha1-D6LGT5MpF8NDOg3tVTY6rjdBa3w=, tarball: inherits/download/inherits-2.0.4.tgz}
-
-  /ip-regex/2.1.0:
-    resolution: {integrity: sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=, tarball: ip-regex/download/ip-regex-2.1.0.tgz}
-    engines: {node: '>=4'}
-    dev: true
 
   /is-binary-path/2.1.0:
     resolution: {integrity: sha1-6h9/O4DwZCNug0cPhsCcJU+0Wwk=, tarball: is-binary-path/download/is-binary-path-2.1.0.tgz}
@@ -847,34 +770,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /is-url/1.2.4:
-    resolution: {integrity: sha1-BKTfRtKMTP89c9Af8Gq+sxihqlI=, tarball: is-url/download/is-url-1.2.4.tgz}
-    dev: true
-
-  /is2/2.0.1:
-    resolution: {integrity: sha1-isNVZEhAkhzkNdlPBdOpRjTTSBo=, tarball: is2/download/is2-2.0.1.tgz}
-    engines: {node: '>=v0.10.0'}
-    dependencies:
-      deep-is: 0.1.4
-      ip-regex: 2.1.0
-      is-url: 1.2.4
-    dev: true
-
   /isarray/0.0.1:
-    resolution: {integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=, tarball: isarray/download/isarray-0.0.1.tgz}
+    resolution: {integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=}
     dev: true
 
   /isexe/2.0.0:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=, tarball: isexe/download/isexe-2.0.0.tgz}
-    dev: true
-
-  /jade/0.26.3:
-    resolution: {integrity: sha1-jxDXl32NefL2/4YqgbBRPMslaGw=, tarball: jade/download/jade-0.26.3.tgz}
-    deprecated: Jade has been renamed to pug, please install the latest version of pug instead of jade
-    hasBin: true
-    dependencies:
-      commander: 0.6.1
-      mkdirp: 0.3.0
     dev: true
 
   /js-yaml/4.1.0:
@@ -885,7 +786,7 @@ packages:
     dev: true
 
   /just-extend/4.2.1:
-    resolution: {integrity: sha1-715Ymvth5dZrJOynSUCaiTmox0Q=, tarball: just-extend/download/just-extend-4.2.1.tgz}
+    resolution: {integrity: sha512-g3UB796vUFIY90VIv/WX3L2c8CS2MdWUww3CNrYmqza1Fg0DURc2K/O4YrnklBdQarSJ/y8JnJYDGc+1iumQjg==}
     dev: true
 
   /lie/3.1.1:
@@ -908,7 +809,7 @@ packages:
     dev: true
 
   /lodash.get/4.4.2:
-    resolution: {integrity: sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=, tarball: lodash.get/download/lodash.get-4.4.2.tgz}
+    resolution: {integrity: sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=}
     dev: true
 
   /lodash/4.17.21:
@@ -927,10 +828,6 @@ packages:
     resolution: {integrity: sha1-fgub/8dvFI+b52nLEyHT3PPLJfM=, tarball: loupe/download/loupe-2.3.4.tgz}
     dependencies:
       get-func-name: 2.0.0
-    dev: true
-
-  /lru-cache/2.7.3:
-    resolution: {integrity: sha1-bUUk6LlV+V1PW1iFHOId1y+06VI=, tarball: lru-cache/download/lru-cache-2.7.3.tgz}
     dev: true
 
   /lru-cache/6.0.0:
@@ -957,14 +854,6 @@ packages:
     resolution: {integrity: sha1-LrLjfqm2fEiR9oShOUeZr0hM96I=, tarball: make-error/download/make-error-1.3.6.tgz}
     dev: true
 
-  /minimatch/0.3.0:
-    resolution: {integrity: sha1-J12O2qxPG7MyZHIInnlJyDlGmd0=, tarball: minimatch/download/minimatch-0.3.0.tgz}
-    deprecated: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
-    dependencies:
-      lru-cache: 2.7.3
-      sigmund: 1.0.1
-    dev: true
-
   /minimatch/3.1.2:
     resolution: {integrity: sha1-Gc0ZS/0+Qo8EmnCBfAONiatL41s=, tarball: minimatch/download/minimatch-3.1.2.tgz}
     dependencies:
@@ -978,26 +867,9 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
-  /minimist/0.0.8:
-    resolution: {integrity: sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=, tarball: minimist/download/minimist-0.0.8.tgz}
-    dev: true
-
   /minimist/1.2.5:
     resolution: {integrity: sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=, tarball: minimist/download/minimist-1.2.5.tgz}
     dev: false
-
-  /mkdirp/0.3.0:
-    resolution: {integrity: sha1-G79asbqCevI1dRQ0kEJkVfSB/h4=, tarball: mkdirp/download/mkdirp-0.3.0.tgz}
-    deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
-    dev: true
-
-  /mkdirp/0.5.1:
-    resolution: {integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=, tarball: mkdirp/download/mkdirp-0.5.1.tgz}
-    deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
-    hasBin: true
-    dependencies:
-      minimist: 0.0.8
-    dev: true
 
   /mkdirp/0.5.5:
     resolution: {integrity: sha1-2Rzv1i0UNsoPQWIOJRKI1CAJne8=, tarball: mkdirp/download/mkdirp-0.5.5.tgz}
@@ -1005,23 +877,6 @@ packages:
     dependencies:
       minimist: 1.2.5
     dev: false
-
-  /mocha/2.5.3:
-    resolution: {integrity: sha1-FhvlvetJZ3HrmzV0UFC2IrWu/Fg=, tarball: mocha/download/mocha-2.5.3.tgz}
-    engines: {node: '>= 0.8.x'}
-    hasBin: true
-    dependencies:
-      commander: 2.3.0
-      debug: 2.2.0
-      diff: 1.4.0
-      escape-string-regexp: 1.0.2
-      glob: 3.2.11
-      growl: 1.9.2
-      jade: 0.26.3
-      mkdirp: 0.5.1
-      supports-color: 1.2.0
-      to-iso-string: 0.0.2
-    dev: true
 
   /mocha/9.2.2:
     resolution: {integrity: sha1-1w20a9uTyldALICTM+WoSXeoj7k=, tarball: mocha/download/mocha-9.2.2.tgz}
@@ -1054,12 +909,8 @@ packages:
       yargs-unparser: 2.0.0
     dev: true
 
-  /ms/0.7.1:
-    resolution: {integrity: sha1-nNE8A62/8ltl7/3nzoZO6VIBcJg=, tarball: ms/download/ms-0.7.1.tgz}
-    dev: true
-
   /ms/2.0.0:
-    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=, tarball: ms/download/ms-2.0.0.tgz}
+    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
     dev: false
 
   /ms/2.1.2:
@@ -1067,7 +918,6 @@ packages:
 
   /ms/2.1.3:
     resolution: {integrity: sha1-V0yBOM4dK1hh8LRFedut1gxmFbI=, tarball: ms/download/ms-2.1.3.tgz}
-    dev: true
 
   /nanoid/3.3.1:
     resolution: {integrity: sha1-Y0ehjKyIr4j1ivCzWUtyPV6ZuzU=, tarball: nanoid/download/nanoid-3.3.1.tgz}
@@ -1094,6 +944,16 @@ packages:
       iconv-lite: 0.4.24
     dev: false
 
+  /needle/3.1.0:
+    resolution: {integrity: sha512-gCE9weDhjVGCRqS8dwDR/D3GTAeyXLXuqp7I8EzH6DllZGXSUyxuqqLh+YX9rMAWaaTFyVAg6rHGL25dqvczKw==}
+    engines: {node: '>= 4.4.x'}
+    hasBin: true
+    dependencies:
+      debug: 3.2.7
+      iconv-lite: 0.6.3
+      sax: 1.2.4
+    dev: false
+
   /network/0.6.0:
     resolution: {integrity: sha1-cAd5zjzZGyYzEA/NG3pxfsxGDBw=, tarball: network/download/network-0.6.0.tgz}
     hasBin: true
@@ -1104,11 +964,21 @@ packages:
       wmic: 0.1.0
     dev: false
 
+  /network/0.6.1:
+    resolution: {integrity: sha512-a5vz0jz2X9kyt3no3zS5Fn7y6o1xylx4o0NxTgbp+qJK4EAwFrLQNJLdg7Gon9T9U4hWI0v8L/kW8R6zoHubWA==}
+    hasBin: true
+    dependencies:
+      async: 1.5.2
+      commander: 2.9.0
+      needle: 3.1.0
+      wmic: 1.1.1
+    dev: false
+
   /nise/5.1.1:
-    resolution: {integrity: sha1-rEI34NeF7Py4PiDziRhZddpcMfM=, tarball: nise/download/nise-5.1.1.tgz}
+    resolution: {integrity: sha512-yr5kW2THW1AkxVmCnKEh4nbYkJdB3I7LUkiUgOvEkOp414mc2UMaHMA7pjq1nYowhdoJZGwEKGaQVbxfpWj10A==}
     dependencies:
       '@sinonjs/commons': 1.8.3
-      '@sinonjs/fake-timers': 9.1.1
+      '@sinonjs/fake-timers': 9.1.2
       '@sinonjs/text-encoding': 0.7.1
       just-extend: 4.2.1
       path-to-regexp: 1.8.0
@@ -1117,13 +987,6 @@ packages:
   /normalize-path/3.0.0:
     resolution: {integrity: sha1-Dc1p/yOhybEf0JeDFmRKA4ghamU=, tarball: normalize-path/download/normalize-path-3.0.0.tgz}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /obj-to-json/1.0.0:
-    resolution: {integrity: sha1-2tGOGYGWLiN8J6yq87aV31XbIcs=, tarball: obj-to-json/download/obj-to-json-1.0.0.tgz}
-    dependencies:
-      debug: 4.1.1
-      is2: 2.0.1
     dev: true
 
   /once/1.4.0:
@@ -1157,7 +1020,7 @@ packages:
     dev: true
 
   /path-to-regexp/1.8.0:
-    resolution: {integrity: sha1-iHs7qdhDk+h6CgufTLdWGYtTVIo=, tarball: path-to-regexp/download/path-to-regexp-1.8.0.tgz}
+    resolution: {integrity: sha512-n43JRhlUKUAlibEJhPeir1ncUID16QnEjNpwzNdO3Lm4ywrBpBZ5oLD0I6br9evr1Y9JTqwRtAh7JLoOzAQdVA==}
     dependencies:
       isarray: 0.0.1
     dev: true
@@ -1171,14 +1034,8 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /prettier/2.5.1:
-    resolution: {integrity: sha1-//dfqdUZxUzw/OMowQF9lFRrxWo=, tarball: prettier/download/prettier-2.5.1.tgz}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-    dev: true
-
-  /prettier/2.6.0:
-    resolution: {integrity: sha1-Evj1BMTY3bdkdfRBM3VC+nmSB9Q=, tarball: prettier/download/prettier-2.6.0.tgz}
+  /prettier/2.6.2:
+    resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -1230,7 +1087,11 @@ packages:
     resolution: {integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=, tarball: safe-buffer/download/safe-buffer-5.2.1.tgz}
 
   /safer-buffer/2.1.2:
-    resolution: {integrity: sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=, tarball: safer-buffer/download/safer-buffer-2.1.2.tgz}
+    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: false
+
+  /sax/1.2.4:
+    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
     dev: false
 
   /serialize-javascript/6.0.0:
@@ -1239,25 +1100,21 @@ packages:
       randombytes: 2.1.0
     dev: true
 
-  /sigmund/1.0.1:
-    resolution: {integrity: sha1-P/IfGYytIXX587eBhT/ZTQ0ZtZA=, tarball: sigmund/download/sigmund-1.0.1.tgz}
-    dev: true
-
-  /sinon-chai/3.6.0_chai@4.3.6+sinon@13.0.1:
-    resolution: {integrity: sha1-Jb1Zo374mQJF4IWkDx951r8CO3o=, tarball: sinon-chai/download/sinon-chai-3.6.0.tgz}
+  /sinon-chai/3.7.0_chai@4.3.6+sinon@13.0.2:
+    resolution: {integrity: sha512-mf5NURdUaSdnatJx3uhoBOrY9dtL19fiOtAdT1Azxg3+lNJFiuN0uzaU3xX1LeAfL17kHQhTAJgpsfhbMJMY2g==}
     peerDependencies:
       chai: ^4.0.0
-      sinon: '>=4.0.0 <11.0.0'
+      sinon: '>=4.0.0'
     dependencies:
       chai: 4.3.6
-      sinon: 13.0.1
+      sinon: 13.0.2
     dev: true
 
-  /sinon/13.0.1:
-    resolution: {integrity: sha1-KlaL7KIITEiYXdmOJ24GXIFzjjw=, tarball: sinon/download/sinon-13.0.1.tgz}
+  /sinon/13.0.2:
+    resolution: {integrity: sha512-KvOrztAVqzSJWMDoxM4vM+GPys1df2VBoXm+YciyB/OLMamfS3VXh3oGh5WtrAGSzrgczNWFFY22oKb7Fi5eeA==}
     dependencies:
       '@sinonjs/commons': 1.8.3
-      '@sinonjs/fake-timers': 9.1.1
+      '@sinonjs/fake-timers': 9.1.2
       '@sinonjs/samsam': 6.1.1
       diff: 5.0.0
       nise: 5.1.1
@@ -1298,14 +1155,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /supports-color/1.2.0:
-    resolution: {integrity: sha1-/x7R5hFp0Gs88tWI4YixjYhH4X4=, tarball: supports-color/download/supports-color-1.2.0.tgz}
-    engines: {node: '>=0.10.0'}
-    hasBin: true
-    dev: true
-
   /supports-color/7.2.0:
-    resolution: {integrity: sha1-G33NyzK4E4gBs+R4umpRyqiWSNo=, tarball: supports-color/download/supports-color-7.2.0.tgz}
+    resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
     dependencies:
       has-flag: 4.0.0
@@ -1318,11 +1169,6 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /to-iso-string/0.0.2:
-    resolution: {integrity: sha1-TcGeZk38y+Jb2NtQiwDG2hWCVdE=, tarball: to-iso-string/download/to-iso-string-0.0.2.tgz}
-    deprecated: to-iso-string has been deprecated, use @segment/to-iso-string instead.
-    dev: true
-
   /to-regex-range/5.0.1:
     resolution: {integrity: sha1-FkjESq58jZiKMmAY7XL1tN0DkuQ=, tarball: to-regex-range/download/to-regex-range-5.0.1.tgz}
     engines: {node: '>=8.0'}
@@ -1330,7 +1176,7 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /ts-node/10.7.0_e79e62fe450383fd2d418267dc75e645:
+  /ts-node/10.7.0_de7c86b0cde507c63a0402da5b982bd3:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
     peerDependencies:
@@ -1349,19 +1195,19 @@ packages:
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
-      '@types/node': 17.0.21
+      '@types/node': 17.0.25
       acorn: 8.7.0
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.6.2
+      typescript: 4.6.3
       v8-compile-cache-lib: 3.0.0
       yn: 3.1.1
     dev: true
 
-  /ts-node/10.7.0_typescript@4.6.2:
+  /ts-node/10.7.0_typescript@4.6.3:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
     peerDependencies:
@@ -1386,36 +1232,20 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.6.2
+      typescript: 4.6.3
       v8-compile-cache-lib: 3.0.0
       yn: 3.1.1
-    dev: true
-
-  /type-detect/0.1.1:
-    resolution: {integrity: sha1-C6XsKohWQORw6k6FBZcZANrFiCI=, tarball: type-detect/download/type-detect-0.1.1.tgz}
-    dev: true
-
-  /type-detect/1.0.0:
-    resolution: {integrity: sha1-diIXzAbbJY7EiQihKY6LlRIejqI=, tarball: type-detect/download/type-detect-1.0.0.tgz}
     dev: true
 
   /type-detect/4.0.8:
-    resolution: {integrity: sha1-dkb7XxiHHPu3dJ5pvTmmOI63RQw=, tarball: type-detect/download/type-detect-4.0.8.tgz}
+    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
     engines: {node: '>=4'}
     dev: true
 
-  /typescript/4.6.2:
-    resolution: {integrity: sha1-/hLScntwj07vQPUVmLM5i6qWEdQ=, tarball: typescript/download/typescript-4.6.2.tgz}
+  /typescript/4.6.3:
+    resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
-
-  /udp-discovery/2.0.2:
-    resolution: {integrity: sha1-fh+w9EWSoCQF/hkR1ZqYOVy1CHU=, tarball: udp-discovery/download/udp-discovery-2.0.2.tgz}
-    dependencies:
-      debug: 4.1.1
-      is2: 2.0.1
-      obj-to-json: 1.0.0
     dev: true
 
   /underscore/1.4.4:
@@ -1443,6 +1273,13 @@ packages:
     dependencies:
       async: 3.2.3
       iconv-lite: 0.4.24
+    dev: false
+
+  /wmic/1.1.1:
+    resolution: {integrity: sha512-6lbonssALks49dX9bJTE8i54OTjbbLfd3IraFfG1ZR1ZrEbEynCt471IX5SfslZaFwISJKdUFHjOWHk0Brs5eg==}
+    dependencies:
+      async: 3.2.3
+      iconv-lite: 0.5.2
     dev: false
 
   /workerpool/6.2.0:

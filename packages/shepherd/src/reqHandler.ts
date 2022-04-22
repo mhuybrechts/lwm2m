@@ -63,7 +63,7 @@ function forRegister(shepherd: CoapShepherd, req: IncomingMessage, rsp: Outgoing
         let promise
         if (shepherd.config.autoReadResources)
           promise = cnode.readAllResource().then(() => shepherd.storage.save(cnode))
-        else promise = Q.resolve()
+        else promise = Q.fcall(() => {})
         promise
           .then(() => {
             if (cnode.heartbeatEnabled) return cnode.observe('/heartbeat')
@@ -342,7 +342,7 @@ function sendRsp(
   optType: string,
 ) {
   rsp.code = code
-  rsp.end(data)
+  data === '' ? rsp.end() : rsp.end(data)
   debug('RSP --> %s, token: %s', optType, rsp._packet ? rsp._packet.token.toString('hex') : undefined)
 }
 
@@ -350,14 +350,15 @@ function patchClientMeta(cnode: CoapNode, rsp: OutgoingMessage) {
   cnode._registered = true
   cnode._heartbeat = helpers.getTime()
   cnode.lifeCheck(true)
+
   rsp.setOption('Location-Path', [Buffer.from('rd'), Buffer.from(cnode.clientId.toString())])
 }
 
 function buildDeviceAttrs(shepherd: CoapShepherd, req: IncomingMessage): IDeviceAttrs | false {
   let devAttrs: any = {}
 
-  const // 'ep=clientName&lt=86400&lwm2m=1.0.0'
-    query = req.url ? req.url.split('?')[1] : undefined
+  // 'ep=clientName&lt=86400&lwm2m=1.0.0'
+  const query = req.url ? req.url.split('?')[1] : undefined
 
   const queryParams: any[] = query ? query.split('&') : undefined
   const invalidAttrs = []
@@ -387,6 +388,7 @@ function buildDeviceAttrs(shepherd: CoapShepherd, req: IncomingMessage): IDevice
   devAttrs.port = req.rsinfo.port
 
   if (req.payload.length !== 0) {
+    debug(`REGISTRY -> PAYLOAD :%s`, String(req.payload))
     obj = helpers.getObjListOfSo(String(req.payload))
     devAttrs.objList = obj.list
     devAttrs.ct = obj.opts.ct
