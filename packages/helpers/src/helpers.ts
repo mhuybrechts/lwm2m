@@ -436,5 +436,3 @@ export function objectDiff(oldObj: object, newObj: object): object {
 
   return diff
 }
-
-console.log(getObjListOfSo(`</>;rt="oma.lwm2m";ct=11543,</1/0>,</3/0>,</4/0>,</5/0>,</19/0>,</19/1>`));
