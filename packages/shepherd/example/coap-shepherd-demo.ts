@@ -1,16 +1,23 @@
 import {CoapShepherd, CoapNode} from '../src'
+import * as fs from 'fs'
+import * as path from 'path'
 
-/*try {
-  fs.unlinkSync(path.resolve("../dist/database/coap.db"));
+try {
+  fs.unlinkSync(path.resolve('../dist/database/coap.db'))
 } catch (e) {
-  console.log(e);
-}*/
+  console.log(e)
+}
 
-const shepherd = new CoapShepherd()
+const shepherd = new CoapShepherd({
+  port: 59999,
+  autoReadResources: false,
+  alwaysFireDevIncoming: true,
+})
 
 shepherd.on('ready', () => {
   console.log('>> coap-shepherd server start!')
   shepherd.permitJoin(180)
+  shepherd.alwaysPermitJoin(true)
 })
 
 shepherd.on('device::status', (cnode: CoapNode, status) => {
@@ -24,31 +31,18 @@ shepherd.on('device::leaving', (clientName: string, mac: string) => {
 shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
   console.log('incoming', cnode.clientName, JSON.stringify(data))
 
-  //  cnode.observeReq('/presence/0/dInState', reqHandler)
-  cnode.observe('/3303/0/5700', (err, rsp) => {
-    if (err) console.log(err)
-    else console.log('observe: /3303/0/5700', rsp)
-  })
-
-  // read test
   setTimeout(() => {
-    cnode.read('/3303/0/5700', (err, data) => {
-      console.log('read: /3303/0/5700', err, data)
+    cnode.observe('/19/0/0', (err, rsp) => {
+      if (err) console.log('ERROR', err)
+      console.log('observe: /19/0/0', JSON.stringify(rsp))
     })
-  }, 2000)
-  setTimeout(() => {
-    cnode.read('/3303/0/5701', (err, data) => {
-      console.log('read: /3303/0/5701', err, data)
+  }, 1000)
+
+  /*  setTimeout(function () {
+    cnode.discover('/3303/0/5700', (data) => {
+      console.log('discover', data)
     })
-  }, 4000)
-
-  //   setTimeout(function () { cnode.readReq('/3303/0/5702', reqHandler) }, 15000)
-  //   setTimeout(function () { cnode.readReq('/3303/0/5703', reqHandler) }, 20000)
-  //   setTimeout(function () { cnode.readReq('/3303/0/5704', reqHandler) }, 25000)
-  //   setTimeout(function () { cnode.readReq('/3303/0', reqHandler) }, 30000)
-
-  // discover test
-  // setTimeout(function () { cnode.discoverReq('/3303/0/5700', reqHandler); }, 5000);
+  }, 5000)*/
   // setTimeout(function () { cnode.discoverReq('/3303/0/5701', reqHandler); }, 10000);
   // setTimeout(function () { cnode.discoverReq('/3303/0/5702', reqHandler); }, 15000);
   // setTimeout(function () { cnode.discoverReq('/3303/0/5703', reqHandler); }, 20000);
@@ -56,15 +50,11 @@ shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
   // setTimeout(function () { cnode.discoverReq('/3303/0', reqHandler); }, 30000);
   // setTimeout(function () { cnode.discoverReq('/3303', reqHandler); }, 35000);
 
-  // write test
-  // setTimeout(function () { cnode.writeReq('/3303/0/5700', 19, reqHandler); }, 3000);
-  // setTimeout(function () { cnode.writeReq('/3303/0/5701', 'C', reqHandler); }, 8000);
-  // setTimeout(function () { cnode.writeReq('/3303/0/5702', 'Hum', reqHandler); }, 13000);
-  setTimeout(() => {
+  /*  setTimeout(() => {
     cnode.write('/3303/0/5703', 'Hum', (err, data) => {
       console.log('writeReq: /3303/0/5703', err, data)
     })
-  }, 5000)
+  }, 5000)*/
   // setTimeout(function () { cnode.writeReq('/3303/0/5704', 'Hum', reqHandler); }, 23000);
   // setTimeout(function () { cnode.writeReq('/3303/0', { 5700: 87, 5701: 'F' }, reqHandler); }, 28000);
 
@@ -82,11 +72,11 @@ shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
   // setTimeout(function () { cnode.executeReq('/3303/0/5701', ['Peter', 'world'], reqHandler); }, 10000);
   // setTimeout(function () { cnode.executeReq('/3303/0/5702', ['Peter', 'world'], reqHandler); }, 15000);
   // setTimeout(function () { cnode.executeReq('/3303/0/5703', ['Peter', 'world'], reqHandler); }, 20000);
-  setTimeout(() => {
+  /*  setTimeout(() => {
     cnode.execute('/3303/0/5704', ['Peter', 'world'], (err, data) => {
       console.log('execute: /3303/0/5704', err, data)
     })
-  }, 5000)
+  }, 5000)*/
 
   // observe test
   // setTimeout(function () { cnode.observeReq('/3303/0/5700', reqHandler); }, 5000);

@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@hollowy/coap-helpers": "^0.0.0",
-    "coap": "^1.0.5",
+    "coap": "1.0.5",
     "debug": "^4.3.4",
     "lodash": "^4",
     "lwm2m-codec": "0.1.1",

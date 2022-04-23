@@ -7,6 +7,8 @@ import {Callback, ICoapRequestParams, IDeviceAttrs, IDeviceInfo, IStatus, Result
 import {CoapShepherd} from './CoapShepherd'
 import {IncomingMessage, OptionValue, ObserveReadStream} from 'coap'
 
+const debug = require('debug')('@hollowy/Shepherd:NODE')
+
 export class CoapNode {
   public shepherd: CoapShepherd
 
@@ -276,6 +278,7 @@ export class CoapNode {
       if (this.dataFormat.includes('application/json')) reqObj.options = {Accept: 'application/json'}
       else reqObj.options = {Accept: 'application/tlv'} // Default format is tlv
 
+      debug(`OBSERVE -> %s`, JSON.stringify(reqObj))
       this.shepherd.request(reqObj).done(
         (observeStream: ObserveReadStream) => {
           rspObj = {status: observeStream.code}
@@ -292,6 +295,8 @@ export class CoapNode {
             observeStream.once('data', () => {
               observeStream.on('data', (value) => {
                 const type = observeStream.headers['Content-Format']
+                // console.log(observeStream);
+                debug(`observeStream._packet.payload -> %s`, String(observeStream._packet.payload))
                 this._notifyHandler(path, value, type)
               })
             })
@@ -518,6 +523,7 @@ export class CoapNode {
       reqObj = this._reqObj('GET', helpers.getNumPath(oid))
       // [TODO]
       reqObj.options = {Accept: 'application/tlv'}
+      debug(`readAllResource -> :%s`, JSON.stringify(reqObj))
       readAllResourcePromises.push(this.shepherd.request(reqObj))
       oids.push(oid)
     })
@@ -530,6 +536,8 @@ export class CoapNode {
         _.forEach(responses, (rsp, idx) => {
           const obj = rsp.payload
           const oid = oids[idx]
+
+          debug(`readAllResource <- : %s : %s`, rsp.code, JSON.stringify(rsp.payload))
 
           if (rsp.code === CONSTANTS.RSP.content) {
             _.forEach(obj, (iObj, iid) => {

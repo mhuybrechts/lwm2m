@@ -459,7 +459,8 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
     else deferred.reject(err)
   })
 
-  reqObj.payload ? req.end(reqObj.payload) : req.end()
+  // reqObj.payload ? req.end(reqObj.payload) : req.end()
+  req.end(reqObj.payload)
 
   debug('REQ --> %s, token: %s', reqObj.method, req._packet ? req._packet.token.toString('hex') : undefined)
   return deferred.promise
