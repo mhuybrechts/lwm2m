@@ -3,44 +3,75 @@ declare module 'smartobject' {
 
   type KEY = string | number
 
+  interface Opt {
+    restrict: boolean
+  }
+
+  class ObjInstance {
+    constructor(oidKey: KEY, iid: KEY, parent: ObjInstance)
+
+    init(resrcs: object, setup: Function): void
+    has(rid: KEY): boolean
+    get(rid: KEY): any
+    set(rid: KEY, value: any): this
+    clear(): this
+
+    dump(opt: Opt, callback: Function): this
+    dump(callback: Function): this
+    dumpSync(): object
+
+    read(rid: KEY, opt: Opt, callback: Function): any
+    read(rid: KEY, callback: Function): any
+
+    write(rid: KEY, value: any, callback: Function): void
+    write(rid: KEY, value: any, opt: Opt, callback: Function): void
+
+    exec(rid: KEY, argus: any[], callback: Function): void
+  }
+
   class SmartObject {
-    constructor(hal?: any, setup?: any)
+    constructor(hal: object, setup?: Function)
+    constructor(setup?: Function)
 
-    create(oid: KEY, iid: KEY): any
+    init(oid: KEY, iid: KEY, resrcs: object, setup: Function): ObjInstance
+    init(oid: KEY, iid: KEY, resrcs: object): ObjInstance
+    init(oid: KEY, iid: KEY, setup: Function): ObjInstance
 
-    dump(oid: KEY, iid: KEY, opt: any, callback?: any, ...args: any[]): any
+    create(oid: KEY, iid: KEY): ObjInstance
+    remove(oid: KEY, iid: KEY): boolean
 
-    dumpSync(oid?: KEY, iid?: KEY, ...args: any[]): any
-
-    exec(oid: KEY, iid: KEY, rid: KEY, argus: any, callback: any): any
-
-    findObject(oid: KEY): any
-
-    findObjectInstance(oid: KEY, iid: KEY): any
-
-    get(oid: KEY, iid: KEY, rid: KEY): any
+    objectList(): any[]
 
     has(oid: KEY, iid: KEY, rid?: KEY): boolean
 
-    init(oid: KEY, iid: KEY, setup?: any): any
+    dump(oid: KEY, iid: KEY, opt: object, callback?: Function): this
 
-    init(oid: KEY, iid: KEY, resrcs: KEY, setup?: any): any
+    dump(oid: KEY, opt: object, callback?: Function): this
+    dump(oid: KEY, iid: KEY, callback?: Function): this
 
-    isExecutable(oid: KEY, iid: KEY, rid: KEY): any
+    dump(opt: object, callback?: Function): this
+    dump(oid: KEY, callback?: Function): this
 
-    isReadable(oid: KEY, iid: KEY, rid: KEY): any
+    dump(callback?: Function): this
 
-    isWritable(oid: KEY, iid: KEY, rid: KEY): any
+    dumpSync(oid?: KEY, iid?: KEY, ...args: any[]): Record<KEY, any>
 
-    objectList(): any
+    findObject(oid: KEY): any
 
-    read(oid: KEY, iid: KEY, rid: KEY, opt: any, callback?: any): any
+    findObjectInstance(oid: KEY, iid: KEY): ObjInstance | undefined
 
-    remove(oid: KEY, iid: KEY): any
+    get(oid: KEY, iid: KEY, rid: KEY): any
+    set(oid: KEY, iid: KEY, rid: KEY, value: any): boolean
 
-    set(oid: KEY, iid: KEY, rid: KEY, value: any): any
+    isExecutable(oid: KEY, iid: KEY, rid: KEY): boolean
+    isReadable(oid: KEY, iid: KEY, rid: KEY): boolean
+    isWritable(oid: KEY, iid: KEY, rid: KEY): boolean
 
-    write(oid: KEY, iid: KEY, rid: KEY, value: any, callback: Function): any
-    write(oid: KEY, iid: KEY, rid: KEY, value: any, opt: any, callback: Function): any
+    read(oid: KEY, iid: KEY, rid: KEY, opt: Opt, callback?: Function): any
+
+    write(oid: KEY, iid: KEY, rid: KEY, value: any, callback: Function): void
+    write(oid: KEY, iid: KEY, rid: KEY, value: any, opt: Opt, callback: Function): void
+
+    exec(oid: KEY, iid: KEY, rid: KEY, argus: any, callback: Function): void
   }
 }

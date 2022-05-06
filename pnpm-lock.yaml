@@ -99,7 +99,7 @@ importers:
       '@types/sinon': ^10.0.11
       '@types/sinon-chai': ^3.2.8
       chai: ^4.3.6
-      coap: 1.0.5
+      coap: 1.0.8
       debug: ^4.3.4
       lodash: ^4
       lwm2m-codec: 0.1.1
@@ -117,7 +117,7 @@ importers:
       typescript: ^4.6.3
     dependencies:
       '@hollowy/coap-helpers': link:../helpers
-      coap: 1.0.5
+      coap: 1.0.8
       debug: 4.3.4
       lodash: 4.17.21
       lwm2m-codec: 0.1.1
@@ -485,6 +485,23 @@ packages:
 
   /coap/1.0.5:
     resolution: {integrity: sha512-csTStrQbxlbzslAgyfKw/yTeU9GrPU7L5igOiCAO+YQJA7hxuRni9EXdUPm4sJgY6jBRmRkjABnDrgiSOzN/Ow==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@types/bl': 5.0.2
+      '@types/lru-cache': 5.1.1
+      bl: 5.0.0
+      capitalize: 2.0.4
+      coap-packet: 1.1.0
+      debug: 4.3.4
+      fastseries: 2.0.0
+      lru-cache: 6.0.0
+      readable-stream: 3.6.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /coap/1.0.8:
+    resolution: {integrity: sha512-hG4KL7Js3435/zO1HlprkHqCyBTIsYkwgEA1lY5fsp8UX7VpkSe77JpWNWz4KUHXGeyo2GuLAe9+I+NxnhuOdA==}
     engines: {node: '>=10'}
     dependencies:
       '@types/bl': 5.0.2

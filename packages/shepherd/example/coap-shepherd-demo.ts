@@ -1,6 +1,6 @@
-import {CoapShepherd, CoapNode} from '../src'
-import * as fs from 'fs'
-import * as path from 'path'
+import {CoapShepherd} from '../src'
+import fs from 'fs'
+import path from 'path'
 
 try {
   fs.unlinkSync(path.resolve('../dist/database/coap.db'))
@@ -20,7 +20,7 @@ shepherd.on('ready', () => {
   shepherd.alwaysPermitJoin(true)
 })
 
-shepherd.on('device::status', (cnode: CoapNode, status) => {
+shepherd.on('device::status', (cnode, status) => {
   console.log('status', cnode.clientName, status)
 })
 
@@ -28,7 +28,7 @@ shepherd.on('device::leaving', (clientName: string, mac: string) => {
   console.log('leaving', clientName, mac)
 })
 
-shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
+shepherd.on('device::incoming', (cnode, data: any) => {
   console.log('incoming', cnode.clientName, JSON.stringify(data))
 
   setTimeout(() => {
@@ -37,6 +37,21 @@ shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
       console.log('observe: /19/0/0', JSON.stringify(rsp))
     })
   }, 1000)
+
+  setInterval(() => {
+    cnode.write('/19/1/0', `DEMO::1233556778745jjf`, (err) => {
+      if (err) console.log('ERROR', err)
+      console.log('write: /19/1/0', 'DEMO::1233556778745jjf')
+    })
+  }, 2000)
+
+  /*  setTimeout(() => {
+    cnode.write('/1/0/1', 400, (err) => {
+      if (err) console.log('ERROR', err)
+      console.log('write: /1/0/1')
+    })
+
+  }, 3000)*/
 
   /*  setTimeout(function () {
     cnode.discover('/3303/0/5700', (data) => {
@@ -96,7 +111,7 @@ shepherd.on('device::incoming', (cnode: CoapNode, data: any) => {
   //        setTimeout(function () { shepherd.remove('nodeTest'); }, 10000);
 })
 
-shepherd.on('device::notify', (cnode: CoapNode, data: any) => {
+shepherd.on('device::notify', (cnode, data: any) => {
   console.log('notify', cnode.clientName, JSON.stringify(data))
 })
 

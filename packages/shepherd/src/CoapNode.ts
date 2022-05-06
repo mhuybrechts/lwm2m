@@ -161,7 +161,14 @@ export class CoapNode {
     return deferred.promise.nodeify(callback)
   }
 
-  write<T>(path: string, value: any | any[], callback?: Callback<T>): Q.Promise<Result<T>> {
+  write<T>(path: string, value: any, callback?: Callback<T>): Q.Promise<Result<T>>
+  write<T>(path: string, value: any, transparent?: boolean, callback?: Callback<T>): Q.Promise<Result<T>>
+  write<T>(path: string, value: any, transparent?: any, callback?: Callback<T>): Q.Promise<Result<T>> {
+    if (typeof transparent === 'function' && !callback) {
+      callback = transparent
+      transparent = false
+    }
+
     const deferred = Q.defer<Result<T>>()
     const chkErr = this._reqCheck('write', path, value)
     let reqObj
@@ -175,9 +182,16 @@ export class CoapNode {
         reqObj.payload = helpers.encodeJson(path, value)
         reqObj.options = {'Content-Format': 'application/json'}
       } else {
-        reqObj.payload = helpers.encodeTlv(path, value)
-        reqObj.options = {'Content-Format': 'application/tlv'} // Default format is tlv
+        if (!transparent) {
+          reqObj.payload = helpers.encodeTlv(path, value)
+          reqObj.options = {'Content-Format': 'application/tlv'}
+        } else {
+          reqObj.payload = Buffer.from(value)
+          reqObj.options = {'Content-Format': 'application/octet-stream'}
+        }
       }
+
+      debug('reqObj: %s', JSON.stringify(reqObj))
 
       this.shepherd
         .request(reqObj)
@@ -428,7 +442,7 @@ export class CoapNode {
     const so = new SmartObject()
     _.forEach(src, (obj, oid) => {
       _.forEach(obj, (iObj, iid) => {
-        so.init(oid, iid, iObj)
+        so.init(oid, iid, iObj as object)
       })
     })
     this.so = so
@@ -446,7 +460,7 @@ export class CoapNode {
     }
   }
 
-  _reqObj(method: ICoapRequestParams['method'], pathname: string): ICoapRequestParams {
+  private _reqObj(method: ICoapRequestParams['method'], pathname: string): ICoapRequestParams {
     proving.string(method, 'method should be a string.')
     proving.string(pathname, 'pathname should be a string.')
 

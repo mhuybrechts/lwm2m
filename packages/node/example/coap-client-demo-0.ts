@@ -1,4 +1,4 @@
-import CoapNode from '../src/coap-node'
+import CoapNode from '../src/CoapNode'
 import SmartObject from 'smartobject'
 
 const so = new SmartObject()
@@ -34,7 +34,16 @@ so.init(3312, 0, {
   5850: false,
 })
 
-const coapNode = new CoapNode('908752526375869', so, {
+so.init('19', '1', {
+  '0': {
+    write(value, cb) {
+      console.log('---|||||》write: /19/1/0', value)
+      cb(null, 1)
+    },
+  },
+})
+
+const coapNode = new CoapNode('908752526375870', so, {
   lifetime: 300,
 })
 
@@ -69,8 +78,7 @@ coapNode.on('observe', (msg) => {
 })
 
 coapNode.register(
-  '221.229.214.202',
-  5683,
+  '221.229.214.202', 5683,
   {
     defaultMaxPeriod: 3,
   },

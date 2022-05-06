@@ -64,7 +64,7 @@ function _coapServerStart(shepherd: CoapShepherd, callback?: Callback<Server>): 
   server.on('request', (req: IncomingMessage, rsp: OutgoingMessage) => {
     if (!_.isEmpty(req.payload)) {
       // @ts-ignore
-      req.payload = req.payload.toString()
+      req.payload = String(req.payload)
     }
 
     reqHandler(shepherd, req, rsp)

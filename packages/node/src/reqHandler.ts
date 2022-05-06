@@ -1,71 +1,75 @@
-import _ from 'lodash'
+/***************************************************
+ * Created by nanyuantingfeng on 2022/3/11 15:19. *
+ ***************************************************/
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
-import CoapNode from './coap-node'
+import CoapNode from './CoapNode'
 import {IncomingMessage, OutgoingMessage} from 'coap'
+import _ from 'lodash'
 import {heartbeat} from './helpers'
+import {IOptType, IRSInfo, IServerInfo, KEY} from './types'
 
 const debug = require('debug')('coap-node:reqHdlr')
 
-const {TTYPE, TAG, ERR, RSP} = CONSTANTS
+const {TTYPE, TAG, RSP} = CONSTANTS
 
-export default function serverReqHandler(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
-  let optType = serverReqParser(req)
+export default function reqHandler(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
+  let optType = reqParser(req)
   let bootstrapping = cn._bootstrapping && req.rsinfo.address === cn.bsServer.ip && req.rsinfo.port === cn.bsServer.port
   let serverInfo = findServer(cn, req.rsinfo)
   let bsSequence = false
-  let reqHdlr
+  let reqHandler
 
   switch (optType) {
     case 'read':
-      reqHdlr = serverReadHandler
+      reqHandler = forRead
       break
     case 'discover':
-      reqHdlr = serverDiscoverHandler
+      reqHandler = forDiscover
       break
     case 'write':
       if (bootstrapping) {
         bsSequence = true
-        reqHdlr = serverBsWriteHandler
+        reqHandler = forBsWrite
       } else {
-        reqHdlr = serverWriteHandler
+        reqHandler = forWrite
       }
       break
     case 'writeAttr':
-      reqHdlr = serverWriteAttrHandler
+      reqHandler = forWriteAttr
       break
     case 'execute':
-      reqHdlr = serverExecuteHandler
+      reqHandler = forExecute
       break
     case 'observe':
-      reqHdlr = serverObserveHandler
+      reqHandler = forObserve
       break
     case 'cancelObserve':
-      reqHdlr = serverCancelObserveHandler
+      reqHandler = forCancelObserve
       break
     case 'ping':
-      reqHdlr = serverPingHandler
+      reqHandler = forPing
       break
     case 'create':
-      reqHdlr = serverCreateHandler
+      reqHandler = forCreate
       break
     case 'delete':
       if (bootstrapping) {
         bsSequence = true
-        reqHdlr = serverBsDeleteHandler
+        reqHandler = forBsDelete
       } else {
-        reqHdlr = serverDeleteHandler
+        reqHandler = forDelete
       }
       break
     case 'finish':
       if (bootstrapping) {
         bsSequence = true
-        reqHdlr = serverFinishHandler
+        reqHandler = forFinish
       } else {
         rsp.reset()
       }
       break
     case 'announce':
-      reqHdlr = serverAnnounceHandler
+      reqHandler = forAnnounce
       break
     case 'empty':
       rsp.reset()
@@ -77,13 +81,10 @@ export default function serverReqHandler(cn: CoapNode, req: IncomingMessage, rsp
   if (!serverInfo || (cn._bootstrapping && !bsSequence))
     // [FIXIT]
     rsp.reset()
-  else if (reqHdlr)
-    setImmediate(function () {
-      reqHdlr(cn, req, rsp, serverInfo)
-    })
+  else if (reqHandler) setImmediate(() => reqHandler(cn, req, rsp, serverInfo))
 }
 
-function serverReadHandler(cn, req, rsp) {
+function forRead(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
   let dataAndOpt
@@ -115,7 +116,7 @@ function serverReadHandler(cn, req, rsp) {
   }
 }
 
-function serverDiscoverHandler(cn, req, rsp, serverInfo) {
+function forDiscover(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
   let rspPayload
@@ -124,14 +125,14 @@ function serverDiscoverHandler(cn, req, rsp, serverInfo) {
     rsp.code = RSP.notfound
     rsp.end()
   } else {
-    rspPayload = buildAttrsAndRsc(cn, serverInfo.shortServerId, pathObj.oid, pathObj.iid, pathObj.rid)
+    rspPayload = buildAttrsAndResource(cn, serverInfo.shortServerId, pathObj.oid, pathObj.iid, pathObj.rid)
     rsp.code = RSP.content
     rsp.setOption('Content-Format', 'application/link-format')
     rsp.end(rspPayload)
   }
 }
 
-function serverBsWriteHandler(cn, req, rsp) {
+function forBsWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
   let value = getReqData(req, target.pathKey)
@@ -142,22 +143,21 @@ function serverBsWriteHandler(cn, req, rsp) {
     rsp.code = RSP.notallowed
     rsp.end()
   } else if (target.type === TTYPE.inst) {
-    cn.createInst(pathObj.oid, pathObj.iid, value)
+    cn.create(pathObj.oid, pathObj.iid, value)
     rsp.code = RSP.changed
     rsp.end()
   } else {
     obj[pathObj.rid] = value
-    cn.createInst(pathObj.oid, pathObj.iid, obj)
+    cn.create(pathObj.oid, pathObj.iid, obj)
     rsp.code = RSP.changed
     rsp.end()
   }
 }
 
-function serverWriteHandler(cn, req, rsp) {
+function forWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
   let value = getReqData(req, target.pathKey)
-  let obj = {}
 
   function writeCallback(err, data) {
     if (err) rsp.code = data === TAG.unwritable || data === TAG.exec ? RSP.notallowed : RSP.badreq
@@ -183,7 +183,7 @@ function serverWriteHandler(cn, req, rsp) {
   }
 }
 
-function serverWriteAttrHandler(cn, req, rsp, serverInfo) {
+function forWriteAttr(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
   let attrs = helpers.buildRptAttr(req)
@@ -201,10 +201,10 @@ function serverWriteAttrHandler(cn, req, rsp, serverInfo) {
   }
 }
 
-function serverExecuteHandler(cn, req, rsp) {
+function forExecute(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
-  let argus = helpers.getArrayArgs(req.payload)
+  let argus = helpers.getArrayArgs(String(req.payload))
 
   if (!target.exist) {
     rsp.code = RSP.notfound
@@ -216,7 +216,7 @@ function serverExecuteHandler(cn, req, rsp) {
     rsp.code = RSP.notallowed
     rsp.end()
   } else {
-    cn.execResrc(pathObj.oid, pathObj.iid, pathObj.rid, argus, function (err, data) {
+    cn.execute(pathObj.oid, pathObj.iid, pathObj.rid, argus as any[], (err, data) => {
       if (err) rsp.code = data === TAG.unexecutable ? RSP.notallowed : RSP.badreq
       else rsp.code = RSP.changed
 
@@ -229,7 +229,7 @@ function serverExecuteHandler(cn, req, rsp) {
   }
 }
 
-function serverObserveHandler(cn, req, rsp, serverInfo) {
+function forObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
   let ssid = serverInfo.shortServerId
   let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
@@ -237,7 +237,7 @@ function serverObserveHandler(cn, req, rsp, serverInfo) {
   let dataAndOpt
 
   function enableReport(oid, iid, rid, format, rsp) {
-    cn._enableReport(ssid, oid, iid, rid, format, rsp, function (err, val) {
+    cn._enableReport(ssid, oid, iid, rid, format, rsp, (err, val) => {
       if (err) {
         rsp.statusCode = val === TAG.unreadable || val === TAG.exec ? RSP.notallowed : RSP.notfound
         rsp.end(val)
@@ -262,7 +262,7 @@ function serverObserveHandler(cn, req, rsp, serverInfo) {
     rsp.statusCode = RSP.notallowed
     rsp.end()
   } else if (serverInfo.reporters[target.pathKey]) {
-    cn._disableReport(ssid, pathObj.oid, pathObj.iid, pathObj.rid, function (err) {
+    cn._disableReport(ssid, pathObj.oid, pathObj.iid, pathObj.rid, (err) => {
       enableReport(pathObj.oid, pathObj.iid, pathObj.rid, req.headers.Accept, rsp)
     })
   } else {
@@ -270,7 +270,7 @@ function serverObserveHandler(cn, req, rsp, serverInfo) {
   }
 }
 
-function serverCancelObserveHandler(cn, req, rsp, serverInfo) {
+function forCancelObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   const pathObj = helpers.getPathIdKey(req.url)
   const target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
 
@@ -294,12 +294,12 @@ function serverCancelObserveHandler(cn, req, rsp, serverInfo) {
   }
 }
 
-function serverPingHandler(cn, req, rsp, serverInfo) {
+function forPing(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   rsp.code = serverInfo.registered ? RSP.content : RSP.notallowed
   rsp.end()
 }
 
-function serverCreateHandler(cn, req, rsp) {
+function forCreate(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let target = cn._target(pathObj.oid, pathObj.iid)
   let data = getReqData(req, target.pathKey)
@@ -310,7 +310,7 @@ function serverCreateHandler(cn, req, rsp) {
     rsp.code = RSP.badreq
     rsp.end()
   } else {
-    cn.createInst(pathObj.oid, iid, value, function (err, data) {
+    cn.create(pathObj.oid, iid, value, (err, data) => {
       if (err) rsp.code = RSP.badreq
       else rsp.code = RSP.created
       rsp.end()
@@ -318,18 +318,18 @@ function serverCreateHandler(cn, req, rsp) {
   }
 }
 
-function serverBsDeleteHandler(cn, req, rsp) {
+function forBsDelete(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
   let objList
   let oid
 
   if (!_.isNil(pathObj.oid) && !_.isNil(pathObj.iid)) {
-    cn.deleteInst(pathObj.oid, pathObj.iid)
+    cn.delete(pathObj.oid, pathObj.iid)
     rsp.code = RSP.deleted
     rsp.end()
   } else {
     objList = cn.so.objectList()
-    _.forEach(objList, function (obj) {
+    _.forEach(objList, (obj) => {
       oid = obj.oid
       switch (oid) {
         case 0:
@@ -339,8 +339,8 @@ function serverBsDeleteHandler(cn, req, rsp) {
         case 5:
         case 6:
         case 7:
-          _.forEach(obj.iid, function (iid) {
-            cn.deleteInst(oid, iid)
+          _.forEach(obj.iid, (iid) => {
+            cn.delete(oid, iid)
           })
           delete cn.so[helpers.oidKey(oid)]
           break
@@ -355,11 +355,11 @@ function serverBsDeleteHandler(cn, req, rsp) {
   }
 }
 
-function serverDeleteHandler(cn, req, rsp) {
+function forDelete(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
 
   if (_.isNil(pathObj.oid) && _.isNil(pathObj.iid)) {
-    cn.deleteInst(pathObj.oid, pathObj.iid, function (err) {
+    cn.delete(pathObj.oid, pathObj.iid, (err) => {
       if (err) rsp.code = RSP.badreq
       else rsp.code = RSP.deleted
       rsp.end()
@@ -370,7 +370,7 @@ function serverDeleteHandler(cn, req, rsp) {
   }
 }
 
-function serverFinishHandler(cn, req, rsp) {
+function forFinish(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let securityObjs = cn.so.dumpSync('lwm2mSecurity')
   let serverObjs = cn.so.dumpSync('lwm2mServer')
   let lwm2mServerURI
@@ -383,13 +383,14 @@ function serverFinishHandler(cn, req, rsp) {
   cn.emit('bootstrapped')
 }
 
-function serverAnnounceHandler(cn, req, rsp) {
+function forAnnounce(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   cn.emit('announce', req.payload)
 }
+
 /*********************************************************
  * Private function                                      *
  *********************************************************/
-function serverReqParser(req) {
+function reqParser(req: IncomingMessage): IOptType {
   let optType
 
   if (req.code === '0.00' && req._packet.confirmable && req.payload.length === 0) {
@@ -426,7 +427,7 @@ function serverReqParser(req) {
 }
 
 // [TODO]
-function getRspDataAndOption(req, originalData) {
+function getRspDataAndOption(req: IncomingMessage, originalData: any) {
   let format
   let data
 
@@ -442,14 +443,11 @@ function getRspDataAndOption(req, originalData) {
     data = helpers.encodeTlv(req.url, originalData)
   }
 
-  return {
-    data: data,
-    option: {'Content-Format': format},
-  }
+  return {data, option: {'Content-Format': format}}
 }
 
 // [TODO]
-function getReqData(req, path) {
+function getReqData(req: IncomingMessage, path: string) {
   let data
 
   if (req.headers['Content-Format'] === 'application/json') {
@@ -457,13 +455,13 @@ function getReqData(req, path) {
   } else if (req.headers['Content-Format'] === 'application/tlv') {
     data = helpers.decodeTlv(path, req.payload)
   } else {
-    data = req.payload.toString()
+    data = String(req.payload)
   }
 
   return data
 }
 
-function buildAttrsAndRsc(cn, ssid, oid, iid, rid) {
+function buildAttrsAndResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: KEY, rid: KEY) {
   let attrs = cn._getAttrs(ssid, oid, iid, rid)
   let allowedAttrs = ['pmin', 'pmax', 'gt', 'lt', 'stp']
   let target = cn._target(oid, iid, rid)
@@ -478,10 +476,10 @@ function buildAttrsAndRsc(cn, ssid, oid, iid, rid) {
   return data
 }
 
-function findServer(cn, rsinfo) {
+function findServer(cn: CoapNode, rsinfo: IRSInfo) {
   let data
 
-  _.forEach(cn.serversInfo, function (serverInfo, ssid) {
+  _.forEach(cn.serversInfo, (serverInfo, ssid) => {
     if (serverInfo.ip === rsinfo.address && serverInfo.port === rsinfo.port) data = serverInfo
   })
 

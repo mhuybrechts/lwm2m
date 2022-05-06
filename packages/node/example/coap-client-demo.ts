@@ -1,4 +1,4 @@
-import CoapNode from '../src/coap-node'
+import CoapNode from '../src/CoapNode'
 import SmartObject from 'smartobject'
 
 const so = new SmartObject()
@@ -32,6 +32,15 @@ so.init(3303, 1, {
 
 so.init(3312, 0, {
   5850: false,
+})
+
+so.init('19', '1', {
+  '0': {
+    write(value, cb) {
+      console.log('---》write: /19/1/0', value)
+      cb(null, 1)
+    },
+  },
 })
 
 const coapNode = new CoapNode('908752526375869', so, {
@@ -70,6 +79,7 @@ coapNode.on('observe', (msg) => {
 
 coapNode.register(
   '127.0.0.1',
+  // '144.34.163.245',
   59999,
   {
     defaultMaxPeriod: 3,
@@ -78,47 +88,3 @@ coapNode.register(
     console.log('register', rsp)
   },
 )
-
-/*  setInterval(function () {
-      so.read(3303, 0, 5702, function () {});
-  }, 3000);*/
-
-// setTimeout(function () {
-//     coapNode.register('127.0.0.1', 5683, function (err, rsp) {
-//         console.log(rsp);
-//     });
-// }, 10000);
-
-// update test
-// setTimeout(function () {
-//     coapNode.update({ lifetime: 12000 }, function (err, rsp) {
-//         console.log(rsp);
-//     });
-// }, 15000);
-
-/*
-// // deregister test
-setTimeout(() => {
-  coapNode.deregister((err, rsp) => {
-    console.log(rsp)
-  })
-
-  setTimeout(function () {
-    coapNode.register('127.0.0.1', 59999, (err, rsp) => {
-      console.log(rsp)
-    })
-  }, 5000)
-}, 12000)
-*/
-
-// setTimeout(function () {
-//     coapNode.checkout(10, function (err, rsp) {
-//         console.log(rsp);
-//     });
-// }, 5000);
-
-// setTimeout(function () {
-//     coapNode.checkin(function (err, rsp) {
-//         console.log(rsp);
-//     });
-// }, 15000);

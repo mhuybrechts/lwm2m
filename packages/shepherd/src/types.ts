@@ -1,5 +1,5 @@
 /***************************************************
- * Created by gongyanyu on 2022/3/11 10:46. *
+ * Created by nanyuantingfeng on 2022/3/11 10:46. *
  ***************************************************/
 import {Storage} from './Storage'
 import {CoapRequestParams} from 'coap'
@@ -65,3 +65,5 @@ export interface ICoapRequestParams extends CoapRequestParams {
 export interface IAcceptDeviceIncoming {
   (deviceInfo: any, callback?: Callback<boolean>): void
 }
+
+export type IOptType = 'register' | 'update' | 'deregister' | 'check' | 'lookup' | 'test' | 'empty'

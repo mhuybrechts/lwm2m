@@ -6,7 +6,7 @@ import {CoapNode} from './CoapNode'
 import {CoapShepherd} from './CoapShepherd'
 
 import {IncomingMessage, OutgoingMessage} from 'coap'
-import {IDeviceAttrs} from './types'
+import {IDeviceAttrs, IOptType} from './types'
 
 const debug = require('debug')('@hollowy/Shepherd:REQ')
 
@@ -305,8 +305,8 @@ function forTest(shepherd: CoapShepherd, req: IncomingMessage, rsp: OutgoingMess
 /*********************************************************
  * Private function                                      *
  *********************************************************/
-function reqParser(req: IncomingMessage): string {
-  let optType: string
+function reqParser(req: IncomingMessage): IOptType {
+  let optType: IOptType
   let pathArray: string[]
 
   if (req.code === '0.00' && req._packet.confirmable && req.payload.length === 0) return 'empty'

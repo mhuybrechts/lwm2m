@@ -1,5 +1,5 @@
 /***************************************************
- * Created by gongyanyu on 2022/3/11 16:47. *
+ * Created by nanyuantingfeng on 2022/3/11 16:47. *
  ***************************************************/
 import './typings/lwm2m-codec'
 import './typings/lwm2m-id'

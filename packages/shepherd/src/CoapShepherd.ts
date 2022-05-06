@@ -433,6 +433,8 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
 
   if (!_.isNil(reqObj.observe) && reqObj.observe === false) req.setOption('Observe', 1)
 
+  if (!_.isNil(reqObj.payload)) req.write(reqObj.payload)
+
   req.on('response', (rsp: IncomingMessage) => {
     debug(
       'RSP <-- %s, token: %s, status: %s',
@@ -446,9 +448,9 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
     } else if (!_.isEmpty(rsp.payload) && rsp.headers['Content-Format'] === 'application/tlv') {
       rsp.payload = helpers.decodeTlv(reqObj.pathname, rsp.payload)
     } else if (!_.isEmpty(rsp.payload) && rsp.headers['Content-Format'] === 'application/link-format') {
-      rsp.payload = helpers.decodeLinkFormat(rsp.payload.toString())
+      rsp.payload = helpers.decodeLinkFormat(String(rsp.payload))
     } else if (!_.isEmpty(rsp.payload)) {
-      rsp.payload = helpers.checkRescType(reqObj.pathname, rsp.payload.toString())
+      rsp.payload = helpers.checkRescType(reqObj.pathname, String(rsp.payload))
     }
 
     deferred.resolve(rsp)
@@ -459,8 +461,7 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
     else deferred.reject(err)
   })
 
-  // reqObj.payload ? req.end(reqObj.payload) : req.end()
-  req.end(reqObj.payload)
+  req.end()
 
   debug('REQ --> %s, token: %s', reqObj.method, req._packet ? req._packet.token.toString('hex') : undefined)
   return deferred.promise

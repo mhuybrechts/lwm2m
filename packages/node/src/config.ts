@@ -1,3 +1,8 @@
+/***************************************************
+ * Created by nanyuantingfeng on 2022/3/11 15:19. *
+ ***************************************************/
+import {IConfig} from './types'
+
 export default {
   // Minimum time in seconds the Client Device should wait between two notifications.
   // default is 0 secs.
@@ -23,4 +28,4 @@ export default {
   // how often to check the socket is not used.
   // default is 60 secs.
   serverChkTime: 60,
-}
+} as IConfig

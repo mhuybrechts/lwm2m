@@ -107,6 +107,7 @@ describe("coap-node", () => {
     it("#._reqObj()", () => {
       _verifySignatureSync(
         (arg) => {
+          // @ts-ignore
           node._reqObj(arg, arg);
         },
         ["string"]
@@ -376,6 +377,7 @@ describe("coap-node", () => {
           method: "GET",
         };
 
+        // @ts-ignore
         expect(node._reqObj("GET", "x")).to.be.eql(obj);
       });
     });

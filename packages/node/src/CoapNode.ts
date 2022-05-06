@@ -1,21 +1,20 @@
+/***************************************************
+ * Created by nanyuantingfeng on 2022/3/11 15:19. *
+ ***************************************************/
 import url from 'url'
 import net from 'net'
 import EventEmitter from 'events'
 import _ from 'lodash'
+import SmartObject from 'smartobject'
+import network from 'network'
 import {Agent, createServer, IncomingMessage, OutgoingMessage, Server, CoapRequestParams} from 'coap'
 
 import reqHandler from './reqHandler'
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
 import config from './config'
-import init from './init'
-import {Callback, IDevAttrs, INet} from './types'
-import SmartObject from 'smartobject'
-import network from 'network'
+import {setupNode} from './init'
+import {Callback, ICoapRequestParams, IConfig, IDevAttrs, INet, IServerInfo, KEY} from './types'
 import {checkAndBuildObjList, heartbeat} from './helpers'
-
-interface ICoapRequestParams extends CoapRequestParams {
-  payload?: string
-}
 
 const DEBUG = require('debug')('coap-node')
 const DEBUG_REQ = require('debug')('coap-node:REQ')
@@ -44,21 +43,17 @@ const DEBUG_RSP = require('debug')('coap-node:RSP')
 } else {
   let network = require('network')
 }*/
-
-const TTYPE = CONSTANTS.TTYPE
-const TAG = CONSTANTS.TAG
-const ERR = CONSTANTS.ERR
-const RSP = CONSTANTS.RSP
+const {TTYPE, TAG, ERR, RSP} = CONSTANTS
 
 export default class CoapNode extends EventEmitter {
   public servers: Record<number, Server>
-  public serversIdTable: any
-  public serversInfo: any
-  public clientName: any
-  public locationPath: any
+  public serversIdTable: Record<string, {securityIid: string; serverIid: string; shortServerId: string}>
+  public serversInfo: Record<KEY, IServerInfo>
+  public clientName: string
+  public locationPath: string
   public ip: string
   public mac: string
-  public port: number | string
+  public port: number
   public version: string
   public lifetime: number
   public bsServer: {ip: string; port: number}
@@ -67,9 +62,9 @@ export default class CoapNode extends EventEmitter {
   public autoReRegister: boolean
   public _bootstrapping: boolean
   public _sleep: boolean
-  public _updater: any
-  public _socketServerChker: any
-  public _config: any
+  public _updater: NodeJS.Timer
+  public _socketServerChecker: NodeJS.Timer
+  public _config: IConfig
 
   constructor(clientName: string, smartObj: SmartObject, devAttrs: Partial<IDevAttrs>) {
     super()
@@ -102,7 +97,7 @@ export default class CoapNode extends EventEmitter {
     this.locationPath = 'unknown'
     this.ip = 'unknown'
     this.mac = 'unknown'
-    this.port = 'unknown'
+    this.port = 'unknown' as any
     this.version = devAttrs.version || '1.0'
     this.lifetime = devAttrs.lifetime || 86400
     this.bsServer = {} as any
@@ -114,21 +109,14 @@ export default class CoapNode extends EventEmitter {
     this._bootstrapping = false
     this._sleep = false
     this._updater = null
-    this._socketServerChker = null
+    this._socketServerChecker = null
 
-    this._config = {
-      reqTimeout: config.reqTimeout,
-      heartbeatTime: config.heartbeatTime,
-      serverChkTime: config.serverChkTime,
-      connectionType: config.connectionType,
-      defaultMinPeriod: config.defaultMinPeriod,
-      defaultMaxPeriod: config.defaultMaxPeriod,
-    }
+    this._config = {...config}
 
-    init.setupNode(this, devAttrs)
+    setupNode(this, devAttrs)
   }
 
-  _updateNetInfo(callback: Callback<INet>) {
+  private _updateNetInfo(callback: Callback<INet>) {
     network.get_active_interface((err, obj) => {
       if (err) {
         callback(err, null)
@@ -150,8 +138,7 @@ export default class CoapNode extends EventEmitter {
     return this.so
   }
 
-  _writeInst(oid: string | number, iid: string | number, value, callback) {
-    let self = this
+  _writeInst(oid: KEY, iid: KEY, value: any, callback: Callback<string>) {
     let exist = this.so.has(oid, iid)
     let okey = helpers.oidKey(oid)
     let dump = {}
@@ -161,15 +148,15 @@ export default class CoapNode extends EventEmitter {
     if (!exist) {
       callback(ERR.notfound, null)
     } else {
-      _.forEach(value, function (rsc, rid) {
-        if (!self.so.isWritable(oid, iid, rid) && oid != 'lwm2mSecurity' && oid != 'lwm2mServer')
+      _.forEach(value, (rsc, rid) => {
+        if (!this.so.isWritable(oid, iid, rid) && oid != 'lwm2mSecurity' && oid != 'lwm2mServer')
           chkErr = chkErr || new Error('Resource is unwritable.')
       })
 
       if (chkErr) return callback(chkErr, TAG.unwritable)
 
-      _.forEach(value, function (rsc, rid) {
-        self.so.write(oid, iid, rid, rsc, function (err, data) {
+      _.forEach(value, (rsc, rid) => {
+        this.so.write(oid, iid, rid, rsc, (err, data) => {
           count -= 1
 
           if (err) {
@@ -187,16 +174,26 @@ export default class CoapNode extends EventEmitter {
     }
   }
 
-  execResrc(oid: string | number, iid: string | number, rid: string | number, argus, callback) {
-    return this.so.exec(oid, iid, rid, argus, callback)
+  execute(oid: KEY, iid: KEY, rid: KEY, args: any[], callback: Callback<any>) {
+    return this.so.exec(oid, iid, rid, args, callback)
   }
 
-  createInst(oid: string | number, iid: string | number, resrcs) {
-    return this.so.init(oid, iid, resrcs)
+  create(oid: KEY, iid: KEY, resource: object, callback?: Callback<any>) {
+    try {
+      const oo = this.so.init(oid, iid, resource)
+      callback?.(null, oo)
+    } catch (e) {
+      callback?.(e, null)
+    }
   }
 
-  deleteInst(oid: string | number, iid: string | number) {
-    return this.so.remove(oid, iid)
+  delete(oid: KEY, iid: KEY, callback?: Callback<any>) {
+    try {
+      const oo = this.so.remove(oid, iid)
+      callback?.(null, oo)
+    } catch (e) {
+      callback?.(e, null)
+    }
   }
 
   configure(ip: string, port: number, opts?: any) {
@@ -321,7 +318,6 @@ export default class CoapNode extends EventEmitter {
   }
 
   registerAllCfg(callback: Callback<any>): void {
-    let self = this
     let securityObjs = this.so.dumpSync('lwm2mSecurity')
     let serverObjs = this.so.dumpSync('lwm2mServer')
     let requestCount = 0
@@ -330,8 +326,8 @@ export default class CoapNode extends EventEmitter {
     let rsps = {status: null, data: []}
     let chkErr
 
-    _.forEach(serverObjs, function (serverObj, iid) {
-      _.forEach(securityObjs, function (securityObj, iid) {
+    _.forEach(serverObjs, (serverObj, iid) => {
+      _.forEach(securityObjs, (securityObj, iid) => {
         if (
           !_.isNil(serverObj.shortServerId) &&
           !_.isNil(serverObj.shortServerId) &&
@@ -352,7 +348,7 @@ export default class CoapNode extends EventEmitter {
     } else {
       _.forEach(requestInfo, (info, key) => {
         serverInfo = getServerUriInfo(info.uri)
-        self._register(serverInfo.address, serverInfo.port, info.ssid, (err, msg) => {
+        this._register(serverInfo.address, serverInfo.port, info.ssid, (err, msg) => {
           requestCount -= 1
           if (err) {
             chkErr = chkErr || err
@@ -386,7 +382,7 @@ export default class CoapNode extends EventEmitter {
   }
 
   // [FIXME 'hb']
-  _register(ip: string, port: number, ssid: string, callback: Callback<any>) {
+  _register(ip: string, port: number, ssid: KEY, callback: Callback<any>) {
     if (!_.isString(ip)) throw new TypeError('ip should be a string.')
 
     if ((!_.isString(port) && !_.isNumber(port)) || _.isNaN(port))
@@ -409,7 +405,7 @@ export default class CoapNode extends EventEmitter {
 
     function setListenerStart(port: number, msg: any) {
       if (!agent._sock) {
-        startListener(self, port, function (err) {
+        startListener(self, port, (err) => {
           if (err) {
             invokeCallBackNextTick(err, null, callback)
           } else {
@@ -432,7 +428,7 @@ export default class CoapNode extends EventEmitter {
     this._updateNetInfo(() => {
       reqObj.query =
         'ep=' + self.clientName + '&lt=' + self.lifetime + '&lwm2m=' + self.version + '&mac=' + self.mac + '&b=U'
-      self.request(reqObj, agent, function (err, rsp) {
+      self.request(reqObj, agent, (err, rsp) => {
         if (err) {
           invokeCallBackNextTick(err, null, callback)
         } else {
@@ -463,10 +459,9 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  update(attrs: Record<string, any>, callback: Callback<any>) {
+  update(attrs: Partial<IDevAttrs>, callback: Callback<any>) {
     if (!_.isPlainObject(attrs)) throw new TypeError('attrs should be an object.')
 
-    let self = this
     let requestCount = Object.keys(this.serversInfo).length
     let rsps = {status: null, data: []}
     let updateObj: any = {}
@@ -476,8 +471,8 @@ export default class CoapNode extends EventEmitter {
     _.forEach(attrs, (val, key) => {
       if (key === 'lifetime') {
         // self.so.set('lwm2mServer', 0, 'lifetime', attrs.lifetime);  // [TODO] need to check / multi server
-        if (attrs.lifetime !== self.lifetime) {
-          self.lifetime = updateObj.lifetime = attrs.lifetime
+        if (attrs.lifetime !== this.lifetime) {
+          this.lifetime = updateObj.lifetime = attrs.lifetime
         } else {
           chkErr = new Error('The given lifetime is the same as cnode current lifetime.')
         }
@@ -486,15 +481,15 @@ export default class CoapNode extends EventEmitter {
       }
     })
 
-    objListInPlain = checkAndBuildObjList(self, true)
+    objListInPlain = checkAndBuildObjList(this, true)
 
     if (!_.isNil(objListInPlain)) updateObj.objList = objListInPlain
 
     if (chkErr) {
       invokeCallBackNextTick(chkErr, null, callback)
     } else {
-      _.forEach(this.serversInfo, function (serverInfo, ssid) {
-        self._update(serverInfo, updateObj, function (err, msg) {
+      _.forEach(this.serversInfo, (serverInfo, ssid) => {
+        this._update(serverInfo, updateObj, (err, msg) => {
           requestCount -= 1
           if (err) {
             chkErr = chkErr || err
@@ -514,7 +509,7 @@ export default class CoapNode extends EventEmitter {
     }
   }
 
-  _update(serverInfo, attrs, callback: Callback<any>) {
+  private _update(serverInfo, attrs, callback: Callback<any>) {
     if (!_.isPlainObject(attrs)) throw new TypeError('attrs should be an object.')
 
     let self = this
@@ -545,9 +540,7 @@ export default class CoapNode extends EventEmitter {
       } else {
         if (resetCount < 10) {
           resetCount += 1
-          setTimeout(function () {
-            setListenerStart(port, msg)
-          }, 10)
+          setTimeout(() => setListenerStart(port, msg), 10)
         } else {
           invokeCallBackNextTick(new Error('Socket can not be create.'), null, callback)
         }
@@ -557,7 +550,7 @@ export default class CoapNode extends EventEmitter {
     if (attrs.objList) reqObj.options = {'Content-Format': 'application/link-format'}
 
     if (serverInfo.registered) {
-      this.request(reqObj, agent, function (err, rsp) {
+      this.request(reqObj, agent, (err, rsp) => {
         if (err) {
           invokeCallBackNextTick(err, null, callback)
         } else {
@@ -578,7 +571,7 @@ export default class CoapNode extends EventEmitter {
   }
 
   deregister(callback: Callback<any>): void
-  deregister(ssid: string, callback: Callback<any>): void
+  deregister(ssid: KEY, callback: Callback<any>): void
   deregister(ssid: any, callback?: any) {
     let self = this
     let requestCount = Object.keys(this.serversInfo).length
@@ -731,8 +724,8 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  checkout(callback: Callback<any>): void
   checkout(duration: number, callback: Callback<any>): void
+  checkout(callback: Callback<any>): void
   checkout(duration: any, callback?: any): void {
     let self = this
     let requestCount = Object.keys(this.serversInfo).length
@@ -801,10 +794,10 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  lookup(ssid: string, clientName: string, callback) {
-    let serverInfo = this.serversInfo[ssid]
+  lookup(ssid: KEY, clientName: string, callback: Callback<any>) {
+    const serverInfo = this.serversInfo[ssid]
 
-    let reqObj: CoapRequestParams = {
+    const reqObj: CoapRequestParams = {
       hostname: serverInfo.ip,
       port: serverInfo.port,
       pathname: '/rd-lookup/ep',
@@ -812,11 +805,11 @@ export default class CoapNode extends EventEmitter {
       method: 'GET',
     }
 
-    this.request(reqObj, function (err, rsp) {
+    this.request(reqObj, (err, rsp) => {
       if (err) {
         invokeCallBackNextTick(err, null, callback)
       } else {
-        let msg: any = {status: rsp.code}
+        const msg: any = {status: rsp.code}
 
         if (rsp.code === RSP.content) {
           msg.data = rsp.payload
@@ -827,9 +820,9 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  request(reqObj: ICoapRequestParams, ownAgent: Agent, callback?)
-  request(reqObj: ICoapRequestParams, callback?)
-  request(reqObj: ICoapRequestParams, ownAgent: any, callback?) {
+  request(reqObj: ICoapRequestParams, ownAgent: Agent, callback: Callback<any>)
+  request(reqObj: ICoapRequestParams, callback: Callback<any>)
+  request(reqObj: ICoapRequestParams, ownAgent: any, callback?: Callback<any>) {
     if (!_.isPlainObject(reqObj)) throw new TypeError('reqObj should be an object.')
 
     if (_.isFunction(ownAgent)) {
@@ -857,14 +850,11 @@ export default class CoapNode extends EventEmitter {
     req.end(reqObj.payload)
   }
 
-  /*********************************************************
-   * protect function                                      *
-   *********************************************************/
-  _createAgent() {
+  private _createAgent(): Agent {
     return new Agent({type: this._config.connectionType})
   }
 
-  _target(oid: string | number, iid: string | number, rid?: string | number) {
+  _target(oid: KEY, iid: KEY, rid?: KEY) {
     let okey = helpers.oidKey(oid)
 
     let trg = {
@@ -902,7 +892,7 @@ export default class CoapNode extends EventEmitter {
     return trg
   }
 
-  _setAttrs(ssid: string | number, oid: string | number, iid: string | number, rid: string | number, attrs: any) {
+  _setAttrs(ssid: KEY, oid: KEY, iid: KEY, rid: KEY, attrs: any) {
     if (!_.isPlainObject(attrs)) throw new TypeError('attrs should be given as an object.')
 
     let target = this._target(oid, iid, rid)
@@ -918,7 +908,7 @@ export default class CoapNode extends EventEmitter {
     return this
   }
 
-  _getAttrs(ssid: string | number, oid: string | number, iid: string | number, rid?: string | number) {
+  _getAttrs(ssid: KEY, oid: KEY, iid: KEY, rid?: KEY) {
     let serverInfo = this.serversInfo[ssid]
     let key = this._target(oid, iid, rid).pathKey
     let defaultAttrs
@@ -937,13 +927,13 @@ export default class CoapNode extends EventEmitter {
   }
 
   _enableReport(
-    ssid: string | number,
-    oid: string | number,
-    iid: string | number,
-    rid: string | number,
-    format,
-    rsp,
-    callback,
+    ssid: KEY,
+    oid: KEY,
+    iid: KEY,
+    rid: KEY,
+    format: string,
+    rsp: OutgoingMessage,
+    callback: Callback<any>,
   ) {
     let self = this
     let serverInfo = this.serversInfo[ssid]
@@ -1009,17 +999,17 @@ export default class CoapNode extends EventEmitter {
       rpt.max = setInterval(reporterMax, pmax)
     }
 
-    function finishHdlr() {
+    function finish() {
       removeReporter(self, ssid, oid, iid, rid)
     }
 
-    dumper(function (err, data) {
+    dumper((err, data) => {
       if (!err && data !== TAG.unreadable && data !== TAG.exec) {
         rAttrs.mute = false
         rAttrs.enable = true
         rAttrs.lastRpVal = data
 
-        rsp.once('finish', finishHdlr)
+        rsp.once('finish', finish)
 
         rpt = serverInfo.reporters[key] = {
           min: setTimeout(reporterMin, pmin),
@@ -1027,7 +1017,7 @@ export default class CoapNode extends EventEmitter {
           write: reporterWrite,
           stream: rsp,
           port: self.port,
-          finishHdlr: finishHdlr,
+          finishHandler: finish,
         }
       }
 
@@ -1035,7 +1025,7 @@ export default class CoapNode extends EventEmitter {
     })
   }
 
-  _disableReport(ssid: string | number, oid: string | number, iid: string | number, rid: string | number, callback) {
+  _disableReport(ssid: KEY, oid: KEY, iid: KEY, rid: KEY, callback: Callback<any>): void {
     let serverInfo = this.serversInfo[ssid]
     let key = this._target(oid, iid, rid).pathKey
     let rpt
@@ -1044,7 +1034,7 @@ export default class CoapNode extends EventEmitter {
     if (serverInfo) rpt = serverInfo.reporters[key]
 
     if (rpt) {
-      rpt.stream.removeListener('finish', rpt.finishHdlr)
+      rpt.stream.removeListener('finish', rpt.finishHandler)
       rpt.stream.end()
       removeReporter(this, ssid, oid, iid, rid)
       chkErr = ERR.success
@@ -1055,7 +1045,7 @@ export default class CoapNode extends EventEmitter {
     if (_.isFunction(callback)) callback(chkErr, null)
   }
 
-  _disableAllReport(ssid: string | number) {
+  private _disableAllReport(ssid: string | number): void {
     let self = this
 
     function disableReport(serverInfo) {
@@ -1079,9 +1069,9 @@ export default class CoapNode extends EventEmitter {
     }
   }
 
-  _idCounter(type: string) {
-    let id
-    let idUsed
+  private _idCounter(type: string): number {
+    let id: number
+    let idUsed: boolean
 
     switch (type) {
       case 'securityIid':
@@ -1103,7 +1093,7 @@ export default class CoapNode extends EventEmitter {
         do {
           id = id + 1
           idUsed = false
-          _.forEach(this.so.dumpSync('lwm2mSecurity'), function (iObj, iid) {
+          _.forEach(this.so.dumpSync('lwm2mSecurity'), (iObj, iid) => {
             if (iObj.shortServerId === id) idUsed = true
           })
         } while (idUsed)
@@ -1127,21 +1117,21 @@ function startListener(cn: CoapNode, port: number, callback: Callback<Server>) {
 
   cn.servers[port] = server
 
-  server.on('request', function (req: IncomingMessage, rsp: OutgoingMessage) {
+  server.on('request', (req: IncomingMessage, rsp: OutgoingMessage) => {
     if (!_.isEmpty(req.payload) && req.headers['Content-Format'] === 'application/json') {
       req.payload = JSON.parse(String(req.payload))
     } else if (!_.isEmpty(req.payload) && req.headers['Content-Format'] === 'application/tlv') {
       /*  req.payload = req.payload*/
     } else if (!_.isEmpty(req.payload)) {
       // @ts-ignore
-      req.payload = req.payload.toString()
+      req.payload = String(req.payload)
     }
 
     reqHandler(cn, req, rsp)
   })
 
   try {
-    server.listen(port, function (err) {
+    server.listen(port, (err) => {
       if (err) {
         if (_.isFunction(callback)) callback(err, null)
         else cn.emit('error', err)
@@ -1154,7 +1144,7 @@ function startListener(cn: CoapNode, port: number, callback: Callback<Server>) {
   }
 }
 
-function removeReporter(cn, ssid: string | number, oid: string | number, iid: string | number, rid: string | number) {
+function removeReporter(cn, ssid: KEY, oid: KEY, iid: KEY, rid: KEY) {
   let serverInfo = cn.serversInfo[ssid]
   let key = cn._target(oid, iid, rid).pathKey
   let rAttrs = cn._getAttrs(ssid, oid, iid, rid)
@@ -1187,6 +1177,6 @@ function getServerUriInfo(uri: string) {
   }
 }
 
-function invokeCallBackNextTick<T>(err: NodeJS.ErrnoException | null, val: any, cb: Callback<T>) {
+function invokeCallBackNextTick<T>(err: NodeJS.ErrnoException | number | null, val: any, cb: Callback<T>) {
   if (_.isFunction(cb)) process.nextTick(() => cb(err, val))
 }

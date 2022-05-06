@@ -1,29 +1,31 @@
+/***************************************************
+ * Created by nanyuantingfeng on 2022/3/11 15:19. *
+ ***************************************************/
 import _ from 'lodash'
 import {CONSTANTS} from '@hollowy/coap-helpers'
-import CoapNode from './coap-node'
+import CoapNode from './CoapNode'
+import {KEY} from './types'
+import {OutgoingMessage} from 'coap'
 
-const {TTYPE, TAG, ERR, RSP} = CONSTANTS
-
-export function lfUpdate(cn: CoapNode, enable: boolean) {
+export function lifetimeUpdate(cn: CoapNode, enable: boolean) {
   clearInterval(cn._updater)
   cn._updater = null
-
   if (enable) {
-    cn._updater = setInterval(function () {
-      _.forEach(cn.serversInfo, function (serverInfo, ssid) {
+    cn._updater = setInterval(() => {
+      _.forEach(cn.serversInfo, (serverInfo, ssid) => {
         if (serverInfo.registered) {
           serverInfo.lfsecs += 1
-          if (serverInfo._lfsecs >= cn.lifetime - 10) {
-            cn.update({}, function (err, msg) {
+          if (serverInfo.lfsecs >= cn.lifetime - 10) {
+            cn.update({}, (err, msg) => {
               if (err) {
                 cn.emit('error', err)
               } else {
                 // if (msg.status === RSP.notfound)
-                //     helper.lfUpdate(cn, false);
+                //     lifetimeUpdate(cn, false);
               }
             })
 
-            serverInfo._lfsecs = 0
+            serverInfo.lfsecs = 0
           }
         }
       })
@@ -31,7 +33,7 @@ export function lfUpdate(cn: CoapNode, enable: boolean) {
   }
 }
 
-export function heartbeat(cn: CoapNode, ssid: string, enable?: boolean, rsp?) {
+export function heartbeat(cn: CoapNode, ssid: KEY, enable?: boolean, rsp?: OutgoingMessage) {
   let serverInfo = cn.serversInfo[ssid]
 
   clearInterval(serverInfo.hbPacemaker)
@@ -65,23 +67,24 @@ export function heartbeat(cn: CoapNode, ssid: string, enable?: boolean, rsp?) {
   }
 }
 
-export function reRegister(cn: CoapNode, ssid: string) {
-  let serverInfo = cn.serversInfo[ssid]
+export function reRegister(cn: CoapNode, ssid: KEY) {
+  const serverInfo = cn.serversInfo[ssid]
 
   cn.emit('reconnect')
+
   cn._register(serverInfo.ip, serverInfo.port, ssid, (err, msg) => {
-    if (!msg || !(msg.status === RSP.created)) {
+    if (!msg || !(msg.status === CONSTANTS.RSP.created)) {
       setTimeout(() => reRegister(cn, ssid), 5000)
     }
   })
 }
 
-export function checkAndBuildObjList(cn: CoapNode, check, opts?) {
+export function checkAndBuildObjList(cn: CoapNode, check: boolean, opts?: any) {
   let objList = cn.getSmartObject().objectList()
   let objListInPlain = ''
   let newObjList = {}
 
-  _.forEach(objList, function (rec) {
+  _.forEach(objList, (rec) => {
     newObjList[rec.oid] = rec.iid
   })
 
@@ -120,14 +123,14 @@ export function checkAndBuildObjList(cn: CoapNode, check, opts?) {
   return objListInPlain
 }
 
-export function checkAndReportResrc(cn: CoapNode, oid: string, iid: string, rid: string, val: any) {
+export function checkAndReportResource(cn: CoapNode, oid: KEY, iid: KEY, rid: KEY, val: any) {
   _.forEach(cn.serversInfo, (serverInfo, ssid) => {
-    _checkAndReportResrc(cn, ssid, oid, iid, rid, val)
+    _checkAndReportResource(cn, ssid, oid, iid, rid, val)
   })
 }
 
-// [FIXME]
-export function _checkAndReportResrc(cn: CoapNode, ssid: string, oid, iid, rid, val) {
+// TODO [FIXME]
+export function _checkAndReportResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: KEY, rid: KEY, val: any) {
   let serverInfo = cn.serversInfo[ssid]
   let target = cn._target(oid, iid, rid)
   let oidKey = target.oidKey
@@ -145,11 +148,11 @@ export function _checkAndReportResrc(cn: CoapNode, ssid: string, oid, iid, rid, 
   if (_.isNil(rAttrs.lastRpVal) && iAttrs.lastRpVal) lastRpVal = iAttrs.lastRpVal[ridKey]
   else lastRpVal = rAttrs.lastRpVal
 
-  chkRp = chackResourceAttrs(val, rAttrs.gt, rAttrs.lt, rAttrs.stp, lastRpVal)
+  chkRp = checkResourceAttrs(val, rAttrs.gt, rAttrs.lt, rAttrs.stp, lastRpVal)
 
   // chack Resource pmin and report
   if (rAttrs.mute && rAttrs.enable) {
-    setTimeout(() => _checkAndReportResrc(cn, ssid, oid, iid, rid, val), rAttrs.pmin * 1000)
+    setTimeout(() => _checkAndReportResource(cn, ssid, oid, iid, rid, val), rAttrs.pmin * 1000)
   } else if (!rAttrs.mute && chkRp && rAttrs.enable && _.isFunction(rpt.write)) {
     rpt.write(val)
   }
@@ -157,7 +160,7 @@ export function _checkAndReportResrc(cn: CoapNode, ssid: string, oid, iid, rid, 
   // chack Object Instance pmin and report
   if (iAttrs.mute && iAttrs.enable) {
     setTimeout(() => {
-      _checkAndReportResrc(cn, ssid, oid, iid, rid, val)
+      _checkAndReportResource(cn, ssid, oid, iid, rid, val)
     }, iAttrs.pmin * 1000)
   } else if (!iAttrs.mute && chkRp && iAttrs.enable && _.isFunction(iRpt.write)) {
     iObj[ridKey] = val
@@ -166,11 +169,11 @@ export function _checkAndReportResrc(cn: CoapNode, ssid: string, oid, iid, rid, 
 }
 
 export function checkAndCloseServer(cn: CoapNode, enable: boolean) {
-  clearInterval(cn._socketServerChker)
-  cn._socketServerChker = null
+  clearInterval(cn._socketServerChecker)
+  cn._socketServerChecker = null
 
   if (enable) {
-    cn._socketServerChker = setInterval(() => {
+    cn._socketServerChecker = setInterval(() => {
       _.forEach(cn.servers, (server, key) => {
         let using = false
 
@@ -192,7 +195,7 @@ export function checkAndCloseServer(cn: CoapNode, enable: boolean) {
   }
 }
 
-function chackResourceAttrs(val, gt, lt, step, lastRpVal) {
+function checkResourceAttrs(val: any, gt: number, lt: number, step: number, lastRpVal: any) {
   let chkRp = false
 
   if (_.isObject(val)) {

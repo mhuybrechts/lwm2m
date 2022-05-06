@@ -1,5 +1,5 @@
 /***************************************************
- * Created by gongyanyu on 2022/3/11 16:50. *
+ * Created by nanyuantingfeng on 2022/3/11 16:50. *
  ***************************************************/
 import lwm2mId from 'lwm2m-id'
 import lwm2mCodec from 'lwm2m-codec'

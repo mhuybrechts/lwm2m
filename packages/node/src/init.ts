@@ -1,32 +1,33 @@
-import * as coap from 'coap'
+/***************************************************
+ * Created by nanyuantingfeng on 2022/3/11 15:19. *
+ ***************************************************/
+import {updateTiming, registerFormat} from 'coap'
 import _ from 'lodash'
-import CoapNode from './coap-node'
-import {checkAndCloseServer, checkAndReportResrc, lfUpdate} from './helpers'
 
-const init: any = {}
+import CoapNode from './CoapNode'
+import {checkAndCloseServer, checkAndReportResource, lifetimeUpdate} from './helpers'
+import {IDevAttrs} from './types'
 
-init.setupNode = function (cn: CoapNode, devResrcs) {
-  let propWritable = {writable: true, enumerable: false, configurable: false}
-  let maxLatency = (cn._config.reqTimeout - 47) / 2
-  let so = cn.getSmartObject()
+export function setupNode(cn: CoapNode, devAttrs: Partial<IDevAttrs>) {
+  const propWritable = {writable: true, enumerable: false, configurable: false}
+  const maxLatency = (cn._config.reqTimeout - 47) / 2
+  const so = cn.getSmartObject()
 
-  coap.updateTiming({
-    maxLatency: maxLatency,
-  })
-  coap.registerFormat('application/tlv', 11542) // Leshan TLV binary Content-Formats
-  coap.registerFormat('application/json', 11543) // Leshan JSON Numeric Content-Formats
+  updateTiming({maxLatency})
+  registerFormat('application/tlv', 11542) // Leshan TLV binary Content-Formats
+  registerFormat('application/json', 11543) // Leshan JSON Numeric Content-Formats
 
   so.init('device', 0, {
     // oid = 3
-    manuf: devResrcs.manuf || 'sivann', // rid = 0
-    model: devResrcs.model || 'cnode-01', // rid = 1
-    serial: devResrcs.serial || 'c-0000', // rid = 2
-    firmware: devResrcs.firmware || '1.0', // rid = 3
-    devType: devResrcs.devType || 'generic', // rid = 17
-    hwVer: devResrcs.hwVer || '1.0', // rid = 18
-    swVer: devResrcs.swVer || '1.0', // rid = 19
-    availPwrSrc: devResrcs.availPwrSrc || 0,
-    pwrSrcVoltage: devResrcs.pwrSrcVoltage || 100,
+    manuf: devAttrs.manuf || 'sivann', // rid = 0
+    model: devAttrs.model || 'cnode-01', // rid = 1
+    serial: devAttrs.serial || 'c-0000', // rid = 2
+    firmware: devAttrs.firmware || '1.0', // rid = 3
+    devType: devAttrs.devType || 'generic', // rid = 17
+    hwVer: devAttrs.hwVer || '1.0', // rid = 18
+    swVer: devAttrs.swVer || '1.0', // rid = 19
+    availPwrSrc: devAttrs.availPwrSrc || 0,
+    pwrSrcVoltage: devAttrs.pwrSrcVoltage || 100,
   })
 
   so.init('connMonitor', 0, {
@@ -47,12 +48,11 @@ init.setupNode = function (cn: CoapNode, devResrcs) {
       }
 
       // @ts-ignore
-      return so.__read(oid, iid, rid, opt, function (err, data) {
+      return so.__read(oid, iid, rid, opt, (err, data) => {
         dataToCheck = data
-        setImmediate(function () {
-          checkAndReportResrc(cn, oid, iid, rid, dataToCheck)
+        setImmediate(() => {
+          checkAndReportResource(cn, oid, iid, rid, dataToCheck)
         })
-
         callback(err, data)
       })
     },
@@ -70,10 +70,10 @@ init.setupNode = function (cn: CoapNode, devResrcs) {
       }
 
       // @ts-ignore
-      return so.__write(oid, iid, rid, value, opt, function (err, data) {
+      return so.__write(oid, iid, rid, value, opt, (err, data) => {
         dataToCheck = data || value
-        setImmediate(function () {
-          checkAndReportResrc(cn, oid, iid, rid, dataToCheck)
+        setImmediate(() => {
+          checkAndReportResource(cn, oid, iid, rid, dataToCheck)
         })
 
         callback(err, data)
@@ -81,8 +81,6 @@ init.setupNode = function (cn: CoapNode, devResrcs) {
     },
   })
 
-  lfUpdate(cn, true)
+  lifetimeUpdate(cn, true)
   checkAndCloseServer(cn, false) // [TODO]
 }
-
-export default init
