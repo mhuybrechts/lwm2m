@@ -1,11 +1,11 @@
 {
   "name": "@hollowy/coap-shepherd",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Network server and manager for lightweight M2M (LWM2M).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@hollowy/coap-helpers": "^0.0.0",
+    "@hollowy/coap-helpers": "^0.0.1",
     "coap": "1.0.8",
     "debug": "^4.3.4",
     "lodash": "^4",

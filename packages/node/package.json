@@ -1,10 +1,10 @@
 {
   "name": "@hollowy/coap-node",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Client node of lightweight M2M (LWM2M).",
   "main": "index.js",
   "dependencies": {
-    "@hollowy/coap-helpers": "^0.0.0",
+    "@hollowy/coap-helpers": "^0.0.1",
     "@types/lodash": "^4.14.182",
     "lodash": "^4.17.21",
     "coap": "^1.0.5",
