@@ -39,7 +39,7 @@ shepherd.on('device::incoming', (cnode, data: any) => {
   }, 1000)
 
   setInterval(() => {
-    cnode.write('/19/1/0', `DEMO::1233556778745jjf`, (err) => {
+    cnode.write('/19/1/0', `DEMO::1233556778745jjf`, true, (err) => {
       if (err) console.log('ERROR', err)
       console.log('write: /19/1/0', 'DEMO::1233556778745jjf')
     })

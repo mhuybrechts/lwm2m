@@ -3,8 +3,13 @@ declare module 'smartobject' {
 
   type KEY = string | number
 
-  interface Opt {
+  interface IOptions {
     restrict: boolean
+  }
+
+  interface Callback<T = unknown> {
+    (error: null, data: T): void
+    (error: NodeJS.ErrnoException, data: '_notfound_' | '_unreadable_' | '_exec_'): void
   }
 
   class ObjInstance {
@@ -16,15 +21,15 @@ declare module 'smartobject' {
     set(rid: KEY, value: any): this
     clear(): this
 
-    dump(opt: Opt, callback: Function): this
+    dump(opt: IOptions, callback: Function): this
     dump(callback: Function): this
     dumpSync(): object
 
-    read(rid: KEY, opt: Opt, callback: Function): any
+    read(rid: KEY, opt: IOptions, callback: Function): any
     read(rid: KEY, callback: Function): any
 
     write(rid: KEY, value: any, callback: Function): void
-    write(rid: KEY, value: any, opt: Opt, callback: Function): void
+    write(rid: KEY, value: any, opt: IOptions, callback: Function): void
 
     exec(rid: KEY, argus: any[], callback: Function): void
   }
@@ -33,45 +38,40 @@ declare module 'smartobject' {
     constructor(hal: object, setup?: Function)
     constructor(setup?: Function)
 
-    init(oid: KEY, iid: KEY, resrcs: object, setup: Function): ObjInstance
-    init(oid: KEY, iid: KEY, resrcs: object): ObjInstance
-    init(oid: KEY, iid: KEY, setup: Function): ObjInstance
+    init(oid: KEY, iid: KEY, resrcs: object, setup?: Function): ObjInstance
 
     create(oid: KEY, iid: KEY): ObjInstance
     remove(oid: KEY, iid: KEY): boolean
 
-    objectList(): any[]
+    objectList(): Array<{oid: KEY; iid: KEY[]}>
 
-    has(oid: KEY, iid: KEY, rid?: KEY): boolean
+    has(oid: KEY, iid?: KEY, rid?: KEY): boolean
 
-    dump(oid: KEY, iid: KEY, opt: object, callback?: Function): this
+    dump(oid: KEY, iid: KEY, opt: IOptions, callback: Callback<any>): this
+    dump(oid: KEY, opt: IOptions, callback: Callback<any>): this
+    dump(oid: KEY, iid: KEY, callback: Callback<any>): this
+    dump(opt: IOptions, callback: Callback<any>): this
+    dump(oid: KEY, callback: Callback<any>): this
+    dump(callback: Callback<any>): this
 
-    dump(oid: KEY, opt: object, callback?: Function): this
-    dump(oid: KEY, iid: KEY, callback?: Function): this
+    dumpSync(oid?: KEY, iid?: KEY): Record<KEY, any>
 
-    dump(opt: object, callback?: Function): this
-    dump(oid: KEY, callback?: Function): this
-
-    dump(callback?: Function): this
-
-    dumpSync(oid?: KEY, iid?: KEY, ...args: any[]): Record<KEY, any>
-
-    findObject(oid: KEY): any
-
-    findObjectInstance(oid: KEY, iid: KEY): ObjInstance | undefined
-
-    get(oid: KEY, iid: KEY, rid: KEY): any
-    set(oid: KEY, iid: KEY, rid: KEY, value: any): boolean
+    get<T>(oid: KEY, iid: KEY, rid: KEY): T | undefined
+    set<T>(oid: KEY, iid: KEY, rid: KEY, value: T): boolean
 
     isExecutable(oid: KEY, iid: KEY, rid: KEY): boolean
     isReadable(oid: KEY, iid: KEY, rid: KEY): boolean
     isWritable(oid: KEY, iid: KEY, rid: KEY): boolean
 
-    read(oid: KEY, iid: KEY, rid: KEY, opt: Opt, callback?: Function): any
+    read<T>(oid: KEY, iid: KEY, rid: KEY, opt: IOptions, callback: Callback<T>): any
+    read<T>(oid: KEY, iid: KEY, rid: KEY, callback: Callback<T>): any
 
-    write(oid: KEY, iid: KEY, rid: KEY, value: any, callback: Function): void
-    write(oid: KEY, iid: KEY, rid: KEY, value: any, opt: Opt, callback: Function): void
+    write<T>(oid: KEY, iid: KEY, rid: KEY, value: any, opt: IOptions, callback: Callback<T>): void
+    write<T>(oid: KEY, iid: KEY, rid: KEY, value: any, callback: Callback<T>): void
 
-    exec(oid: KEY, iid: KEY, rid: KEY, argus: any, callback: Function): void
+    exec<T>(oid: KEY, iid: KEY, rid: KEY, args: any[], callback: Callback<T>): void
+
+    findObject(oid: KEY): any
+    findObjectInstance(oid: KEY, iid: KEY): ObjInstance | undefined
   }
 }
