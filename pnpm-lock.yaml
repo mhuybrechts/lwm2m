@@ -69,7 +69,7 @@ importers:
       prettier: ^2.6.2
       smartobject: ^1.5.3
     dependencies:
-      '@hollowy/coap-helpers': link:../helpers
+      '@hollowy/coap-helpers': 0.0.1
       '@types/lodash': 4.14.182
       coap: 1.0.5
       debug: 4.3.4
@@ -86,35 +86,35 @@ importers:
 
   packages/shepherd:
     specifiers:
-      '@hollowy/coap-helpers': ^0.0.1
+      '@hollowy/coap-helpers': ^0.0.2
       '@types/chai': ^4.3.1
       '@types/debug': ^4.1.7
       '@types/lodash': ^4
       '@types/mocha': ^9.1.1
       '@types/nedb': ^1.8.12
-      '@types/node': ^17.0.25
+      '@types/node': ^17.0.31
       '@types/prettier': ^2.6.0
       '@types/q': ^1.5.5
       '@types/rimraf': ^3.0.2
       '@types/sinon': ^10.0.11
       '@types/sinon-chai': ^3.2.8
       chai: ^4.3.6
-      coap: 1.0.8
+      coap: ^1.0.8
       debug: ^4.3.4
       lodash: ^4
       lwm2m-codec: 0.1.1
       lwm2m-id: ^1.6.4
-      mocha: ^9.2.2
+      mocha: ^10.0.0
       nedb: ^1.8.0
       network: ^0.6
       proving: ^0.1.0
       q: ^1.5.1
       rimraf: ^3.0.2
-      sinon: ^13.0.2
+      sinon: ^14.0.0
       sinon-chai: ^3.7.0
       smartobject: ^1.5.3
       ts-node: ^10.7.0
-      typescript: ^4.6.3
+      typescript: ^4.6.4
     dependencies:
       '@hollowy/coap-helpers': link:../helpers
       coap: 1.0.8
@@ -133,19 +133,19 @@ importers:
       '@types/lodash': 4.14.180
       '@types/mocha': 9.1.1
       '@types/nedb': 1.8.12
-      '@types/node': 17.0.25
+      '@types/node': 17.0.31
       '@types/prettier': 2.6.0
       '@types/q': 1.5.5
       '@types/rimraf': 3.0.2
       '@types/sinon': 10.0.11
       '@types/sinon-chai': 3.2.8
       chai: 4.3.6
-      mocha: 9.2.2
+      mocha: 10.0.0
       rimraf: 3.0.2
-      sinon: 13.0.2
-      sinon-chai: 3.7.0_chai@4.3.6+sinon@13.0.2
-      ts-node: 10.7.0_de7c86b0cde507c63a0402da5b982bd3
-      typescript: 4.6.3
+      sinon: 14.0.0
+      sinon-chai: 3.7.0_chai@4.3.6+sinon@14.0.0
+      ts-node: 10.7.0_5f3e12794cebfbf3197131903b74d233
+      typescript: 4.6.4
 
 packages:
 
@@ -160,6 +160,16 @@ packages:
     dependencies:
       '@cspotcode/source-map-consumer': 0.8.0
     dev: true
+
+  /@hollowy/coap-helpers/0.0.1:
+    resolution: {integrity: sha512-B/gj9BTsK6ml1HxK3tsLiKqxhOHS84Jxlq1tsWpAUzHx3JeLq1ib80XB4+mEvoyqcDbSKGnae9uJYNUGGjmVJA==}
+    dependencies:
+      '@types/lodash': 4.14.182
+      lodash: 4.17.21
+      lwm2m-codec: 0.1.1
+      lwm2m-id: 1.6.4
+      proving: 0.1.0
+    dev: false
 
   /@sinonjs/commons/1.8.3:
     resolution: {integrity: sha512-xkNcLAn/wZaX14RPlwizcKicDk9G3F8m2nU3L7Ukm5zBgTwiT0wsoFAHx9Jq56fJA1z/7uKGtCRu16sOUCLIHQ==}
@@ -252,7 +262,7 @@ packages:
   /@types/nedb/1.8.12:
     resolution: {integrity: sha1-WXuxJN2vFgOcbUePSrwKjyAGsTQ=, tarball: '@types/nedb/download/@types/nedb-1.8.12.tgz'}
     dependencies:
-      '@types/node': 17.0.25
+      '@types/node': 17.0.31
     dev: true
 
   /@types/node/17.0.21:
@@ -261,6 +271,10 @@ packages:
 
   /@types/node/17.0.25:
     resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
+
+  /@types/node/17.0.31:
+    resolution: {integrity: sha512-AR0x5HbXGqkEx9CadRH3EBYx/VkiUgZIhP4wvPn/+5KIsgpNoyFaRlVe0Zlx9gRtg8fA06a9tskE2MSN7TcG4Q==}
+    dev: true
 
   /@types/prettier/2.6.0:
     resolution: {integrity: sha512-G/AdOadiZhnJp0jXCaBQU449W2h716OW/EoXeYkCytxKL06X1WCXB4DZpp8TpZ8eyIJVS1cw4lrlkkSYU21cDw==}
@@ -366,7 +380,7 @@ packages:
     dev: false
 
   /balanced-match/1.0.2:
-    resolution: {integrity: sha1-6D46fj8wCzTLnYf2FfoMvzV2kO4=, tarball: balanced-match/download/balanced-match-1.0.2.tgz}
+    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
 
   /base64-js/1.5.1:
@@ -397,6 +411,12 @@ packages:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
+    dev: true
+
+  /brace-expansion/2.0.1:
+    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+    dependencies:
+      balanced-match: 1.0.2
     dev: true
 
   /braces/3.0.2:
@@ -579,6 +599,19 @@ packages:
     dependencies:
       ms: 2.1.2
     dev: false
+
+  /debug/4.3.4_supports-color@8.1.1:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+      supports-color: 8.1.1
+    dev: true
 
   /decamelize/4.0.0:
     resolution: {integrity: sha1-qkcte/Zg6xXzSU79UxyrfypwmDc=, tarball: decamelize/download/decamelize-4.0.0.tgz}
@@ -884,6 +917,13 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
+  /minimatch/5.0.1:
+    resolution: {integrity: sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: true
+
   /minimist/1.2.5:
     resolution: {integrity: sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=, tarball: minimist/download/minimist-1.2.5.tgz}
     dev: false
@@ -894,6 +934,35 @@ packages:
     dependencies:
       minimist: 1.2.5
     dev: false
+
+  /mocha/10.0.0:
+    resolution: {integrity: sha512-0Wl+elVUD43Y0BqPZBzZt8Tnkw9CMUdNYnUsTfOM1vuhJVZL+kiesFYsqwBkEEuEixaiPe5ZQdqDgX2jddhmoA==}
+    engines: {node: '>= 14.0.0'}
+    hasBin: true
+    dependencies:
+      '@ungap/promise-all-settled': 1.1.2
+      ansi-colors: 4.1.1
+      browser-stdout: 1.3.1
+      chokidar: 3.5.3
+      debug: 4.3.4_supports-color@8.1.1
+      diff: 5.0.0
+      escape-string-regexp: 4.0.0
+      find-up: 5.0.0
+      glob: 7.2.0
+      he: 1.2.0
+      js-yaml: 4.1.0
+      log-symbols: 4.1.0
+      minimatch: 5.0.1
+      ms: 2.1.3
+      nanoid: 3.3.3
+      serialize-javascript: 6.0.0
+      strip-json-comments: 3.1.1
+      supports-color: 8.1.1
+      workerpool: 6.2.1
+      yargs: 16.2.0
+      yargs-parser: 20.2.4
+      yargs-unparser: 2.0.0
+    dev: true
 
   /mocha/9.2.2:
     resolution: {integrity: sha1-1w20a9uTyldALICTM+WoSXeoj7k=, tarball: mocha/download/mocha-9.2.2.tgz}
@@ -938,6 +1007,12 @@ packages:
 
   /nanoid/3.3.1:
     resolution: {integrity: sha1-Y0ehjKyIr4j1ivCzWUtyPV6ZuzU=, tarball: nanoid/download/nanoid-3.3.1.tgz}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+    dev: true
+
+  /nanoid/3.3.3:
+    resolution: {integrity: sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
@@ -1127,8 +1202,29 @@ packages:
       sinon: 13.0.2
     dev: true
 
+  /sinon-chai/3.7.0_chai@4.3.6+sinon@14.0.0:
+    resolution: {integrity: sha512-mf5NURdUaSdnatJx3uhoBOrY9dtL19fiOtAdT1Azxg3+lNJFiuN0uzaU3xX1LeAfL17kHQhTAJgpsfhbMJMY2g==}
+    peerDependencies:
+      chai: ^4.0.0
+      sinon: '>=4.0.0'
+    dependencies:
+      chai: 4.3.6
+      sinon: 14.0.0
+    dev: true
+
   /sinon/13.0.2:
     resolution: {integrity: sha512-KvOrztAVqzSJWMDoxM4vM+GPys1df2VBoXm+YciyB/OLMamfS3VXh3oGh5WtrAGSzrgczNWFFY22oKb7Fi5eeA==}
+    dependencies:
+      '@sinonjs/commons': 1.8.3
+      '@sinonjs/fake-timers': 9.1.2
+      '@sinonjs/samsam': 6.1.1
+      diff: 5.0.0
+      nise: 5.1.1
+      supports-color: 7.2.0
+    dev: true
+
+  /sinon/14.0.0:
+    resolution: {integrity: sha512-ugA6BFmE+WrJdh0owRZHToLd32Uw3Lxq6E6LtNRU+xTVBefx632h03Q7apXWRsRdZAJ41LB8aUfn2+O4jsDNMw==}
     dependencies:
       '@sinonjs/commons': 1.8.3
       '@sinonjs/fake-timers': 9.1.2
@@ -1193,6 +1289,37 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /ts-node/10.7.0_5f3e12794cebfbf3197131903b74d233:
+    resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.7.0
+      '@tsconfig/node10': 1.0.8
+      '@tsconfig/node12': 1.0.9
+      '@tsconfig/node14': 1.0.1
+      '@tsconfig/node16': 1.0.2
+      '@types/node': 17.0.31
+      acorn: 8.7.0
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 4.6.4
+      v8-compile-cache-lib: 3.0.0
+      yn: 3.1.1
+    dev: true
+
   /ts-node/10.7.0_de7c86b0cde507c63a0402da5b982bd3:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
@@ -1235,6 +1362,12 @@ packages:
     hasBin: true
     dev: true
 
+  /typescript/4.6.4:
+    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
   /underscore/1.4.4:
     resolution: {integrity: sha1-YaajIBBiKvoHljvzJSA88SI51gQ=, tarball: underscore/download/underscore-1.4.4.tgz}
     dev: false
@@ -1271,6 +1404,10 @@ packages:
 
   /workerpool/6.2.0:
     resolution: {integrity: sha1-gn2Tyboj7iAZw/+v9cJ/zOoonos=, tarball: workerpool/download/workerpool-6.2.0.tgz}
+    dev: true
+
+  /workerpool/6.2.1:
+    resolution: {integrity: sha512-ILEIE97kDZvF9Wb9f6h5aXK4swSlKGUcOEGiIYb2OOu/IrDU9iwj0fD//SsA6E5ibwJxpEvhullJY4Sl4GcpAw==}
     dev: true
 
   /wrap-ansi/7.0.0:
