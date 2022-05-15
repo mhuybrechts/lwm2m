@@ -437,10 +437,11 @@ function coapRequest(reqObj: ICoapRequestParams, agent: Agent): Q.Promise<Incomi
 
   req.on('response', (rsp: IncomingMessage) => {
     debug(
-      'RSP <-- %s, token: %s, status: %s',
+      'RSP <-- %s, token: %s, status: %s, payload: %s',
       reqObj.method,
       req._packet ? req._packet.token.toString('hex') : undefined,
       rsp.code,
+      String(rsp.payload),
     )
 
     if (!_.isEmpty(rsp.payload) && rsp.headers['Content-Format'] === 'application/json') {

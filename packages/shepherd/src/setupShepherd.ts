@@ -67,6 +67,8 @@ function _coapServerStart(shepherd: CoapShepherd, callback?: Callback<Server>): 
       req.payload = String(req.payload)
     }
 
+    debug('RECEIVED : %s', req.payload)
+
     reqHandler(shepherd, req, rsp)
   })
 

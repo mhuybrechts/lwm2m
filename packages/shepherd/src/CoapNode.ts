@@ -178,17 +178,16 @@ export class CoapNode {
       deferred.reject(chkErr)
     } else {
       reqObj = this._reqObj('PUT', helpers.getNumPath(path))
-      if (this.dataFormat.includes('application/json')) {
+
+      if (transparent) {
+        reqObj.payload = Buffer.from(value)
+        reqObj.options = {'Content-Format': 'application/octet-stream'}
+      } else if (this.dataFormat.includes('application/json')) {
         reqObj.payload = helpers.encodeJson(path, value)
         reqObj.options = {'Content-Format': 'application/json'}
       } else {
-        if (!transparent) {
-          reqObj.payload = helpers.encodeTlv(path, value)
-          reqObj.options = {'Content-Format': 'application/tlv'}
-        } else {
-          reqObj.payload = Buffer.from(value)
-          reqObj.options = {'Content-Format': 'application/octet-stream'}
-        }
+        reqObj.payload = helpers.encodeTlv(path, value)
+        reqObj.options = {'Content-Format': 'application/tlv'}
       }
 
       debug('reqObj: %s', JSON.stringify(reqObj))
@@ -292,6 +291,8 @@ export class CoapNode {
       if (this.dataFormat.includes('application/json')) reqObj.options = {Accept: 'application/json'}
       else reqObj.options = {Accept: 'application/tlv'} // Default format is tlv
 
+      // reqObj.options = {Accept: 'application/octet-stream'}
+
       debug(`OBSERVE -> %s`, JSON.stringify(reqObj))
       this.shepherd.request(reqObj).done(
         (observeStream: ObserveReadStream) => {
@@ -306,13 +307,10 @@ export class CoapNode {
 
             this._streamObservers[helpers.getKeyPath(reqObj.pathname)] = observeStream
 
-            observeStream.once('data', () => {
-              observeStream.on('data', (value) => {
-                const type = observeStream.headers['Content-Format']
-                // console.log(observeStream);
-                debug(`observeStream._packet.payload -> %s`, String(observeStream._packet.payload))
-                this._notifyHandler(path, value, type)
-              })
+            observeStream.on('data', (value) => {
+              const type = observeStream.headers['Content-Format']
+              debug(`observeStream:value -> %s : %s`, type, value)
+              this._notifyHandler(path, value, type)
             })
           }
 
@@ -709,6 +707,8 @@ export class CoapNode {
   }
 
   private _notifyHandler(path: string, value: any, type: OptionValue): void {
+    debug('_notifyHandler -> %s', value)
+
     const shepherd = this.shepherd
     let data
 
