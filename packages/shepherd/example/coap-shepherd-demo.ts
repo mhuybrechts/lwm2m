@@ -12,6 +12,7 @@ const shepherd = new CoapShepherd({
   port: 59999,
   autoReadResources: false,
   alwaysFireDevIncoming: true,
+  disableFiltering: true,
 })
 
 shepherd.on('ready', () => {
