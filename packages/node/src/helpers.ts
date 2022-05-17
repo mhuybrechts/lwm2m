@@ -3,7 +3,7 @@
  ***************************************************/
 import _ from 'lodash'
 import {CONSTANTS} from '@hollowy/coap-helpers'
-import CoapNode from './CoapNode'
+import {CoapNode} from './CoapNode'
 import {KEY} from './types'
 import {OutgoingMessage} from 'coap'
 

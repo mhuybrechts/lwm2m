@@ -1,6 +1,6 @@
 {
   "name": "@hollowy/coap-shepherd",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Network server and manager for lightweight M2M (LWM2M).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,14 +44,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PeterEB/coap-shepherd.git"
+    "url": "https://github.com/nanyuantingfeng/coap-shepherd.git"
   },
   "keywords": [
     "coap"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PeterEB/coap-shepherd/issues"
+    "url": "https://github.com/nanyuantingfeng/coap-shepherd/issues"
   },
-  "homepage": "https://github.com/PeterEB/coap-shepherd"
+  "homepage": "https://github.com/nanyuantingfeng/coap-shepherd"
 }

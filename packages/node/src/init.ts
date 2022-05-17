@@ -4,7 +4,7 @@
 import {updateTiming, registerFormat} from 'coap'
 import _ from 'lodash'
 
-import CoapNode from './CoapNode'
+import {CoapNode} from './CoapNode'
 import {checkAndCloseServer, checkAndReportResource, lifetimeUpdate} from './helpers'
 import {IDevAttrs} from './types'
 

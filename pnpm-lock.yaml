@@ -53,6 +53,14 @@ importers:
       ts-node: 10.7.0_de7c86b0cde507c63a0402da5b982bd3
       typescript: 4.6.3
 
+  packages/lwm2m:
+    specifiers:
+      '@hollowy/coap-shepherd': ^0.0.22
+      rpc-websockets: ^7.4.18
+    dependencies:
+      '@hollowy/coap-shepherd': link:../shepherd
+      rpc-websockets: 7.4.18
+
   packages/node:
     specifiers:
       '@hollowy/coap-helpers': ^0.0.1
@@ -148,6 +156,13 @@ importers:
       typescript: 4.6.4
 
 packages:
+
+  /@babel/runtime/7.17.9:
+    resolution: {integrity: sha512-lSiBBvodq29uShpWGNbgFdKYNiFDo5/HIYsaCEY9ff4sb10x9jizo2+pRrSyF4jKZCXqgzuqBOQKbUm90gQwJg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
 
   /@cspotcode/source-map-consumer/0.8.0:
     resolution: {integrity: sha1-M79LeznBeIIWBvZpu8RHpqYpeGs=, tarball: '@cspotcode/source-map-consumer/download/@cspotcode/source-map-consumer-0.8.0.tgz'}
@@ -437,6 +452,15 @@ packages:
       ieee754: 1.2.1
     dev: false
 
+  /bufferutil/4.0.6:
+    resolution: {integrity: sha512-jduaYOYtnio4aIAyc6UbvPCVcgq7nYpVnucyxr6eCYg/Woad9Hf/oxxBRDnGGjPfjUm6j5O/uBWhIu4iLebFaw==}
+    engines: {node: '>=6.14.2'}
+    requiresBuild: true
+    dependencies:
+      node-gyp-build: 4.4.0
+    dev: false
+    optional: true
+
   /busyman/0.3.0:
     resolution: {integrity: sha1-FN6kn2JgfOSy0wsgPGMG72zKiKc=, tarball: busyman/download/busyman-0.3.0.tgz}
     dev: false
@@ -655,6 +679,10 @@ packages:
     resolution: {integrity: sha1-FLqDpdNz49MR5a/KKc9b+tllvzQ=, tarball: escape-string-regexp/download/escape-string-regexp-4.0.0.tgz}
     engines: {node: '>=10'}
     dev: true
+
+  /eventemitter3/4.0.7:
+    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
+    dev: false
 
   /fastseries/2.0.0:
     resolution: {integrity: sha512-XBU9RXeoYc2/VnvMhplAxEmZLfIk7cvTBu+xwoBuTI8pL19E03cmca17QQycKIdxgwCeFA/a4u27gv1h3ya5LQ==}
@@ -1076,6 +1104,12 @@ packages:
       path-to-regexp: 1.8.0
     dev: true
 
+  /node-gyp-build/4.4.0:
+    resolution: {integrity: sha512-amJnQCcgtRVw9SvoebO3BKGESClrfXGCUTX9hSn1OuGQTQBOZmVd0Z0OlecpuRksKvbsUqALE8jls/ErClAPuQ==}
+    hasBin: true
+    dev: false
+    optional: true
+
   /normalize-path/3.0.0:
     resolution: {integrity: sha1-Dc1p/yOhybEf0JeDFmRKA4ghamU=, tarball: normalize-path/download/normalize-path-3.0.0.tgz}
     engines: {node: '>=0.10.0'}
@@ -1163,6 +1197,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+    dev: false
+
   /require-directory/2.1.1:
     resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=, tarball: require-directory/download/require-directory-2.1.1.tgz}
     engines: {node: '>=0.10.0'}
@@ -1174,6 +1212,18 @@ packages:
     dependencies:
       glob: 7.2.0
     dev: true
+
+  /rpc-websockets/7.4.18:
+    resolution: {integrity: sha512-bVu+4qM5CkGVlTqJa6FaAxLbb5uRnyH4te7yjFvoCzbnif7PT4BcvXtNTprHlNvsH+/StB81zUQicxMrUrIomA==}
+    dependencies:
+      '@babel/runtime': 7.17.9
+      eventemitter3: 4.0.7
+      uuid: 8.3.2
+      ws: 8.6.0_d6955b83f926115bf12ffeabab6deaae
+    optionalDependencies:
+      bufferutil: 4.0.6
+      utf-8-validate: 5.0.9
+    dev: false
 
   /safe-buffer/5.2.1:
     resolution: {integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=, tarball: safe-buffer/download/safe-buffer-5.2.1.tgz}
@@ -1372,8 +1422,22 @@ packages:
     resolution: {integrity: sha1-YaajIBBiKvoHljvzJSA88SI51gQ=, tarball: underscore/download/underscore-1.4.4.tgz}
     dev: false
 
+  /utf-8-validate/5.0.9:
+    resolution: {integrity: sha512-Yek7dAy0v3Kl0orwMlvi7TPtiCNrdfHNd7Gcc/pLq4BLXqfAmd0J7OWMizUQnTTJsyjKn02mU7anqwfmUP4J8Q==}
+    engines: {node: '>=6.14.2'}
+    requiresBuild: true
+    dependencies:
+      node-gyp-build: 4.4.0
+    dev: false
+    optional: true
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
+    dev: false
+
+  /uuid/8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
     dev: false
 
   /v8-compile-cache-lib/3.0.0:
@@ -1422,6 +1486,22 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=, tarball: wrappy/download/wrappy-1.0.2.tgz}
     dev: true
+
+  /ws/8.6.0_d6955b83f926115bf12ffeabab6deaae:
+    resolution: {integrity: sha512-AzmM3aH3gk0aX7/rZLYvjdvZooofDu3fFOzGqcSnQ1tOcTWwhM/o+q++E8mAyVVIyUdajrkzWUGftaVSDLn1bw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      bufferutil: 4.0.6
+      utf-8-validate: 5.0.9
+    dev: false
 
   /y18n/5.0.8:
     resolution: {integrity: sha1-f0k00PfKjFb5UxSTndzS3ZHOHVU=, tarball: y18n/download/y18n-5.0.8.tgz}

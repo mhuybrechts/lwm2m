@@ -1,8 +1,9 @@
 /***************************************************
- * Created by nanyuantingfeng on 2022/3/15 18:48. *
+ * Created by nanyuantingfeng on 2022/5/18 00:10. *
  ***************************************************/
 export * from './CoapNode'
-export * from './CoapShepherd'
-export * from './Storage'
-export * from './StorageNeDB'
 export * from './types'
+
+import {CoapNode} from './CoapNode'
+
+export default CoapNode

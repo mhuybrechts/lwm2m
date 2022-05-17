@@ -1,8 +1,9 @@
 {
   "name": "@hollowy/coap-node",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Client node of lightweight M2M (LWM2M).",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "dependencies": {
     "@hollowy/coap-helpers": "^0.0.1",
     "@types/lodash": "^4.14.182",
@@ -27,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PeterEB/coap-node.git"
+    "url": "https://github.com/nanyuantingfeng/coap-node.git"
   },
   "keywords": [
     "coap"
@@ -35,7 +36,7 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PeterEB/coap-node/issues"
+    "url": "https://github.com/nanyuantingfeng/coap-node/issues"
   },
-  "homepage": "https://github.com/PeterEB/coap-node"
+  "homepage": "https://github.com/nanyuantingfeng/coap-node"
 }

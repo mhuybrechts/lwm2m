@@ -45,7 +45,7 @@ const DEBUG_RSP = require('debug')('coap-node:RSP')
 }*/
 const {TTYPE, TAG, ERR, RSP} = CONSTANTS
 
-export default class CoapNode extends EventEmitter {
+export class CoapNode extends EventEmitter {
   public servers: Record<number, Server>
   public serversIdTable: Record<string, {securityIid: string; serverIid: string; shortServerId: string}>
   public serversInfo: Record<KEY, IServerInfo>

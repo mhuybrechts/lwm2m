@@ -5,7 +5,7 @@ var expect = require("chai").expect;
 var SmartObject = require("smartobject");
 var shepherd = require("coap-shepherd");
 
-var CoapNode = require("../index");
+var CoapNode = require('../src/CoapNode').CoapNode
 
 var so = new SmartObject();
 var iObj = {

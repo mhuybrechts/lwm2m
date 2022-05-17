@@ -1,4 +1,4 @@
-import CoapNode from '../src/CoapNode'
+import {CoapNode} from '../src/CoapNode'
 import SmartObject from 'smartobject'
 
 const so = new SmartObject()

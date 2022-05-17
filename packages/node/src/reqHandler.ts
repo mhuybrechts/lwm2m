@@ -2,7 +2,7 @@
  * Created by nanyuantingfeng on 2022/3/11 15:19. *
  ***************************************************/
 import {helpers, CONSTANTS} from '@hollowy/coap-helpers'
-import CoapNode from './CoapNode'
+import {CoapNode} from './CoapNode'
 import {IncomingMessage, OutgoingMessage} from 'coap'
 import _ from 'lodash'
 import {heartbeat} from './helpers'
