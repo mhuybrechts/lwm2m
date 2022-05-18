@@ -1,6 +1,6 @@
 {
   "name": "@hollowy/lwm2m",
-  "version": "0.0.0-beta.8",
+  "version": "0.0.0-beta.9",
   "description": "LWM2M Server & Client implementation",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/nanyuantingfeng/coap-shepherd",
   "license": "MIT",
   "dependencies": {
-    "@hollowy/coap-shepherd": "^0.0.22",
+    "@hollowy/coap-shepherd": "^0.0.23",
     "rpc-websockets": "^7.4.18"
   }
 }

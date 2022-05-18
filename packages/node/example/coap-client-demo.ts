@@ -78,7 +78,8 @@ coapNode.on('observe', (msg) => {
 })
 
 coapNode.register(
-  '221.229.214.202', 5683,
+  '127.0.0.1',
+  59999,
   {
     defaultMaxPeriod: 3,
   },

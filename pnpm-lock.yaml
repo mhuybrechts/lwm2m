@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 importers:
 
@@ -50,12 +50,12 @@ importers:
       rimraf: 3.0.2
       sinon: 13.0.2
       sinon-chai: 3.7.0_chai@4.3.6+sinon@13.0.2
-      ts-node: 10.7.0_de7c86b0cde507c63a0402da5b982bd3
+      ts-node: 10.7.0_typescript@4.6.3
       typescript: 4.6.3
 
   packages/lwm2m:
     specifiers:
-      '@hollowy/coap-shepherd': ^0.0.22
+      '@hollowy/coap-shepherd': ^0.0.23
       rpc-websockets: ^7.4.18
     dependencies:
       '@hollowy/coap-shepherd': link:../shepherd
@@ -152,7 +152,7 @@ importers:
       rimraf: 3.0.2
       sinon: 14.0.0
       sinon-chai: 3.7.0_chai@4.3.6+sinon@14.0.0
-      ts-node: 10.7.0_5f3e12794cebfbf3197131903b74d233
+      ts-node: 10.7.0_l47be6km5p57gglrggidw5gsgm
       typescript: 4.6.4
 
 packages:
@@ -589,12 +589,22 @@ packages:
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.0.0
     dev: false
 
   /debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.1.3
     dev: false
@@ -1062,6 +1072,8 @@ packages:
     dependencies:
       debug: 2.6.9
       iconv-lite: 0.4.24
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /needle/3.1.0:
@@ -1072,6 +1084,8 @@ packages:
       debug: 3.2.7
       iconv-lite: 0.6.3
       sax: 1.2.4
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /network/0.6.0:
@@ -1082,6 +1096,8 @@ packages:
       commander: 2.9.0
       needle: 1.1.2
       wmic: 0.1.0
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /network/0.6.1:
@@ -1092,6 +1108,8 @@ packages:
       commander: 2.9.0
       needle: 3.1.0
       wmic: 1.1.1
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /nise/5.1.1:
@@ -1219,7 +1237,7 @@ packages:
       '@babel/runtime': 7.17.9
       eventemitter3: 4.0.7
       uuid: 8.3.2
-      ws: 8.6.0_d6955b83f926115bf12ffeabab6deaae
+      ws: 8.6.0_22kvxa7zeyivx4jp72v2w3pkvy
     optionalDependencies:
       bufferutil: 4.0.6
       utf-8-validate: 5.0.9
@@ -1339,7 +1357,7 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /ts-node/10.7.0_5f3e12794cebfbf3197131903b74d233:
+  /ts-node/10.7.0_l47be6km5p57gglrggidw5gsgm:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
     peerDependencies:
@@ -1370,7 +1388,7 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /ts-node/10.7.0_de7c86b0cde507c63a0402da5b982bd3:
+  /ts-node/10.7.0_typescript@4.6.3:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
     peerDependencies:
@@ -1389,7 +1407,6 @@ packages:
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
-      '@types/node': 17.0.25
       acorn: 8.7.0
       acorn-walk: 8.2.0
       arg: 4.1.3
@@ -1487,7 +1504,7 @@ packages:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=, tarball: wrappy/download/wrappy-1.0.2.tgz}
     dev: true
 
-  /ws/8.6.0_d6955b83f926115bf12ffeabab6deaae:
+  /ws/8.6.0_22kvxa7zeyivx4jp72v2w3pkvy:
     resolution: {integrity: sha512-AzmM3aH3gk0aX7/rZLYvjdvZooofDu3fFOzGqcSnQ1tOcTWwhM/o+q++E8mAyVVIyUdajrkzWUGftaVSDLn1bw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:

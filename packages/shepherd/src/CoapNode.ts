@@ -307,10 +307,12 @@ export class CoapNode {
 
             this._streamObservers[helpers.getKeyPath(reqObj.pathname)] = observeStream
 
-            observeStream.on('data', (value) => {
-              const type = observeStream.headers['Content-Format']
-              debug(`observeStream:value -> %s : %s`, type, value)
-              this._notifyHandler(path, value, type)
+            observeStream.once('data', () => {
+              observeStream.on('data', (value) => {
+                const type = observeStream.headers['Content-Format']
+                debug(`observeStream:value -> %s : %s`, type, value)
+                this._notifyHandler(path, value, type)
+              })
             })
           }
 

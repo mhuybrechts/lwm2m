@@ -17,7 +17,6 @@ const shepherd = new CoapShepherd({
 
 shepherd.on('ready', () => {
   console.log('>> coap-shepherd server start!')
-  shepherd.permitJoin(180)
   shepherd.alwaysPermitJoin(true)
 })
 

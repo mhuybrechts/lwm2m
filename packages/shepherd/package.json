@@ -1,6 +1,6 @@
 {
   "name": "@hollowy/coap-shepherd",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Network server and manager for lightweight M2M (LWM2M).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
