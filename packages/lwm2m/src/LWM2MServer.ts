@@ -24,6 +24,9 @@ export class LWM2MServer {
       disableFiltering: true,
       ...this.options,
     })
+
+    this.shepherd.alwaysPermitJoin(true)
+
     this.wss = new WebSocketServer({port: this.options.port})
 
     setupServerAPIProxy(this.shepherd, this.wss)
