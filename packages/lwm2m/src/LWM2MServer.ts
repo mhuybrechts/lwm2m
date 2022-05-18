@@ -6,6 +6,7 @@ import {Server as WebSocketServer} from 'rpc-websockets'
 import {Callback} from './types'
 import {setupServerAPIProxy} from './setupServerAPIProxy'
 import {setupNodeAPIProxy} from './setupNodeAPIProxy'
+import {setupEvents} from './setupEvents'
 
 export interface ILWM2MOptions extends IConfig {
   port: number
@@ -27,6 +28,7 @@ export class LWM2MServer {
 
     setupServerAPIProxy(this.shepherd, this.wss)
     setupNodeAPIProxy(this.shepherd, this.wss)
+    setupEvents(this.shepherd, this.wss)
   }
 
   start(callback: Callback<void>) {
@@ -59,7 +61,10 @@ export class LWM2MServer {
   on(eventName: 'device::leaving', listener: (clientName: string, mac: string) => void): this
   on(eventName: 'lookup', listener: (clientName: string) => void): this
   on(eventName: string | symbol, listener: (...args: any[]) => void): this {
-    this.shepherd.on(eventName as any, listener)
+    this.shepherd.on(eventName as any, (cnode?: any, ...args: any[]) => {
+      listener(cnode, ...args)
+      this.wss.emit(eventName, cnode?.clientName ?? cnode, ...args)
+    })
     return this
   }
 }

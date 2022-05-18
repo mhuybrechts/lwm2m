@@ -14,32 +14,32 @@ export class LWM2MConnect {
     this.waitForReady = new Promise((resolve) => this.ws.on('open', resolve))
   }
 
-  async resetShepherd(mode?: boolean) {
+  async reset(mode?: boolean) {
     await this.waitForReady
     return this.ws.call('reset', {mode})
   }
 
-  async listDevices(): Promise<IDeviceInfo[]> {
+  async list(): Promise<IDeviceInfo[]> {
     await this.waitForReady
     return this.ws.call('list') as any
   }
 
-  async findDeviceByName(clientName: string) {
+  async findByName(clientName: string) {
     await this.waitForReady
     return this.ws.call('find', {clientName})
   }
 
-  async findDeviceByMacAddr(macAddress: string) {
+  async findByMacAddr(macAddress: string) {
     await this.waitForReady
     return this.ws.call('findByMacAddr', {macAddress})
   }
 
-  async findDeviceByClientId(id: string | number) {
+  async findByClientId(id: string | number) {
     await this.waitForReady
     return this.ws.call('findByClientId', {id})
   }
 
-  async findDeviceByLocationPath(path: string) {
+  async findByLocationPath(path: string) {
     await this.waitForReady
     return this.ws.call('findByLocationPath', {path})
   }
@@ -162,5 +162,15 @@ export class LWM2MConnect {
   async updateAttrs(clientName: string, attrs: object) {
     await this.waitForReady
     return this.ws.call('updateAttrs', {clientName, attrs}) as any
+  }
+
+  async subscribe(eventName, listener: (...args: any[]) => void): Promise<() => void> {
+    await this.waitForReady
+    await this.ws.subscribe(eventName)
+    this.ws.on(eventName, listener)
+    return () => {
+      this.ws.unsubscribe(eventName)
+      this.ws.off(eventName, listener)
+    }
   }
 }
