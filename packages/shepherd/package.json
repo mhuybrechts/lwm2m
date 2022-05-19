@@ -1,0 +1,57 @@
+{
+  "name": "@hollowy/coap-shepherd",
+  "version": "0.0.25",
+  "description": "Network server and manager for lightweight M2M (LWM2M).",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@hollowy/coap-helpers": "^0.0.2",
+    "coap": "^1.0.11",
+    "debug": "^4.3.4",
+    "lodash": "^4",
+    "lwm2m-codec": "0.1.1",
+    "lwm2m-id": "^1.6.4",
+    "nedb": "^1.8.0",
+    "network": "^0.6",
+    "proving": "^0.1.0",
+    "q": "^1.5.1",
+    "smartobject": "^1.5.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/debug": "^4.1.7",
+    "@types/lodash": "^4",
+    "@types/mocha": "^9.1.1",
+    "@types/nedb": "^1.8.12",
+    "@types/node": "^17.0.34",
+    "@types/prettier": "^2.6.1",
+    "@types/q": "^1.5.5",
+    "@types/rimraf": "^3.0.2",
+    "@types/sinon": "^10.0.11",
+    "@types/sinon-chai": "^3.2.8",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "rimraf": "^3.0.2",
+    "sinon": "^14.0.0",
+    "sinon-chai": "^3.7.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "scripts": {
+    "test": "mocha",
+    "build": "rm -rf dist && tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nanyuantingfeng/coap-shepherd.git"
+  },
+  "keywords": [
+    "coap"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nanyuantingfeng/coap-shepherd/issues"
+  },
+  "homepage": "https://github.com/nanyuantingfeng/coap-shepherd"
+}

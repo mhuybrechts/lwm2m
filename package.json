@@ -1,41 +1,8 @@
 {
-  "name": "coap-shepherd",
-  "version": "0.3.1",
-  "description": "Network server and manager for lightweight M2M (LWM2M).",
-  "main": "index.js",
-  "dependencies": {
-    "busyman": "^0.3.0",
-    "coap": "^0.23.1",
-    "debug": "^2.2.0",
-    "firmata": "^0.10.1",
-    "lwm2m-codec": "0.1.1",
-    "lwm2m-id": "^1.6.1",
-    "nedb": "^1.8.0",
-    "network": "^0.2.1",
-    "proving": "^0.1.0",
-    "q": "^1.4.1",
-    "smartobject": "^1.4.0"
-  },
+  "name": "@hollowy/coap",
+  "version": "1.0.0",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.5.3",
-    "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0"
-  },
-  "scripts": {
-    "test": "make test-all"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PeterEB/coap-shepherd.git"
-  },
-  "keywords": [
-    "coap"
-  ],
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/PeterEB/coap-shepherd/issues"
-  },
-  "homepage": "https://github.com/PeterEB/coap-shepherd"
+    "@types/node": "^17.0.25",
+    "prettier": "^2.6.2"
+  }
 }
