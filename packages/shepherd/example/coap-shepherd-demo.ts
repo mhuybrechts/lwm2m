@@ -39,9 +39,9 @@ shepherd.on('device::incoming', (cnode, data: any) => {
 
   setInterval(() => {
     if (cnode.status === 'online')
-      cnode.write('/19/1/0', `DEMO::1233556778745jjf` + Math.random(), true, (err) => {
+      cnode.write('/19/1/0', `DEMO::1233556778::` + Math.random(), true, (err) => {
         if (err) console.log('ERROR', err)
-        console.log('write: /19/1/0', 'DEMO::1233556778745jjf')
+        console.log('write: /19/1/0', 'DEMO::1233556778::???')
       })
   }, 2000)
 

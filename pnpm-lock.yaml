@@ -16,6 +16,7 @@ importers:
       '@types/debug': ^4.1.7
       '@types/lodash': ^4.14.182
       '@types/mocha': ^9.1.1
+      '@types/node': ^17.0.34
       '@types/rimraf': ^3.0.2
       '@types/sinon': ^10.0.11
       '@types/sinon-chai': ^3.2.8
@@ -41,6 +42,7 @@ importers:
       '@types/chai': 4.3.1
       '@types/debug': 4.1.7
       '@types/mocha': 9.1.1
+      '@types/node': 17.0.34
       '@types/rimraf': 3.0.2
       '@types/sinon': 10.0.11
       '@types/sinon-chai': 3.2.8
@@ -50,12 +52,12 @@ importers:
       rimraf: 3.0.2
       sinon: 14.0.0
       sinon-chai: 3.7.0_chai@4.3.6+sinon@14.0.0
-      ts-node: 10.7.0_typescript@4.6.4
+      ts-node: 10.7.0_3smuweqyuzdazdnyhhezld6mfa
       typescript: 4.6.4
 
   packages/lwm2m:
     specifiers:
-      '@hollowy/coap-shepherd': ^0.0.24
+      '@hollowy/coap-shepherd': ^0.0.25
       '@types/node': ^17.0.34
       rpc-websockets: ^7.4.18
     dependencies:
@@ -240,7 +242,7 @@ packages:
     resolution: {integrity: sha1-vBtb86qS8lvV3TnzXFc2G9zlsus=, tarball: '@types/glob/download/@types/glob-7.2.0.tgz'}
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 17.0.21
+      '@types/node': 17.0.34
     dev: true
 
   /@types/lodash/4.14.180:
@@ -273,10 +275,6 @@ packages:
       '@types/node': 17.0.34
     dev: true
 
-  /@types/node/17.0.21:
-    resolution: {integrity: sha1-hkuYfAxo0HtDRYRcPmO3Xt0UNkQ=, tarball: '@types/node/download/@types/node-17.0.21.tgz'}
-    dev: true
-
   /@types/node/17.0.25:
     resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
     dev: true
@@ -303,7 +301,7 @@ packages:
     resolution: {integrity: sha1-pj0XWzMXSOUiCtSMkB17vx9E7vg=, tarball: '@types/rimraf/download/@types/rimraf-3.0.2.tgz'}
     dependencies:
       '@types/glob': 7.2.0
-      '@types/node': 17.0.21
+      '@types/node': 17.0.34
     dev: true
 
   /@types/sinon-chai/3.2.8:
@@ -1266,36 +1264,6 @@ packages:
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
       '@types/node': 17.0.34
-      acorn: 8.7.0
-      acorn-walk: 8.2.0
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 4.6.4
-      v8-compile-cache-lib: 3.0.0
-      yn: 3.1.1
-    dev: true
-
-  /ts-node/10.7.0_typescript@4.6.4:
-    resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': '>=1.2.50'
-      '@swc/wasm': '>=1.2.50'
-      '@types/node': '*'
-      typescript: '>=2.7'
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      '@swc/wasm':
-        optional: true
-    dependencies:
-      '@cspotcode/source-map-support': 0.7.0
-      '@tsconfig/node10': 1.0.8
-      '@tsconfig/node12': 1.0.9
-      '@tsconfig/node14': 1.0.1
-      '@tsconfig/node16': 1.0.2
       acorn: 8.7.0
       acorn-walk: 8.2.0
       arg: 4.1.3

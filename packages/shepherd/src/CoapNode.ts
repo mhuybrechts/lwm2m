@@ -288,10 +288,13 @@ export class CoapNode {
     } else {
       reqObj = this._reqObj('GET', helpers.getNumPath(path))
       reqObj.observe = true
-      if (this.dataFormat.includes('application/json')) reqObj.options = {Accept: 'application/json'}
-      else reqObj.options = {Accept: 'application/tlv'} // Default format is tlv
-
-      // reqObj.options = {Accept: 'application/octet-stream'}
+      if (this.dataFormat.includes('application/json')) {
+        reqObj.options = {Accept: 'application/json'}
+      } else if (this.dataFormat.includes('application/tlv')) {
+        reqObj.options = {Accept: 'application/tlv'}
+      } else {
+        reqObj.options = {Accept: 'text/plain'} // Default format is tlv
+      }
 
       debug(`OBSERVE -> %s`, JSON.stringify(reqObj))
       this.shepherd.request(reqObj).done(
@@ -708,8 +711,6 @@ export class CoapNode {
   }
 
   private _notifyHandler(path: string, value: any, type: OptionValue): void {
-    debug('_notifyHandler -> %s', value)
-
     const shepherd = this.shepherd
     let data
 
@@ -721,7 +722,7 @@ export class CoapNode {
         data = helpers.decodeTlv(path, value)
         break
       default:
-        data = helpers.checkRescType(path, value.toString())
+        data = helpers.checkRescType(path, value)
         break
     }
 
