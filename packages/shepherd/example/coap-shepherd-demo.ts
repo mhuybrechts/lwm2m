@@ -12,6 +12,7 @@ const shepherd = new CoapShepherd({
   port: 59999,
   autoReadResources: false,
   alwaysFireDevIncoming: true,
+  dontReinitiateObserve: true,
   disableFiltering: true,
 })
 
@@ -31,18 +32,17 @@ shepherd.on('device::leaving', (clientName: string, mac: string) => {
 shepherd.on('device::incoming', (cnode, data: any) => {
   console.log('incoming', cnode.clientName, JSON.stringify(data))
 
-  setTimeout(() => {
-    cnode.observe('/19/0/0', (err, rsp) => {
-      if (err) console.log('ERROR', err)
-      console.log('observe: /19/0/0', JSON.stringify(rsp))
-    })
-  }, 1000)
+  cnode.observe('/19/0/0', (err, rsp) => {
+    if (err) console.log('ERROR', err)
+    console.log('observe: /19/0/0', JSON.stringify(rsp))
+  })
 
   setInterval(() => {
-    cnode.write('/19/1/0', `DEMO::1233556778745jjf`, true, (err) => {
-      if (err) console.log('ERROR', err)
-      console.log('write: /19/1/0', 'DEMO::1233556778745jjf')
-    })
+    if (cnode.status === 'online')
+      cnode.write('/19/1/0', `DEMO::1233556778745jjf` + Math.random(), true, (err) => {
+        if (err) console.log('ERROR', err)
+        console.log('write: /19/1/0', 'DEMO::1233556778745jjf')
+      })
   }, 2000)
 
   /*  setTimeout(() => {

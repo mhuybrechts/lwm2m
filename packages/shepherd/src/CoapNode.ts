@@ -357,10 +357,9 @@ export class CoapNode {
 
   ping(callback?: Callback<void>): Q.Promise<Result<void>> {
     const deferred = Q.defer<Result<void>>()
-    let reqObj
     const txTime = new Date().getTime()
 
-    reqObj = this._reqObj('POST', '/ping')
+    const reqObj = this._reqObj('POST', '/ping')
 
     if (!this._registered) {
       deferred.reject(new Error(this.clientName + ' was deregistered.'))
@@ -619,7 +618,7 @@ export class CoapNode {
 
   cancelObserver(path: string): void {
     const streamObservers = this._streamObservers
-    streamObservers[path].close()
+    streamObservers[path]?.close()
     streamObservers[path] = null
     delete streamObservers[path]
 

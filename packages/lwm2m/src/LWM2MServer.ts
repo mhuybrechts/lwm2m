@@ -21,6 +21,7 @@ export class LWM2MServer {
     this.shepherd = new CoapShepherd({
       autoReadResources: false,
       alwaysFireDevIncoming: true,
+      dontReinitiateObserve: true,
       disableFiltering: true,
       ...this.options,
     })
