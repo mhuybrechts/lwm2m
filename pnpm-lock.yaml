@@ -16,7 +16,7 @@ importers:
       '@types/debug': ^4.1.7
       '@types/lodash': ^4.14.182
       '@types/mocha': ^9.1.1
-      '@types/node': ^17.0.34
+      '@types/node': ^17.0.35
       '@types/rimraf': ^3.0.2
       '@types/sinon': ^10.0.11
       '@types/sinon-chai': ^3.2.8
@@ -42,7 +42,7 @@ importers:
       '@types/chai': 4.3.1
       '@types/debug': 4.1.7
       '@types/mocha': 9.1.1
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       '@types/rimraf': 3.0.2
       '@types/sinon': 10.0.11
       '@types/sinon-chai': 3.2.8
@@ -52,25 +52,25 @@ importers:
       rimraf: 3.0.2
       sinon: 14.0.0
       sinon-chai: 3.7.0_chai@4.3.6+sinon@14.0.0
-      ts-node: 10.7.0_3smuweqyuzdazdnyhhezld6mfa
+      ts-node: 10.7.0_ihi2kx3po6rqbrzdqgpcfvwinm
       typescript: 4.6.4
 
   packages/lwm2m:
     specifiers:
-      '@hollowy/coap-shepherd': ^0.0.25
-      '@types/node': ^17.0.34
+      '@hollowy/coap-shepherd': ^0.0.26
+      '@types/node': ^17.0.35
       rpc-websockets: ^7.4.18
     dependencies:
       '@hollowy/coap-shepherd': link:../shepherd
       rpc-websockets: 7.4.18
     devDependencies:
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
 
   packages/node:
     specifiers:
-      '@hollowy/coap-helpers': ^0.0.2
+      '@hollowy/coap-helpers': ^0.0.3
       '@types/lodash': ^4.14.182
-      '@types/node': ^17.0.34
+      '@types/node': ^17.0.35
       chai: ^4.3.6
       coap: ^1.0.11
       debug: ^4.3.4
@@ -92,20 +92,20 @@ importers:
       network: 0.6.1
       smartobject: 1.5.3
     devDependencies:
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       chai: 4.3.6
       mocha: 10.0.0
       prettier: 2.6.2
 
   packages/shepherd:
     specifiers:
-      '@hollowy/coap-helpers': ^0.0.2
+      '@hollowy/coap-helpers': ^0.0.3
       '@types/chai': ^4.3.1
       '@types/debug': ^4.1.7
       '@types/lodash': ^4
       '@types/mocha': ^9.1.1
       '@types/nedb': ^1.8.12
-      '@types/node': ^17.0.34
+      '@types/node': ^17.0.35
       '@types/prettier': ^2.6.1
       '@types/q': ^1.5.5
       '@types/rimraf': ^3.0.2
@@ -146,7 +146,7 @@ importers:
       '@types/lodash': 4.14.180
       '@types/mocha': 9.1.1
       '@types/nedb': 1.8.12
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       '@types/prettier': 2.6.1
       '@types/q': 1.5.5
       '@types/rimraf': 3.0.2
@@ -157,7 +157,7 @@ importers:
       rimraf: 3.0.2
       sinon: 14.0.0
       sinon-chai: 3.7.0_chai@4.3.6+sinon@14.0.0
-      ts-node: 10.7.0_3smuweqyuzdazdnyhhezld6mfa
+      ts-node: 10.7.0_ihi2kx3po6rqbrzdqgpcfvwinm
       typescript: 4.6.4
 
 packages:
@@ -224,7 +224,7 @@ packages:
   /@types/bl/5.0.2:
     resolution: {integrity: sha512-V4g3uJIfBHeDd/35QTPOujJ4+viJJVtNwC2LmBUZeXGSGL60R5iTsBEZ9Nh+wP3asMOA/LEFHxmKT6JzK+Vd0A==}
     dependencies:
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       '@types/readable-stream': 2.3.12
     dev: false
 
@@ -242,7 +242,7 @@ packages:
     resolution: {integrity: sha1-vBtb86qS8lvV3TnzXFc2G9zlsus=, tarball: '@types/glob/download/@types/glob-7.2.0.tgz'}
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
     dev: true
 
   /@types/lodash/4.14.180:
@@ -272,15 +272,15 @@ packages:
   /@types/nedb/1.8.12:
     resolution: {integrity: sha1-WXuxJN2vFgOcbUePSrwKjyAGsTQ=, tarball: '@types/nedb/download/@types/nedb-1.8.12.tgz'}
     dependencies:
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
     dev: true
 
   /@types/node/17.0.25:
     resolution: {integrity: sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==}
     dev: true
 
-  /@types/node/17.0.34:
-    resolution: {integrity: sha512-XImEz7XwTvDBtzlTnm8YvMqGW/ErMWBsKZ+hMTvnDIjGCKxwK5Xpc+c/oQjOauwq8M4OS11hEkpjX8rrI/eEgA==}
+  /@types/node/17.0.35:
+    resolution: {integrity: sha512-vu1SrqBjbbZ3J6vwY17jBs8Sr/BKA+/a/WtjRG+whKg1iuLFOosq872EXS0eXWILdO36DHQQeku/ZcL6hz2fpg==}
 
   /@types/prettier/2.6.1:
     resolution: {integrity: sha512-XFjFHmaLVifrAKaZ+EKghFHtHSUonyw8P2Qmy2/+osBnrKbH9UYtlK10zg8/kCt47MFilll/DEDKy3DHfJ0URw==}
@@ -293,7 +293,7 @@ packages:
   /@types/readable-stream/2.3.12:
     resolution: {integrity: sha512-IVe0ietigIRWjRg0gv2sydr0rhyPzdXQsBMU/gda8fl82xQL+J9UWRBcD0asxoe4pb5wTOsPrOz0KYJZVCXZJQ==}
     dependencies:
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       safe-buffer: 5.2.1
     dev: false
 
@@ -301,7 +301,7 @@ packages:
     resolution: {integrity: sha1-pj0XWzMXSOUiCtSMkB17vx9E7vg=, tarball: '@types/rimraf/download/@types/rimraf-3.0.2.tgz'}
     dependencies:
       '@types/glob': 7.2.0
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
     dev: true
 
   /@types/sinon-chai/3.2.8:
@@ -1244,7 +1244,7 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /ts-node/10.7.0_3smuweqyuzdazdnyhhezld6mfa:
+  /ts-node/10.7.0_ihi2kx3po6rqbrzdqgpcfvwinm:
     resolution: {integrity: sha1-NdUD0Pqz4rqmcqDpT0tAZTwkY/U=, tarball: ts-node/download/ts-node-10.7.0.tgz}
     hasBin: true
     peerDependencies:
@@ -1263,7 +1263,7 @@ packages:
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
       '@tsconfig/node16': 1.0.2
-      '@types/node': 17.0.34
+      '@types/node': 17.0.35
       acorn: 8.7.0
       acorn-walk: 8.2.0
       arg: 4.1.3

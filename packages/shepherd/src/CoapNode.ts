@@ -314,7 +314,7 @@ export class CoapNode {
               observeStream.on('data', (value) => {
                 const type = observeStream.headers['Content-Format']
                 debug(`observeStream:value -> %s : %s`, type, value)
-                this._notifyHandler(path, value, type)
+                this._notifyHandler(path, String(value), type)
               })
             })
           }
