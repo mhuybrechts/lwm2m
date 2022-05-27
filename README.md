@@ -1,4 +1,4 @@
-# coap-shepherd
+# @hollowy/lwm2m
 Network server and manager for lightweight M2M (LWM2M).
 
 [![NPM](https://nodei.co/npm/coap-shepherd.png?downloads=true)](https://nodei.co/npm/coap-shepherd/)  
@@ -11,7 +11,7 @@ Network server and manager for lightweight M2M (LWM2M).
 
 ## Documentation  
 
-Please visit the [Wiki](https://github.com/PeterEB/coap-shepherd/wiki).
+Please visit the [DOC](https://github.com/nanyuantingfeng/lwm2m/blob/master/docs/Home.md).
 
 <br />
 
@@ -19,15 +19,14 @@ Please visit the [Wiki](https://github.com/PeterEB/coap-shepherd/wiki).
 
 [**OMA Lightweight M2M**](http://technical.openmobilealliance.org/Technical/technical-information/release-program/current-releases/oma-lightweightm2m-v1-0) (LWM2M) is a resource constrained device management protocol relies on [**CoAP**](https://tools.ietf.org/html/rfc7252). And **CoAP** is an application layer protocol that allows devices to communicate with each other RESTfully over the Internet.  
 
-**coap-shepherd**, **coap-node** and **lwm2m-bs-server** modules aim to provide a simple way to build and manage a **LWM2M** network.
-* Server-side library: **coap-shepherd** (this module)
-* Client-side library: [**coap-node**](https://github.com/PeterEB/coap-node)
+**@hollowy/coap-shepherd**, **@hollowy/coap-node** and **lwm2m-bs-server** modules aim to provide a simple way to build and manage a **LWM2M** network.
+* Connect library: **@hollowy/lwm2m**  
+* Server-side library: **@hollowy/coap-shepherd**  
+* Client-side library: **@hollowy/coap-node**
 * Bootstrap server library: [**lwm2m-bs-server**](https://github.com/PeterEB/lwm2m-bs-server)
 * [**A simple demo webapp**](https://github.com/PeterEB/quick-demo)
 
-![coap-shepherd net](https://raw.githubusercontent.com/PeterEB/documents/master/coap-shepherd/media/lwm2m_net.png) 
-
-### LWM2M Server: coap-shepherd
+### LWM2M Server: @hollowy/coap-shepherd
 
 * It is a **LWM2M** Server application framework running on node.js.  
 * It follows most parts of **LWM2M** specification to meet the requirements of a machine network and devices management.  
@@ -39,7 +38,7 @@ Please visit the [Wiki](https://github.com/PeterEB/coap-shepherd/wiki).
 
 ## Installation
 
-> $ npm install coap-shepherd --save
+> $ npm install @hollowy/lwm2m --save
 
 <br />
 
@@ -48,37 +47,49 @@ Please visit the [Wiki](https://github.com/PeterEB/coap-shepherd/wiki).
 This example shows how to start a server and allow devices to join the network within 180 seconds after the server is ready:
 
 ```js
-var cserver = require('coap-shepherd');
+import { LWM2MServer } from '@hollowy/lwm2m'
 
-cserver.on('ready', function () {
+const server = new LWM2MServer({ port: 5683 })
+
+server.on('ready', () => {
     console.log('Server is ready.');
 
     // when server is ready, allow devices to join the network within 180 secs
-    cserver.permitJoin(180);  
+  server.permitJoin(180);  
 });
 
-cserver.start(function (err) {  // start the server
-    if (err)
-        console.log(err);
+server.start((err) => {  // start the server
+    if (err) console.log(err);
 });
 
 // That's all to start a LWM2M server.
 // Now cserver is going to automatically tackle most of the network managing things.
 ```
 
-Or you can pass a config object as an argument to the CoapShepherd constructor and instance the CoapShepherd by yourself:
+In your front-end project page
 
 ```js
-var CoapShepherd = require('coap-shepherd').constructor;
-var cshepherd = new CoapShepherd({
-    connectionType: 'udp6',
-    port: 5500,
-    defaultDbPath: __dirname + '/../lib/database/myShepherd.db'
-});
+import {LWM2MConnect} from '@hollowy/lwm2m'
+
+const connect = new LWM2MConnect(5683, window.location.hostname)
+
+connect.subscribe("device::notify", (clientName, data) => {
+  console.log("device::notify", clientName, data)
+})
+
+connect.subscribe("device::status", (clientName, status) => {
+  console.log("device::status",clientName, status)
+})
+
+// and write a value to device
+connect.write(`@clientName`, "/19/1/0", "Some Message...").catch(e => {
+  console.log("ERROR", e)
+})
+
 ```
 
 <br />
 
-## License
+## LICENSE
 
-Licensed under [MIT](https://github.com/PeterEB/coap-shepherd/blob/master/LICENSE).
+Licensed under [MIT](https://github.com/nanyuantingfeng/lwm2m/blob/master/LICENSE).
