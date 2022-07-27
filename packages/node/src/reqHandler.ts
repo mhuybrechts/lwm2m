@@ -86,7 +86,7 @@ export default function reqHandler(cn: CoapNode, req: IncomingMessage, rsp: Outg
 
 function forRead(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
   let dataAndOpt
 
   function readCallback(err, data) {
@@ -108,24 +108,24 @@ function forRead(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
     rsp.code = RSP.notfound
     rsp.end()
   } else if (target.type === TTYPE.obj) {
-    cn.so.dump(pathObj.oid, {restrict: true}, readCallback)
+    cn.so.dump(pathObj.oid as KEY, {restrict: true}, readCallback)
   } else if (target.type === TTYPE.inst) {
-    cn.so.dump(pathObj.oid, pathObj.iid, {restrict: true}, readCallback)
+    cn.so.dump(pathObj.oid as KEY, pathObj.iid as KEY, {restrict: true}, readCallback)
   } else if (target.type === TTYPE.rsc) {
-    cn.so.read(pathObj.oid, pathObj.iid, pathObj.rid, {restrict: true}, readCallback)
+    cn.so.read(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, {restrict: true}, readCallback)
   }
 }
 
 function forDiscover(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
   let rspPayload
 
   if (!target.exist) {
     rsp.code = RSP.notfound
     rsp.end()
   } else {
-    rspPayload = buildAttrsAndResource(cn, serverInfo.shortServerId, pathObj.oid, pathObj.iid, pathObj.rid)
+    rspPayload = buildAttrsAndResource(cn, serverInfo.shortServerId, pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY)
     rsp.code = RSP.content
     rsp.setOption('Content-Format', 'application/link-format')
     rsp.end(rspPayload)
@@ -134,8 +134,8 @@ function forDiscover(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, s
 
 function forBsWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
-  let value = getReqData(req, target.pathKey)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
+  let value = getReqData(req, target.pathKey as unknown as string)
   let obj = {}
 
   // if req come from bootstrap server, should create object instance
@@ -143,12 +143,12 @@ function forBsWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
     rsp.code = RSP.notallowed
     rsp.end()
   } else if (target.type === TTYPE.inst) {
-    cn.create(pathObj.oid, pathObj.iid, value)
+    cn.create(pathObj.oid as KEY, pathObj.iid as KEY, value)
     rsp.code = RSP.changed
     rsp.end()
   } else {
-    obj[pathObj.rid] = value
-    cn.create(pathObj.oid, pathObj.iid, obj)
+    obj[pathObj.rid as KEY] = value
+    cn.create(pathObj.oid as KEY, pathObj.iid as KEY, obj)
     rsp.code = RSP.changed
     rsp.end()
   }
@@ -156,8 +156,8 @@ function forBsWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
 
 function forWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
-  let value = getReqData(req, target.pathKey)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
+  let value = getReqData(req, target.pathKey as unknown as string)
 
   function writeCallback(err, data) {
     if (err) rsp.code = data === TAG.unwritable || data === TAG.exec ? RSP.notallowed : RSP.badreq
@@ -177,15 +177,15 @@ function forWrite(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
     rsp.code = RSP.notallowed
     rsp.end()
   } else if (target.type === TTYPE.inst) {
-    cn._writeInst(pathObj.oid, pathObj.iid, value, writeCallback)
+    cn._writeInst(pathObj.oid as KEY, pathObj.iid as KEY, value, writeCallback)
   } else {
-    cn.so.write(pathObj.oid, pathObj.iid, pathObj.rid, value, {restrict: true}, writeCallback)
+    cn.so.write(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, value, {restrict: true}, writeCallback)
   }
 }
 
 function forWriteAttr(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
   let attrs = helpers.buildRptAttr(req)
 
   if (!target.exist) {
@@ -195,7 +195,7 @@ function forWriteAttr(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, 
     rsp.code = RSP.badreq
     rsp.end()
   } else {
-    cn._setAttrs(serverInfo.shortServerId, pathObj.oid, pathObj.iid, pathObj.rid, attrs)
+    cn._setAttrs(serverInfo.shortServerId, pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, attrs)
     rsp.code = RSP.changed
     rsp.end()
   }
@@ -203,7 +203,7 @@ function forWriteAttr(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, 
 
 function forExecute(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
   let argus = helpers.getArrayArgs(String(req.payload))
 
   if (!target.exist) {
@@ -216,7 +216,7 @@ function forExecute(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
     rsp.code = RSP.notallowed
     rsp.end()
   } else {
-    cn.execute(pathObj.oid, pathObj.iid, pathObj.rid, argus as any[], (err, data) => {
+    cn.execute(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, argus as any[], (err, data) => {
       if (err) rsp.code = data === TAG.unexecutable ? RSP.notallowed : RSP.badreq
       else rsp.code = RSP.changed
 
@@ -232,8 +232,8 @@ function forExecute(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
 function forObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   let pathObj = helpers.getPathIdKey(req.url)
   let ssid = serverInfo.shortServerId
-  let target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
-  let rAttrs = cn._getAttrs(ssid, pathObj.oid, pathObj.iid, pathObj.rid)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
+  let rAttrs = cn._getAttrs(ssid, pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
   let dataAndOpt
 
   function enableReport(oid, iid, rid, format, rsp) {
@@ -261,18 +261,18 @@ function forObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, se
   } else if (target.type === TTYPE.obj) {
     rsp.statusCode = RSP.notallowed
     rsp.end()
-  } else if (serverInfo.reporters[target.pathKey]) {
-    cn._disableReport(ssid, pathObj.oid, pathObj.iid, pathObj.rid, (err) => {
-      enableReport(pathObj.oid, pathObj.iid, pathObj.rid, req.headers.Accept, rsp)
+  } else if (serverInfo.reporters[target.pathKey as unknown as string]) {
+    cn._disableReport(ssid, pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, (_err) => {
+      enableReport(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid, req.headers.Accept, rsp)
     })
   } else {
-    enableReport(pathObj.oid, pathObj.iid, pathObj.rid, req.headers.Accept, rsp)
+    enableReport(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid, req.headers.Accept, rsp)
   }
 }
 
 function forCancelObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   const pathObj = helpers.getPathIdKey(req.url)
-  const target = cn._target(pathObj.oid, pathObj.iid, pathObj.rid)
+  const target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid)
 
   if (pathObj.oid === 'heartbeat') {
     heartbeat(cn, serverInfo.shortServerId, false)
@@ -285,7 +285,7 @@ function forCancelObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessa
     rsp.statusCode = RSP.notallowed
     rsp.end()
   } else {
-    cn._disableReport(serverInfo.shortServerId, pathObj.oid, pathObj.iid, pathObj.rid, function (err, val) {
+    cn._disableReport(serverInfo.shortServerId, pathObj.oid as KEY, pathObj.iid as KEY, pathObj.rid as KEY, function (err, _val) {
       if (err) rsp.code = RSP.notfound
       else rsp.code = RSP.content
 
@@ -294,15 +294,15 @@ function forCancelObserve(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessa
   }
 }
 
-function forPing(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
+function forPing(_cn: CoapNode, _req: IncomingMessage, rsp: OutgoingMessage, serverInfo: IServerInfo) {
   rsp.code = serverInfo.registered ? RSP.content : RSP.notallowed
   rsp.end()
 }
 
 function forCreate(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
-  let target = cn._target(pathObj.oid, pathObj.iid)
-  let data = getReqData(req, target.pathKey)
+  let target = cn._target(pathObj.oid as KEY, pathObj.iid as KEY)
+  let data = getReqData(req, target.pathKey as unknown as string)
   let iid = Object.keys(data)[0]
   let value = data[iid]
 
@@ -310,7 +310,7 @@ function forCreate(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
     rsp.code = RSP.badreq
     rsp.end()
   } else {
-    cn.create(pathObj.oid, iid, value, (err, data) => {
+    cn.create(pathObj.oid as KEY, iid, value, (err, _data) => {
       if (err) rsp.code = RSP.badreq
       else rsp.code = RSP.created
       rsp.end()
@@ -359,7 +359,7 @@ function forDelete(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   let pathObj = helpers.getPathIdKey(req.url)
 
   if (_.isNil(pathObj.oid) && _.isNil(pathObj.iid)) {
-    cn.delete(pathObj.oid, pathObj.iid, (err) => {
+    cn.delete(pathObj.oid as unknown as KEY, pathObj.iid as unknown as KEY, (err) => {
       if (err) rsp.code = RSP.badreq
       else rsp.code = RSP.deleted
       rsp.end()
@@ -370,7 +370,7 @@ function forDelete(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   }
 }
 
-function forFinish(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
+function forFinish(cn: CoapNode, _req: IncomingMessage, rsp: OutgoingMessage) {
   let securityObjs = cn.so.dumpSync('lwm2mSecurity')
   let serverObjs = cn.so.dumpSync('lwm2mServer')
   let lwm2mServerURI
@@ -383,7 +383,7 @@ function forFinish(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
   cn.emit('bootstrapped')
 }
 
-function forAnnounce(cn: CoapNode, req: IncomingMessage, rsp: OutgoingMessage) {
+function forAnnounce(cn: CoapNode, req: IncomingMessage, _rsp: OutgoingMessage) {
   cn.emit('announce', req.payload)
 }
 
@@ -471,7 +471,7 @@ function buildAttrsAndResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: KEY, rid:
   if (!_.isNil(iid)) value = cn.getSmartObject().dumpSync(oid, iid)
   else value = cn.getSmartObject().dumpSync(oid)
 
-  data = helpers.encodeLinkFormat(target.pathKey, value, attrs)
+  data = helpers.encodeLinkFormat(target.pathKey as unknown as string, value, attrs)
 
   return data
 }
@@ -479,7 +479,7 @@ function buildAttrsAndResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: KEY, rid:
 function findServer(cn: CoapNode, rsinfo: IRSInfo) {
   let data
 
-  _.forEach(cn.serversInfo, (serverInfo, ssid) => {
+  _.forEach(cn.serversInfo, (serverInfo, _ssid) => {
     if (serverInfo.ip === rsinfo.address && serverInfo.port === rsinfo.port) data = serverInfo
   })
 

@@ -15,6 +15,7 @@ import config from './config'
 import {setupNode} from './init'
 import {Callback, ICoapRequestParams, IConfig, IDevAttrs, INet, IServerInfo, KEY} from './types'
 import {checkAndBuildObjList, heartbeat} from './helpers'
+import ErrnoException = NodeJS.ErrnoException;
 
 const DEBUG = require('debug')('coap-node')
 const DEBUG_REQ = require('debug')('coap-node:REQ')
@@ -62,8 +63,8 @@ export class CoapNode extends EventEmitter {
   public autoReRegister: boolean
   public _bootstrapping: boolean
   public _sleep: boolean
-  public _updater: NodeJS.Timer
-  public _socketServerChecker: NodeJS.Timer
+  public _updater: NodeJS.Timer | null
+  public _socketServerChecker: NodeJS.Timer | null
   public _config: IConfig
 
   constructor(clientName: string, smartObj: SmartObject, devAttrs: Partial<IDevAttrs>) {
@@ -116,7 +117,7 @@ export class CoapNode extends EventEmitter {
     setupNode(this, devAttrs)
   }
 
-  private _updateNetInfo(callback: Callback<INet>) {
+  private _updateNetInfo(callback: Callback<INet | null>) {
     network.get_active_interface((err, obj) => {
       if (err) {
         callback(err, null)
@@ -138,17 +139,17 @@ export class CoapNode extends EventEmitter {
     return this.so
   }
 
-  _writeInst(oid: KEY, iid: KEY, value: any, callback: Callback<string>) {
+  _writeInst(oid: KEY, iid: KEY, value: any, callback: Callback<string | null>) {
     let exist = this.so.has(oid, iid)
     let okey = helpers.oidKey(oid)
     let dump = {}
-    let chkErr = null
+    let chkErr: null | Error = null
     let count = _.keys(value).length
 
     if (!exist) {
       callback(ERR.notfound, null)
     } else {
-      _.forEach(value, (rsc, rid) => {
+      _.forEach(value, (_rsc, rid) => {
         if (!this.so.isWritable(oid, iid, rid) && oid != 'lwm2mSecurity' && oid != 'lwm2mServer')
           chkErr = chkErr || new Error('Resource is unwritable.')
       })
@@ -183,7 +184,7 @@ export class CoapNode extends EventEmitter {
       const oo = this.so.init(oid, iid, resource)
       callback?.(null, oo)
     } catch (e) {
-      callback?.(e, null)
+      callback?.(e as ErrnoException, null)
     }
   }
 
@@ -192,7 +193,7 @@ export class CoapNode extends EventEmitter {
       const oo = this.so.remove(oid, iid)
       callback?.(null, oo)
     } catch (e) {
-      callback?.(e, null)
+      callback?.(e as ErrnoException, null)
     }
   }
 
@@ -321,13 +322,13 @@ export class CoapNode extends EventEmitter {
     let securityObjs = this.so.dumpSync('lwm2mSecurity')
     let serverObjs = this.so.dumpSync('lwm2mServer')
     let requestCount = 0
-    let requestInfo = []
+    let requestInfo: {uri: string, ssid: string}[] = []
     let serverInfo
-    let rsps = {status: null, data: []}
+    let rsps: {status: null | string, data: any[]} = {status: null, data: []}
     let chkErr
 
-    _.forEach(serverObjs, (serverObj, iid) => {
-      _.forEach(securityObjs, (securityObj, iid) => {
+    _.forEach(serverObjs, (serverObj, _iid) => {
+      _.forEach(securityObjs, (securityObj, _iid) => {
         if (
           !_.isNil(serverObj.shortServerId) &&
           !_.isNil(serverObj.shortServerId) &&
@@ -346,7 +347,7 @@ export class CoapNode extends EventEmitter {
     if (requestCount === 0) {
       invokeCallBackNextTick(new Error('Do not have any allowed configuration.'), null, callback)
     } else {
-      _.forEach(requestInfo, (info, key) => {
+      _.forEach(requestInfo, (info, _key) => {
         serverInfo = getServerUriInfo(info.uri)
         this._register(serverInfo.address, serverInfo.port, info.ssid, (err, msg) => {
           requestCount -= 1
@@ -394,7 +395,7 @@ export class CoapNode extends EventEmitter {
       hostname: ip,
       port: port,
       pathname: '/rd',
-      payload: checkAndBuildObjList(this, false, {}),
+      payload: checkAndBuildObjList(this, false, {}) as string,
       method: 'POST',
       options: {'Content-Format': 'application/link-format'},
     }
@@ -463,16 +464,16 @@ export class CoapNode extends EventEmitter {
     if (!_.isPlainObject(attrs)) throw new TypeError('attrs should be an object.')
 
     let requestCount = Object.keys(this.serversInfo).length
-    let rsps = {status: null, data: []}
+    let rsps: {status: string | null, data: any[]} = {status: null, data: []}
     let updateObj: any = {}
     let objListInPlain
     let chkErr
 
-    _.forEach(attrs, (val, key) => {
+    _.forEach(attrs, (_val, key) => {
       if (key === 'lifetime') {
         // self.so.set('lwm2mServer', 0, 'lifetime', attrs.lifetime);  // [TODO] need to check / multi server
         if (attrs.lifetime !== this.lifetime) {
-          this.lifetime = updateObj.lifetime = attrs.lifetime
+          this.lifetime = updateObj.lifetime = (attrs.lifetime as number)
         } else {
           chkErr = new Error('The given lifetime is the same as cnode current lifetime.')
         }
@@ -575,7 +576,7 @@ export class CoapNode extends EventEmitter {
   deregister(ssid: any, callback?: any) {
     let self = this
     let requestCount = Object.keys(this.serversInfo).length
-    let rsps = {status: null, data: []}
+    let rsps: {status: string | null, data: any[]} = {status: null, data: []}
     let chkErr
 
     function deregister(serverInfo, cb) {
@@ -649,7 +650,7 @@ export class CoapNode extends EventEmitter {
     let agent = this._createAgent()
     let requestCount = Object.keys(this.serversInfo).length
     let resetCount = 0
-    let rsps = {status: null, data: []}
+    let rsps: {status: null | string, data: any[]} = {status: null, data: []}
     let chkErr
 
     function setListenerStart(port, msg, cb) {
@@ -729,7 +730,7 @@ export class CoapNode extends EventEmitter {
   checkout(duration: any, callback?: any): void {
     let self = this
     let requestCount = Object.keys(this.serversInfo).length
-    let rsps = {status: null, data: []}
+    let rsps: {status: string | null, data: any[]} = {status: null, data: []}
     let chkErr
 
     if (_.isFunction(duration)) {
@@ -761,7 +762,7 @@ export class CoapNode extends EventEmitter {
             if (rsp.code === RSP.changed) {
               self._disableAllReport(serverInfo.shortServerId)
               self._sleep = true
-              _.forEach(self.servers, function (server, key) {
+              _.forEach(self.servers, function (server, _key) {
                 server.close()
               })
             }
@@ -844,7 +845,7 @@ export class CoapNode extends EventEmitter {
     req.on('error', (err) => {
       if (!_.isFunction(callback)) self.emit('error', err)
       else if (err.retransmitTimeout) callback(null, {code: RSP.timeout})
-      else callback(err)
+      else callback(err, null)
     })
 
     req.end(reqObj.payload)
@@ -857,7 +858,14 @@ export class CoapNode extends EventEmitter {
   _target(oid: KEY, iid: KEY, rid?: KEY) {
     let okey = helpers.oidKey(oid)
 
-    let trg = {
+    let trg: {
+      type: null | number,
+      exist: boolean,
+      value: any,
+      pathKey: KEY | null,
+      oidKey: KEY,
+      ridKey: null,
+    } = {
       type: null,
       exist: this.so.has(oid, iid, rid),
       value: null,
@@ -886,7 +894,7 @@ export class CoapNode extends EventEmitter {
     if (trg.exist) {
       if (trg.type === TTYPE.obj) trg.value = this.so.findObject(oid)
       else if (trg.type === TTYPE.inst) trg.value = this.so.findObjectInstance(oid, iid)
-      else if (trg.type === TTYPE.rsc) trg.value = this.so.get(oid, iid, rid)
+      else if (trg.type === TTYPE.rsc) trg.value = this.so.get(oid, iid, rid as KEY)
     }
 
     return trg
@@ -910,7 +918,7 @@ export class CoapNode extends EventEmitter {
 
   _getAttrs(ssid: KEY, oid: KEY, iid: KEY, rid?: KEY) {
     let serverInfo = this.serversInfo[ssid]
-    let key = this._target(oid, iid, rid).pathKey
+    let key = this._target(oid, iid, rid).pathKey as unknown as string
     let defaultAttrs
 
     defaultAttrs = {
@@ -938,7 +946,7 @@ export class CoapNode extends EventEmitter {
     let self = this
     let serverInfo = this.serversInfo[ssid]
     let target = this._target(oid, iid, rid)
-    let key = target.pathKey
+    let key = target.pathKey as unknown as string
     let rAttrs = this._getAttrs(ssid, oid, iid, rid)
     let pmin = rAttrs.pmin * 1000
     let pmax = rAttrs.pmax * 1000
@@ -967,7 +975,6 @@ export class CoapNode extends EventEmitter {
 
     function reporterWrite(val) {
       rAttrs.mute = true
-
       if (_.isObject(val)) {
         _.forEach(val, function (val, rid) {
           rAttrs.lastRpVal[rid] = val
@@ -976,6 +983,7 @@ export class CoapNode extends EventEmitter {
         rAttrs.lastRpVal = val
       }
 
+      DEBUG_RSP(val);
       if (format === 'text/plain') {
         if (_.isBoolean(val)) val = val ? '1' : '0'
         else val = val.toString()
@@ -1011,7 +1019,7 @@ export class CoapNode extends EventEmitter {
 
         rsp.once('finish', finish)
 
-        rpt = serverInfo.reporters[key] = {
+        rpt = serverInfo.reporters[key as string] = {
           min: setTimeout(reporterMin, pmin),
           max: setInterval(reporterMax, pmax),
           write: reporterWrite,
@@ -1026,8 +1034,8 @@ export class CoapNode extends EventEmitter {
   }
 
   _disableReport(ssid: KEY, oid: KEY, iid: KEY, rid: KEY, callback: Callback<any>): void {
-    let serverInfo = this.serversInfo[ssid]
-    let key = this._target(oid, iid, rid).pathKey
+    let serverInfo = this.serversInfo[ssid as string]
+    let key = this._target(oid, iid, rid).pathKey as unknown as string
     let rpt
     let chkErr
 
@@ -1051,12 +1059,12 @@ export class CoapNode extends EventEmitter {
     function disableReport(serverInfo) {
       heartbeat(self, serverInfo.shortServerId, false)
 
-      _.forEach(serverInfo.reporters, function (rpt, key) {
+      _.forEach(serverInfo.reporters, function (_rpt, key) {
         let oid = key.split('/')[0]
         let iid = key.split('/')[1]
         let rid = key.split('/')[2]
 
-        self._disableReport(serverInfo.shortServerId, oid, iid, rid, function (err, result) {
+        self._disableReport(serverInfo.shortServerId, oid, iid, rid, function (err, _result) {
           if (err) self.emit('error', err)
         })
       })
@@ -1070,7 +1078,7 @@ export class CoapNode extends EventEmitter {
   }
 
   private _idCounter(type: string): number {
-    let id: number
+    let id: number = 0;
     let idUsed: boolean
 
     switch (type) {
@@ -1093,7 +1101,7 @@ export class CoapNode extends EventEmitter {
         do {
           id = id + 1
           idUsed = false
-          _.forEach(this.so.dumpSync('lwm2mSecurity'), (iObj, iid) => {
+          _.forEach(this.so.dumpSync('lwm2mSecurity'), (iObj, _iid) => {
             if (iObj.shortServerId === id) idUsed = true
           })
         } while (idUsed)
@@ -1107,7 +1115,7 @@ export class CoapNode extends EventEmitter {
   }
 }
 
-function startListener(cn: CoapNode, port: number, callback: Callback<Server>) {
+function startListener(cn: CoapNode, port: number, callback: Callback<Server | null>) {
   const server = createServer({
     type: cn._config.connectionType,
     proxy: true,
@@ -1140,7 +1148,7 @@ function startListener(cn: CoapNode, port: number, callback: Callback<Server>) {
       }
     })
   } catch (e) {
-    callback(e, null)
+    callback(e as ErrnoException, null)
   }
 }
 

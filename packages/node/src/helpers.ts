@@ -8,15 +8,15 @@ import {KEY} from './types'
 import {OutgoingMessage} from 'coap'
 
 export function lifetimeUpdate(cn: CoapNode, enable: boolean) {
-  clearInterval(cn._updater)
+  clearInterval(cn._updater as NodeJS.Timer)
   cn._updater = null
   if (enable) {
     cn._updater = setInterval(() => {
-      _.forEach(cn.serversInfo, (serverInfo, ssid) => {
+      _.forEach(cn.serversInfo, (serverInfo, _ssid) => {
         if (serverInfo.registered) {
           serverInfo.lfsecs += 1
           if (serverInfo.lfsecs >= cn.lifetime - 10) {
-            cn.update({}, (err, msg) => {
+            cn.update({}, (err, _msg) => {
               if (err) {
                 cn.emit('error', err)
               } else {
@@ -54,7 +54,7 @@ export function heartbeat(cn: CoapNode, ssid: KEY, enable?: boolean, rsp?: Outgo
       if (cn.autoReRegister === true) reRegister(cn, ssid)
     }
 
-    rsp.on('finish', serverInfo.hbStream.finishCb)
+    rsp?.on('finish', serverInfo.hbStream.finishCb)
 
     serverInfo.hbPacemaker = setInterval(function () {
       try {
@@ -72,7 +72,7 @@ export function reRegister(cn: CoapNode, ssid: KEY) {
 
   cn.emit('reconnect')
 
-  cn._register(serverInfo.ip, serverInfo.port, ssid, (err, msg) => {
+  cn._register(serverInfo.ip, serverInfo.port, ssid, (_err, msg) => {
     if (!msg || !(msg.status === CONSTANTS.RSP.created)) {
       setTimeout(() => reRegister(cn, ssid), 5000)
     }
@@ -124,7 +124,7 @@ export function checkAndBuildObjList(cn: CoapNode, check: boolean, opts?: any) {
 }
 
 export function checkAndReportResource(cn: CoapNode, oid: KEY, iid: KEY, rid: KEY, val: any) {
-  _.forEach(cn.serversInfo, (serverInfo, ssid) => {
+  _.forEach(cn.serversInfo, (_serverInfo, ssid) => {
     _checkAndReportResource(cn, ssid, oid, iid, rid, val)
   })
 }
@@ -137,7 +137,7 @@ export function _checkAndReportResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: 
   let ridKey = target.ridKey
   let rAttrs = cn._getAttrs(ssid, oid, iid, rid)
   let iAttrs = cn._getAttrs(ssid, oid, iid)
-  let rpt = serverInfo.reporters[target.pathKey]
+  let rpt = serverInfo.reporters[target.pathKey as any]
   let iRpt = serverInfo.reporters[oidKey + '/' + iid]
   let iObj = {}
   let lastRpVal
@@ -163,13 +163,15 @@ export function _checkAndReportResource(cn: CoapNode, ssid: KEY, oid: KEY, iid: 
       _checkAndReportResource(cn, ssid, oid, iid, rid, val)
     }, iAttrs.pmin * 1000)
   } else if (!iAttrs.mute && chkRp && iAttrs.enable && _.isFunction(iRpt.write)) {
-    iObj[ridKey] = val
+    iObj[ridKey as any] = val
     iRpt.write(iObj)
   }
+
+  return
 }
 
 export function checkAndCloseServer(cn: CoapNode, enable: boolean) {
-  clearInterval(cn._socketServerChecker)
+  clearInterval(cn._socketServerChecker as NodeJS.Timer)
   cn._socketServerChecker = null
 
   if (enable) {
@@ -178,7 +180,7 @@ export function checkAndCloseServer(cn: CoapNode, enable: boolean) {
         let using = false
 
         _.forEach(cn.serversInfo, (serverInfo) => {
-          _.forEach(serverInfo.reporters, (reporter, path) => {
+          _.forEach(serverInfo.reporters, (reporter, _path) => {
             // @ts-ignore
             if (server._port === reporter.port) using = true
           })
